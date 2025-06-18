@@ -20,10 +20,10 @@
 
     //variables para bancoocci
     let url= "https://plataforma-qa.bytesw.cloud/"
-    let usuario = "operadorqa";
-    let contrasena = "QA2025";
-    let tipoDocumento = 0
-    let InfoTipoDocumento = 1010199002153 
+    let usuario = "OPERADORQA";
+    let contrasena = "byte0625";
+    let tipoDocumento = " 1 - CEDULA DE IDENTIDAD "
+    let InfoTipoDocumento = "1010199002153"
 
     
   describe("BancoOcci", () => {
@@ -64,7 +64,11 @@
 //        cy.ingresoJson("varjson")
 
 
-        Generales.Login("https://plataforma-qa.bytesw.cloud/", "operadorqa", "QA2025") // Metodo de login de MetidisGenerales 
+        //Generales.Login("https://plataforma-qa.bytesw.cloud/", "operadorqa", "byte0625") // Metodo de login de MetidisGenerales 
+
+
+
+        
         // Generales.Login(ArrayVar[0].URL_Sitio, ArrayVar[0].Usuario, ArrayVar[0].Password) // Metodo de login de MetidisGenerales 
       })// TERMINA EL IT LOGIN
 

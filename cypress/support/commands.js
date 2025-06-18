@@ -46,6 +46,7 @@ Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
     cy.wait(420) 
     //click en operacion
     cy.get('body').then(() => {
+      cy.wait(1500)
         cy.xpath('/html/body/app-root/app-container/bac-app-container/div/mat-drawer-container/mat-drawer[1]/div/div[2]/mat-nav-list/div[1]/a/span/span/mat-icon[2]')
           .then($el => {
             if ($el.length > 0) {
@@ -68,10 +69,11 @@ Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
       });
     });
     // Espera a que aparezcan las opciones (ajusta si tu app necesita más tiempo)
-    cy.wait(2500);
+    cy.wait(5000);
     //ingreso tipoDocumento
     cy.get('body').then(() => {
-        cy.xpath('/html/body/app-root/app-container/bac-app-container/div/mat-drawer-container/mat-drawer-content/app-search-person/div[1]/form/div/div[1]/div/app-auto-complete/section/mat-form-field/div[1]/div/div[2]/input')
+       cy.contains('mat-label', 'Tipo de documento').click({force:true})
+      
           .then($el => {
             if ($el.length > 0) {
               // Hace clic en el input para abrir las opciones de autocompletado
@@ -79,13 +81,14 @@ Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
                     // Espera a que aparezcan las opciones (ajusta si tu app necesita más tiempo)
               cy.wait(500);
                     // Selecciona el mat-option correspondiente según el tipo de documento
-              cy.get('mat-option').eq(tipoDocumento).click({ force: true })
-              .wait(500)
+              cy.contains('.mat-mdc-option span',tipoDocumento).click({ force: true })
+              .wait(1000)
 
-              cy.xpath("/html/body/app-root/app-container/bac-app-container/div/mat-drawer-container/mat-drawer-content/app-search-person/div[1]/form/div/div[1]/div/app-input-material/form/mat-form-field/div[1]/div/div[2]/input").type(InfoTipoDocumento); // Luego escribe el valor   
+             cy.get('.mat-mdc-input-element').eq(1).click().type(InfoTipoDocumento); // Luego escribe el valor   
                 } else {
               cy.log('No se encontró el input de tipo de documento');
             }
+            cy.contains('span', 'Buscar ').click({force:true})
         });
       });
     //ingreso informacion del documento seleccionado
