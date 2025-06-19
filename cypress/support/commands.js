@@ -1,18 +1,22 @@
-require('cypress-xpath');
-import 'cypress-plugin-tab';
+require("cypress-xpath");
+import "cypress-plugin-tab";
 
-Cypress.Commands.add('Login', (URL, Usuario, Password) => {
-    cy.visit(URL);
-        
-        const user = Usuario
-        const password = Password
+Cypress.Commands.add("Login", (URL, Usuario, Password) => {
+  cy.visit(URL);
 
-        cy.origin('https://keycloak-core.bytesw.cloud', { args: { user, password } }, ({ user, password }) => {
-        cy.get('input#username').type(user)
-        cy.get('input#password').type(password)
-        cy.get('#kc-login').click()
-        })    
-      });
+  const user = Usuario;
+  const password = Password;
+
+  cy.origin(
+    "https://keycloak-core.bytesw.cloud",
+    { args: { user, password } },
+    ({ user, password }) => {
+      cy.get("input#username").type(user);
+      cy.get("input#password").type(password);
+      cy.get("#kc-login").click();
+    }
+  );
+});
 
 Cypress.Commands.add('alertaSuscr', () => {
 
@@ -140,59 +144,42 @@ Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
 
 
 });
-  
-Cypress.Commands.add('ingresoJson', (valorJson) => {
 
-    cy.get('body').then(() => {
-      if ($el.is('input')) {
-    cy.wrap($el).invoke('prop', 'readonly').then((readonly) => {
-      if (readonly) {
-        cy.log('El campo es de solo lectura');
-      } else {
-        Generales.input(labelText,datos[arraylabel[totalArrayLabel]])
-      }
-    });
-  }                       
-  else if ($el.hasClass('mat-select-placeholder')) {
-    cy.wrap($el).invoke('prop', 'disabled').then((disabled) => {
-        if (disabled) {
-          cy.log('El combobox está deshabilitado');
-        } else {
-            Generales.Combobox(datos[arraylabel[totalArrayLabel]])
-               }
-            }); 
-        }
-    });
+Cypress.Commands.add("ingresoJson", (valorJson) => {
+  cy.get("body").then(() => {
+    if ($el.is("input")) {
+      cy.wrap($el)
+        .invoke("prop", "readonly")
+        .then((readonly) => {
+          if (readonly) {
+            cy.log("El campo es de solo lectura");
+          } else {
+            Generales.input(labelText, datos[arraylabel[totalArrayLabel]]);
+          }
+        });
+    } else if ($el.hasClass("mat-select-placeholder")) {
+      cy.wrap($el)
+        .invoke("prop", "disabled")
+        .then((disabled) => {
+          if (disabled) {
+            cy.log("El combobox está deshabilitado");
+          } else {
+            Generales.Combobox(datos[arraylabel[totalArrayLabel]]);
+          }
+        });
+    }
+  });
 });
 
-
-Cypress.Commands.add('ingresoInput', (selector, valorInput) => {
-    cy.get(selector)
-    .should('not.be.disabled') // Espera a que el campo no esté deshabilitado
+Cypress.Commands.add("ingresoInput", (selector, valorInput) => {
+  cy.get(selector)
+    .should("not.be.disabled") // Espera a que el campo no esté deshabilitado
     .click({ force: true })
     .clear()
     .type(valorInput)
     .click({ force: true });
-    cy.wait(500);   
+  cy.wait(500);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // ***********************************************
 // This example commands.js shows you how to
@@ -219,4 +206,3 @@ Cypress.Commands.add('ingresoInput', (selector, valorInput) => {
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
