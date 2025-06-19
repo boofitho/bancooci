@@ -275,6 +275,14 @@ function getElementSelector($el) {
 
     //Fin Metodos Generales
 
+TipodePersona(persona){
+cy.contains('label', persona).click();
+
+
+
+}
+
+
 }
 
 
