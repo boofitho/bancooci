@@ -16,7 +16,7 @@ class PersonaNatural {
     cy.get("#kc-login").click();
   }
 
-  IngresoPersonaNatural(usuarioAgregar) {//Metodo para agregar tipo de persona 
+  IngresoPersonaNatural(usuarioAgregar ) {//Metodo para agregar tipo de persona 
     //Ingreso de persona natural
     cy.contains("span", "Agregar ").click({ force: true });
     cy.wait(3000);
@@ -24,9 +24,12 @@ class PersonaNatural {
     cy.wait(20000);
   }//Fin tipo de persona 
 
-  IngresoDatosPersonaNatural(InfoTipoDocumento){ //Se ingresan datos en la pantalla tipo de persona natural 
+  IngresoDatosPersonaNatural(InfoTipoDocumento, anio){ //Se ingresan datos en la pantalla tipo de persona natural 
     cy.contains('mat-label', 'CEDULA DE IDENTIDAD' ).type(InfoTipoDocumento)
-    cy.get('button[aria-label="Open calendar"]').click();
+    cy.wait(9000)
+    cy.get('button[aria-label="Open calendar"]').first().click({force:true});
+    cy.xpath("//button[@aria-label='Choose month and year']").click({force:true})
+    cy.contains('button', anio).click({force:true});
 
 
 

@@ -9,7 +9,7 @@ let tipoDocumento = " 1 - CEDULA DE IDENTIDAD ";
 let InfoTipoDocumento = "0826199564782";
 let usuarioAgregar = "Cliente";
 let persona = " Natural";
-
+let anio = "2017"
 //Variables persona natural
 
 describe("BancoOcci", () => {
@@ -30,8 +30,9 @@ describe("BancoOcci", () => {
     cotizador.IngresoPersonaNatural(usuarioAgregar);
     cy.wait(8000);
     metodos.TipodePersona(persona);
-    cotizador.IngresoDatosPersonaNatural(InfoTipoDocumento)
+    cotizador.IngresoDatosPersonaNatural(InfoTipoDocumento, anio)
     
+
   });
 
   //   it("Agregar persona", () => {
