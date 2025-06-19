@@ -23,8 +23,8 @@ describe("BancoOcci", () => {
   it("Ingreso e inicio de sesion", () => {
     cy.Login(url, usuario, contrasena);
     //cotizador.login(usuario, contrasena)
-    cy.alertaSuscr();
-    cy.alertaNotif();
+   cy.xpathClk("//h2[contains(text(), '¿Desea suscribirse a las notificaciones?')]/following::button[normalize-space(text())='Si'][1]")
+        cy.xpathClk("//h2[contains(text(), 'Aceptar Notificaciones en Chrome.')]/following::button[contains(text(), 'Cerrar')][1]")
     cy.busquedaCliente(tipoDocumento, InfoTipoDocumento);
     cy.wait(8000);
     cotizador.IngresoPersonaNatural(usuarioAgregar);
