@@ -30,6 +30,8 @@ describe("BancoOcci", () => {
     cotizador.IngresoPersonaNatural(usuarioAgregar);
     cy.wait(8000);
     metodos.TipodePersona(persona);
+    cotizador.IngresoDatosPersonaNatural(InfoTipoDocumento)
+    
   });
 
   //   it("Agregar persona", () => {
