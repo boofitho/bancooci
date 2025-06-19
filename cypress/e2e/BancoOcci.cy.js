@@ -22,7 +22,7 @@
     let url= "https://plataforma-qa.bytesw.cloud/"
     let usuario = "OPERADORQA";
     let contrasena = "byte0625";
-    let tipoDocumento = " 1 - CEDULA DE IDENTIDAD "
+    let tipoDocumento = "CEDULA"
     let InfoTipoDocumento = "1010199002153"
 
     
@@ -58,8 +58,10 @@
       it('Ingreso e inicio de sesion', () => {
 
         cy.Login(url, usuario, contrasena)
-        cy.alertaSuscr()
-        cy.alertaNotif()
+        cy.xpathClk("//h2[contains(text(), '¿Desea suscribirse a las notificaciones?')]/following::button[normalize-space(text())='Si'][1]")
+        cy.xpathClk("//h2[contains(text(), 'Aceptar Notificaciones en Chrome.')]/following::button[contains(text(), 'Cerrar')][1]")
+        //cy.alertaNotif()
+        //cy.alertaSuscr()
         cy.busquedaCliente(tipoDocumento, InfoTipoDocumento)
 //        cy.ingresoJson("varjson")
 

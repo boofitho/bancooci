@@ -15,83 +15,128 @@ Cypress.Commands.add('Login', (URL, Usuario, Password) => {
       });
 
 Cypress.Commands.add('alertaSuscr', () => {
-    cy.wait(7500)
-    cy.get('body').then($body => {
-        if ($body.find('button.swal2-confirm.swal2-styled.swal2-default-outline').length > 0) {
-          // Si el botón existe, realiza una acción (como hacer clic en otro botón)
-          cy.get('button.swal2-confirm.swal2-styled.swal2-default-outline').contains('Si').click(); // Reemplaza "#miOtroBoton" con tu selector real
-        } else {
-          // Si el botón NO existe, escribe un mensaje en la consola de Cypress
-          cy.log('No apareció nada');
-        }
-      });
+
+  cy.xpath("//h2[contains(text(), 'Aceptar Notificaciones en Chrome.')]/following::button[contains(text(), 'Cerrar')][1]", { timeout: 60000 })
+  .should('not.be.disabled')
+  .should("")
+  .click({force: true});
+
 });
 
 
+
+Cypress.Commands.add('oculto', () => {
+
+cy.xpath("xpath de loading", { timeout: 60000 })
+  .should('be.visible')
+  .should('not.be.disabled')
+  .click({force: true});
+
+});
+
+
+Cypress.Commands.add('xpathClk', (xpath) => {
+
+cy.xpath(xpath, { timeout: 60000 })
+  .should('be.visible')
+  .should('not.be.disabled')
+  .click({force: true});
+
+});
+
+Cypress.Commands.add('xpathBtxt', (varibale, xpath) => {
+
+cy.xpath(xpath, { timeout: 60000 })
+  .should('be.visible')
+  .should('not.be.disabled')
+  .type(varibale)
+  .click({force: true})
+
+});
+
 Cypress.Commands.add('alertaNotif', () => {
-    cy.wait(420)
-cy.get('body').then($body => {
-    const botonCerrar = $body.find('button.swal2-confirm.swal2-styled.swal2-default-outline:contains("Cerrar")');
-  
-    if (botonCerrar.length > 0) {
-      cy.wrap(botonCerrar).click();
-    } else {
-      cy.log('No apareció el botón "Cerrar"');
-    }
-  });
+
+cy.xpath("//h2[contains(text(), '¿Desea suscribirse a las notificaciones?')]/following::button[normalize-space(text())='Si'][1]", { timeout: 60000 })
+  .should('be.visible')
+  .should('not.be.disabled')
+  .click({force: true});
+
 });
 
 
 Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
-    cy.wait(420) 
-    //click en operacion
-    cy.get('body').then(() => {
-      cy.wait(1500)
-        cy.xpath('/html/body/app-root/app-container/bac-app-container/div/mat-drawer-container/mat-drawer[1]/div/div[2]/mat-nav-list/div[1]/a/span/span/mat-icon[2]')
-          .then($el => {
-            if ($el.length > 0) {
-              cy.wrap($el).click();
-            } else {
-              cy.log('Elemento no encontrado');
-            }
-        });
-    });
-    cy.wait(420)  
-    //clien en busqueda de clientes
-    cy.get('body').then(() => {
-    cy.xpath('/html/body/app-root/app-container/bac-app-container/div/mat-drawer-container/mat-drawer[1]/div/div[2]/mat-nav-list/div[1]/mat-nav-list/a[1]/span')
-      .then($el => {
-        if ($el.length > 0) {
-          cy.wrap($el).click();
-        } else {
-          cy.log('Elemento no encontrado');
-        }
-      });
-    });
-    // Espera a que aparezcan las opciones (ajusta si tu app necesita más tiempo)
-    cy.wait(5000);
-    //ingreso tipoDocumento
-    cy.get('body').then(() => {
-       cy.contains('mat-label', 'Tipo de documento').click({force:true})
-      
-          .then($el => {
-            if ($el.length > 0) {
-              // Hace clic en el input para abrir las opciones de autocompletado
-              cy.wrap($el).click({ force: true });
-                    // Espera a que aparezcan las opciones (ajusta si tu app necesita más tiempo)
-              cy.wait(500);
-                    // Selecciona el mat-option correspondiente según el tipo de documento
-              cy.contains('.mat-mdc-option span',tipoDocumento).click({ force: true })
-              .wait(1000)
+  // Paso 1: Ingresa a buscar cliente
+  cy.xpathClk("  //span[contains(text(), 'Operación')]")
+  cy.xpathClk("  //span[contains(text(), 'Búsqueda clientes')]")
 
-             cy.get('.mat-mdc-input-element').eq(1).click().type(InfoTipoDocumento); // Luego escribe el valor   
-                } else {
-              cy.log('No se encontró el input de tipo de documento');
-            }
-            cy.contains('span', 'Buscar ').click({force:true})
-        });
-      });
-    //ingreso informacion del documento seleccionado
+  // Paso 2: Clic en el input asociado a "Tipo de documento"
+  cy.xpathClk("//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input")
+  
+  // Paso 3: Esperar a que se abra el panel y seleccionar la opción que coincide con la variable
+  cy.contains('.mat-mdc-option span',tipoDocumento, { timeout: 60000 }).click({ force: true })
+
+  // Paso 4: click en identificacion y llenamos 
+  cy.xpathBtxt(InfoTipoDocumento, "(//mat-label[normalize-space()='Identificación'])[1]")
+
+
+
+
+// cy.xpath("//span[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), "+tipoDocumento+")]", { timeout: 60000 })
+//   .should('be.visible')
+//   .click({ force: true })
+
+//   cy.contains('.mat-mdc-option span',tipoDocumento).click({ force: true })
+
+
+  // cy.wait(420) 
+  //   //click en operacion
+  //   cy.get('body').then(() => {
+  //     cy.wait(1500)
+  //       cy.xpath("//mat-label[contains(text(), 'Tipo de documento')]/following::input[_ngcontent-ng-c125790888]")
+  //         .then($el => {
+  //           if ($el.length > 0) {
+  //             cy.wrap($el).click();
+  //           } else {
+  //             cy.log('Elemento no encontrado');
+  //           }
+  //       });
+  //   });
+  //   cy.wait(420)  
+  //   //clien en busqueda de clientes
+  //   cy.get('body').then(() => {
+  //   cy.xpath('/html/body/app-root/app-container/bac-app-container/div/mat-drawer-container/mat-drawer[1]/div/div[2]/mat-nav-list/div[1]/mat-nav-list/a[1]/span')
+  //     .then($el => {
+  //       if ($el.length > 0) {
+  //         cy.wrap($el).click();
+  //       } else {
+  //         cy.log('Elemento no encontrado');
+  //       }
+  //     });
+  //   });
+  //   // Espera a que aparezcan las opciones (ajusta si tu app necesita más tiempo)
+  //   cy.wait(5000);
+  //   //ingreso tipoDocumento
+  //   cy.get('body').then(() => {
+  //      cy.contains('mat-label', 'Tipo de documento').click({force:true})
+      
+  //         .then($el => {
+  //           if ($el.length > 0) {
+  //             // Hace clic en el input para abrir las opciones de autocompletado
+  //             cy.wrap($el).click({ force: true });
+  //                   // Espera a que aparezcan las opciones (ajusta si tu app necesita más tiempo)
+  //             cy.wait(500);
+  //                   // Selecciona el mat-option correspondiente según el tipo de documento
+  //             cy.contains('.mat-mdc-option span',tipoDocumento).click({ force: true })
+  //             .wait(1000)
+
+  //            cy.get('.mat-mdc-input-element').eq(1).click().type(InfoTipoDocumento); // Luego escribe el valor   
+  //               } else {
+  //             cy.log('No se encontró el input de tipo de documento');
+  //           }
+  //           cy.contains('span', 'Buscar ').click({force:true})
+  //       });
+  //     });
+  //   //ingreso informacion del documento seleccionado
 
 
 });
