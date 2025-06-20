@@ -1,45 +1,61 @@
-import MetodosGenerales from "../support/MetodosGeneralesPo.cy.js";
-import PersonaNatural from "../support/personaNatural-PO.cy.js";
+require("cypress-xpath");
+class personaJuridica {
 
-//variables para bancoocci
-let url = "https://plataforma-qa.bytesw.cloud/";
-let usuario = "OPERADORQA";
-let contrasena = "byte0625";
-let tipoDocumento = " 1 - CEDULA DE IDENTIDAD ";
-let InfoTipoDocumento = "0826199564782";
-let usuarioAgregar = "Cliente";
-let persona = " Natural";
-let anio = "2017"
-//Variables persona natural
 
-describe("BancoOcci", () => {
-  const cotizador = new PersonaNatural();
-  const metodos = new MetodosGenerales();
-  //cotizador.VisitaCotizador();
-  Cypress.on("uncaught:exception", (err, Runnable) => {
-    return false;
-  });
-
-  it("Ingreso e inicio de sesion", () => {
-    cy.Login(url, usuario, contrasena);
-    //cotizador.login(usuario, contrasena)
-   cy.xpathClk("//h2[contains(text(), '¿Desea suscribirse a las notificaciones?')]/following::button[normalize-space(text())='Si'][1]")
-        cy.xpathClk("//h2[contains(text(), 'Aceptar Notificaciones en Chrome.')]/following::button[contains(text(), 'Cerrar')][1]")
-    cy.busquedaCliente(tipoDocumento, InfoTipoDocumento);
-    cy.wait(8000);
-    cotizador.IngresoPersonaNatural(usuarioAgregar);
-    cy.wait(8000);
-    metodos.TipodePersona(persona);
-    cotizador.IngresoDatosPersonaNatural(InfoTipoDocumento, anio)
+  IngresoDatosPersonaJuridica(){ 
     
+    cy.xpathClk('//label[contains(normalize-space(), "Jurídica")]')
+  }
+  //Identificacion Juridica 
+  Identificacion(data){ 
+    cy.xpathBtxt(data.RTN, "//mat-label[contains(normalize-space(), 'REGISTRO TRIBUTARIO NACIONAL')]")
+    cy.xpathClk("(//button[contains(., 'Siguiente')])[1]")
+  }//Identificacion Juridica
 
-  });
+  DatosGeneralesPersonaJuridica(data){
+    this.TipoPersonaJuridica(
+      data.TPJ,
+      data.RazonSoc,
+      data.NombreCom,
+      data.Siglas,
+      data.PaisOr,
+      data.CatNegocio
+    )
+    this.DatosConstitucionEmpresa(
+      data.TipSoc,
+      data.FechaReg,
+      data.EnFormacion,
+      data.FechaIniOp
+    )
+    this.RegistroMercantil(
+      data.Numero,
+      data.tomo,
+      data.Pagina,
+      data.PatenteCom,
+      data.EscriPermiso
+    )
+//    cy.xpathClk("(//button[contains(., 'Siguiente')])[2]")
 
-  //   it("Agregar persona", () => {
-  //     cy.busquedaCliente(tipoDocumento, InfoTipoDocumento);
-  //     cy.wait(8000)
-  //     cotizador.IngresoPersonaNatural(usuarioAgregar)
-  //     cy.wait(8000)
-  //     cotizador.IngresoPersonaNatural(persona)
-  //   });
-});
+  }
+
+  TipoPersonaJuridica(TPJ, RazonSoc, NombreCom, Siglas, PaisOr, CatNegocio){
+    cy.xpathClk("(//mat-radio-button[contains(., "+String(TPJ)+")])")
+    // cy.xpathBtxt(TPJ, "(//mat-radio-button[contains(., 'ONG')])")
+    // cy.xpathBtxt(TPJ, "(//mat-radio-button[contains(., 'ONG')])")
+    // cy.xpathBtxt(TPJ, "(//mat-radio-button[contains(., 'ONG')])")
+    // cy.xpathBtxt(TPJ, "(//mat-radio-button[contains(., 'ONG')])")
+    
+  }
+
+  DatosConstitucionEmpresa(TipSoc, FechaReg, EnFormacion, FechaIniOp){
+
+  }
+
+  RegistroMercantil(Numero, tomo, Pagina, PatenteCom, EscriPermiso){
+
+  }
+
+
+}
+
+export default personaJuridica;
