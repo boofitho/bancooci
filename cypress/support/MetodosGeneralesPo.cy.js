@@ -276,7 +276,8 @@ function getElementSelector($el) {
     //Fin Metodos Generales
 
 TipodePersona(persona){
-cy.contains('label', persona).click();
+  cy.wait(5000)
+cy.contains('label', persona, { timeout: 60000 }).should('be.visible').should('not.be.disabled').click({force:true});
 
 
 

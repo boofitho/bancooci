@@ -53,7 +53,7 @@ Cypress.Commands.add('xpathBtxt', (varibale, xpath) => {
 cy.xpath(xpath, { timeout: 60000 })
   .should('be.visible')
   .should('not.be.disabled')
-  .type(varibale)
+  .type(varibale, { timeout: 60000 })
   .click({force: true})
 
 });
@@ -71,8 +71,9 @@ cy.xpath("//h2[contains(text(), '¿Desea suscribirse a las notificaciones?')]/fo
 Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
   // Paso 1: Ingresa a buscar cliente
   cy.xpathClk("  //span[contains(text(), 'Operación')]")
+  cy.wait(2000)
   cy.xpathClk("  //span[contains(text(), 'Búsqueda clientes')]")
-
+  cy.wait(2000)
   // Paso 2: Clic en el input asociado a "Tipo de documento"
   cy.xpathClk("//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input")
   

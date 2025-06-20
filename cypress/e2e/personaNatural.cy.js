@@ -9,7 +9,25 @@ let tipoDocumento = " 1 - CEDULA DE IDENTIDAD ";
 let InfoTipoDocumento = "0826199564782";
 let usuarioAgregar = "Cliente";
 let persona = " Natural";
-let anio = "2017"
+let anio = " 2026 ";
+let mes = " NOV ";
+let dia = " 6 ";
+let rTributarioNac = "HN0826-1995-647821";
+let textoGenero = " Masculino";
+let PrimerApellido = "Cuellar"
+let PrimerNombre = "Jesus"
+let anioNacimiento = " 1995 "
+let mesNacimiento = " JUL ";
+let diaNacimiento = " 7 ";
+let EstadoCivil = " Casado(a) "
+let gradoAcademico = " UNIVERSITARIO " 
+let profesion = " AGENTE DE VIAJES "
+let NoAniosEducacion = "15"
+let capacidadadesEspeciales = " Ninguna "
+let ocupacion = " JEFE DE SUPERVISION "
+let dobleNacionalidad = "si"
+let nacionalidad = " ANDORRA "
+let NumeroSocial = "362112657"
 //Variables persona natural
 
 describe("BancoOcci", () => {
@@ -23,23 +41,21 @@ describe("BancoOcci", () => {
   it("Ingreso e inicio de sesion", () => {
     cy.Login(url, usuario, contrasena);
     //cotizador.login(usuario, contrasena)
-   cy.xpathClk("//h2[contains(text(), '¿Desea suscribirse a las notificaciones?')]/following::button[normalize-space(text())='Si'][1]")
-        cy.xpathClk("//h2[contains(text(), 'Aceptar Notificaciones en Chrome.')]/following::button[contains(text(), 'Cerrar')][1]")
+    cy.xpathClk(
+      "//h2[contains(text(), '¿Desea suscribirse a las notificaciones?')]/following::button[normalize-space(text())='Si'][1]"
+    );
+    cy.wait(1000);
+    cy.xpathClk(
+      "//h2[contains(text(), 'Aceptar Notificaciones en Chrome.')]/following::button[contains(text(), 'Cerrar')][1]"
+    );
+    cy.wait(1000);
     cy.busquedaCliente(tipoDocumento, InfoTipoDocumento);
-    cy.wait(8000);
+    cy.wait(1000);
     cotizador.IngresoPersonaNatural(usuarioAgregar);
-    cy.wait(8000);
+    cy.wait(1000);
     metodos.TipodePersona(persona);
-    cotizador.IngresoDatosPersonaNatural(InfoTipoDocumento, anio)
-    
-
+    cy.wait(2000);
+    cotizador.IdentificacionGeneralPersonaNatural(InfoTipoDocumento, anio, mes, dia, rTributarioNac);
+    cotizador.DatosGeneralesPersonaNatural(textoGenero, PrimerApellido, PrimerNombre, anioNacimiento, mesNacimiento, diaNacimiento,EstadoCivil,gradoAcademico,profesion,NoAniosEducacion, capacidadadesEspeciales,ocupacion, nacionalidad, dobleNacionalidad, NumeroSocial)
   });
-
-  //   it("Agregar persona", () => {
-  //     cy.busquedaCliente(tipoDocumento, InfoTipoDocumento);
-  //     cy.wait(8000)
-  //     cotizador.IngresoPersonaNatural(usuarioAgregar)
-  //     cy.wait(8000)
-  //     cotizador.IngresoPersonaNatural(persona)
-  //   });
 });
