@@ -69,6 +69,7 @@ cy.contains(cont, { timeout: 60000 })
 Cypress.Commands.add('busquedaCliente', (data) => {
   // Paso 1: Ingresa a buscar cliente
   cy.xpathClk("  //span[contains(text(), 'Operación')]")
+  cy.wait(2000)
   cy.xpathClk("  //span[contains(text(), 'Búsqueda clientes')]")
   // Paso 2: Clic en el input asociado a "Tipo de documento"
   cy.xpathClk("//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input")

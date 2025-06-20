@@ -16,28 +16,249 @@ class PersonaNatural {
     cy.get("#kc-login").click();
   }
 
-  IngresoPersonaNatural(usuarioAgregar ) {//Metodo para agregar tipo de persona 
+  IngresoPersonaNatural(usuarioAgregar) {
+    //Metodo para agregar tipo de persona
     //Ingreso de persona natural
-    cy.contains("span", "Agregar ").click({ force: true });
+    cy.contains("span", "Agregar ", { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
     cy.wait(3000);
     cy.get("#cdk-overlay-2").contains(usuarioAgregar).click({ force: true });
-    cy.wait(20000);
-  }//Fin tipo de persona 
+  } //Fin tipo de persona
 
-  IngresoDatosPersonaNatural(InfoTipoDocumento, anio){ //Se ingresan datos en la pantalla tipo de persona natural 
-    cy.contains('mat-label', 'CEDULA DE IDENTIDAD' ).type(InfoTipoDocumento)
-    cy.wait(9000)
-    cy.get('button[aria-label="Open calendar"]').first().click({force:true});
-    cy.xpath("//button[@aria-label='Choose month and year']").click({force:true})
-    cy.contains('button', anio).click({force:true});
+  IdentificacionGeneralPersonaNatural(
+    InfoTipoDocumento,
+    anio,
+    mes,
+    dia,
+    rTributarioNac
+  ) {
+    //Se ingresan datos en la pantalla tipo de persona natural 1. Identificación general
+    cy.wait(2000);
+    cy.contains("mat-label", "CEDULA DE IDENTIDAD", { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .then(() => {
+        cy.contains("mat-label", "CEDULA DE IDENTIDAD").type(
+          InfoTipoDocumento,
+          { timeout: 60000 }
+        );
+      });
 
+    //Flujo para seleccionar fecha de expiracion documento de identificacion
+    cy.get('button[aria-label="Open calendar"]', { timeout: 60000 })
+      .first()
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    cy.xpath("//button[@aria-label='Choose month and year']", {
+      timeout: 60000,
+    })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    cy.contains("span", anio, { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    cy.contains("span", mes, { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    cy.get(".mat-calendar-body-cell-content")
+      .contains(dia, { timeout: 60000 })
+      .should("be.visible")
+      .click({ force: true });
+    cy.wait(2000); //Fin flujo para seleccionar fecha de expiracion documento de identificacion
+    //Inicio de escritura tipo de documento de registro tributario nacional
+    cy.contains("mat-label", "REGISTRO TRIBUTARIO NACIONAL", { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .then(() => {
+        cy.contains("mat-label", "REGISTRO TRIBUTARIO NACIONAL").type(
+          rTributarioNac,
+          { timeout: 60000 }
+        );
+      }); //Fin de escritura tipo de documento de registro tributario nacional
 
+    //Boton para dar siguiente en el flujo no. 2
+    cy.contains("span", "Siguiente", { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+  } //fin ingreso de datos persona natural 1. Identificación general
 
-  }//fin ingreso de datos persona natural
+  DatosGeneralesPersonaNatural(
+    textoGenero,
+    PrimerApellido,
+    PrimerNombre,
+    anioNacimiento,
+    mesNacimiento,
+    diaNacimiento,
+    EstadoCivil,
+    gradoAcademico,
+    profesion,
+    NoAniosEducacion,
+    capacidadadesEspeciales,
+    ocupacion,
+    nacionalidad,
+    dobleNacionalidad,
+    NumeroSocial
+  ) {
+    // Inicio de paso 2. Datos generales persona natural
+    cy.contains("label", textoGenero, { timeout: 60000 })
+      .scrollIntoView() // Hace scroll hasta que el elemento sea visible
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    cy.wait(3000);
+    // Ingreso Primer apellido
+    cy.contains("mat-label", "Primer Apellido", { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .then(() => {
+        cy.contains("mat-label", "Primer Apellido").type(PrimerApellido, {
+          timeout: 60000,
+        });
+      });
+    //Ingreso primer nombre
+    cy.contains("mat-label", "Primer Nombre", { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .then(() => {
+        cy.contains("mat-label", "Primer Nombre").type(PrimerNombre, {
+          timeout: 60000,
+        });
+      });
 
+    // Inicio flujo fecha de nacimiento
+    cy.get('button[aria-label="Open calendar"]', { timeout: 60000 })
+      .eq(1)
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
 
+    // Abre selector de mes/año
+    cy.xpath("//button[@aria-label='Choose month and year']", {
+      timeout: 60000,
+    })
+      .first()
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    function navegarHastaAnio(anioDeseado) {
+      const buscarAnio = () => {
+        cy.get("body").then(($body) => {
+          // Verifica si el año está visible en la página actual
+          if ($body.find(`span:contains(${anioDeseado})`).length > 0) {
+            cy.contains("span", anioDeseado)
+              .should("be.visible")
+              .click({ force: true });
+          } else {
+            // Si no está visible, haz clic en el botón de navegación y vuelve a buscar
+            cy.get("button.mat-calendar-previous-button")
+              .should("be.visible")
+              .click()
+              .then(buscarAnio); // Llama recursivamente hasta encontrar el año
+          }
+        });
+      };
+      // Inicia la búsqueda
+      buscarAnio();
+    }
+    navegarHastaAnio(anioNacimiento); // Donde anioNacimiento es "1995" en tu casoF
+    cy.contains("span", mesNacimiento, { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    cy.get(".mat-calendar-body-cell-content")
+      .contains(diaNacimiento, { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    cy.wait(2000); //Fin flujo fecha de nacimiento
+    cy.contains("mat-label", "Estado Civil", { timeout: 6000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .then(() => {
+        cy.contains("span", EstadoCivil, { timeout: 6000 }).click({
+          force: true,
+        });
+      });
+    //Grado academico
+    cy.contains("mat-label", "Grado Académico", { timeout: 6000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .then(() => {
+        cy.contains("span", gradoAcademico, { timeout: 6000 }).click({
+          force: true,
+        });
+      });
 
+    cy.contains("mat-label", "Profesión", { timeout: 6000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .then(() => {
+        cy.contains("span", profesion).click({ force: true });
+      });
 
+    cy.contains("mat-label", "No. De Años Educación")
+      .should("be.visible")
+      .should("not.be.disabled")
+      .type(NoAniosEducacion, { timeout: 6000 });
+
+    cy.contains("mat-label", "Capacidades Especiales")
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .then(() => {
+        cy.contains("span", capacidadadesEspeciales, { timeout: 6000 }).click({
+          force: true,
+        });
+      });
+
+    cy.contains("mat-label", "Ocupación", { timeout: 6000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .then(() => {
+        cy.contains("span", ocupacion, { timeout: 6000 }).click({
+          force: true,
+        });
+      });
+    if (dobleNacionalidad.trim().toLowerCase() === "si") {
+      // Flujo general para doble nacionalidad
+      cy.contains("mat-label", "2da. Nacionalidad", { timeout: 6000 })
+        .should("be.visible")
+        .should("not.be.disabled")
+        .click({ force: true })
+        .then(() => {
+          cy.contains("span", nacionalidad, { timeout: 6000 }).click({
+            force: true,
+          });
+
+          // Flujo adicional si es estadounidense
+          if (nacionalidad.trim().toLowerCase() === "estadounidense") {
+            cy.contains("mat-label", "Social Security Number", {
+              timeout: 6000,
+            }).type(NumeroSocial, { timeout: 6000 });
+          } else {
+            cy.log("Solo tiene una nacionalidad");
+          }
+        });
+    } else {
+      cy.log("No tiene doble nacionalidad");
+    }
+  } // Fin de paso 2. Datos generales persona natural
 }
 
 export default PersonaNatural;
+
+// cy.xpath(xpath, { timeout: 60000 })
+//   .should('be.visible')
+//   .should('not.be.disabled')
+//   .click({force: true});
