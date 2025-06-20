@@ -5,8 +5,12 @@ module.exports = defineConfig({
   viewportWidth: 1500,
   viewportHeight: 900,
   e2e: {
+    testIsolation: false, //Default blank page
     pageLoadTimeout: 70000, // 120 segundos
-    
+   chromeWebSecurity: false,
+   experimentalSessionAndOrigin: true, // necesario para cy.origin
+   preserveOnceAfterEach: true,
+
     setupNodeEvents(on, config) {
       on('before:browser:launch', (browser = {}, launchOptions) => {
         if (browser.family === 'chromium' && browser.name !== 'electron') {
