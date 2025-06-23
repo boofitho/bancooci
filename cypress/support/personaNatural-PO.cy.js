@@ -27,13 +27,7 @@ class PersonaNatural {
     cy.get("#cdk-overlay-2").contains(usuarioAgregar).click({ force: true });
   } //Fin tipo de persona
 
-  IdentificacionGeneralPersonaNatural(
-    InfoTipoDocumento,
-    anio,
-    mes,
-    dia,
-    rTributarioNac
-  ) {
+  IdentificacionGeneralPersonaNatural(InfoTipoDocumento, anio, mes, dia, RTN) {
     //Se ingresan datos en la pantalla tipo de persona natural 1. Identificación general
     cy.wait(2000);
     cy.contains("mat-label", "CEDULA DE IDENTIDAD", { timeout: 60000 })
@@ -76,10 +70,9 @@ class PersonaNatural {
       .should("be.visible")
       .should("not.be.disabled")
       .then(() => {
-        cy.contains("mat-label", "REGISTRO TRIBUTARIO NACIONAL").type(
-          rTributarioNac,
-          { timeout: 60000 }
-        );
+        cy.contains("mat-label", "REGISTRO TRIBUTARIO NACIONAL").type(RTN, {
+          timeout: 60000,
+        });
       }); //Fin de escritura tipo de documento de registro tributario nacional
 
     //Boton para dar siguiente en el flujo no. 2
@@ -104,7 +97,8 @@ class PersonaNatural {
     ocupacion,
     nacionalidad,
     dobleNacionalidad,
-    NumeroSocial
+    NumeroSocial,
+    UbicacionSegundaNacionalidad
   ) {
     // Inicio de paso 2. Datos generales persona natural
     cy.contains("label", textoGenero, { timeout: 60000 })
@@ -133,32 +127,27 @@ class PersonaNatural {
       });
 
     // Inicio flujo fecha de nacimiento
-    cy.get('button[aria-label="Open calendar"]', { timeout: 60000 })
+    cy.get('button[aria-label="Open calendar"]')
       .eq(1)
-      .should("be.visible")
-      .should("not.be.disabled")
-      .click({ force: true });
+      .click({ force: true, timeout: 10000 });
 
     // Abre selector de mes/año
     cy.xpath("//button[@aria-label='Choose month and year']", {
       timeout: 60000,
     })
       .first()
-      .should("be.visible")
-      .should("not.be.disabled")
-      .click({ force: true });
+
+      .click({ force: true }, { timeout: 6000 });
     function navegarHastaAnio(anioDeseado) {
       const buscarAnio = () => {
         cy.get("body").then(($body) => {
           // Verifica si el año está visible en la página actual
           if ($body.find(`span:contains(${anioDeseado})`).length > 0) {
-            cy.contains("span", anioDeseado)
-              .should("be.visible")
-              .click({ force: true });
+            cy.contains("span", anioDeseado).click({ force: true });
           } else {
             // Si no está visible, haz clic en el botón de navegación y vuelve a buscar
             cy.get("button.mat-calendar-previous-button")
-              .should("be.visible")
+
               .click()
               .then(buscarAnio); // Llama recursivamente hasta encontrar el año
           }
@@ -245,15 +234,60 @@ class PersonaNatural {
           if (nacionalidad.trim().toLowerCase() === "estadounidense") {
             cy.contains("mat-label", "Social Security Number", {
               timeout: 6000,
-            }).type(NumeroSocial, { timeout: 6000 });
+            })
+              .type(NumeroSocial, { timeout: 6000 })
+              .then(() => {
+                cy.xpath(
+                  "//*[@id='cdk-stepper-0-content-1']/div/app-general-data-natural-person/div/form/div[2]/app-nationality-and-residence-panel/div/form/div[4]/div/app-documents-wrapper/app-documents/form/table/tbody/tr/td[2]/mat-form-field/div[1]"
+                )
+                  .click({ force: true })
+                  .then(() => {
+                    cy.contains("span", UbicacionSegundaNacionalidad, {
+                      timeout: 6000,
+                    }).click({ force: true });
+                  });
+              });
           } else {
-            cy.log("Solo tiene una nacionalidad");
+            cy.log("Solo tiene nacionalidad doble pero no estadounidense");
           }
         });
     } else {
       cy.log("No tiene doble nacionalidad");
     }
+
+    cy.get("button.mat-mdc-raised-button")
+      .contains("Siguiente")
+      .click({ force: true });
   } // Fin de paso 2. Datos generales persona natural
+
+
+
+//Inicio paso 3 PEP
+PersonaPep(pep,institucionPEP, cargoOcupadoPEP, periodoPEP){
+if(pep.trim().toLowerCase()=== "si"){
+  //se llena el flujo cuando es una persona con cargo publico 'PEP'
+  cy.contains('mat-label', 'Institución', {timeout:6000}).should('be.visible').should('not.be.disabled').type(`${institucionPEP}{enter}`, {timeout: 6000}).then(()=>{
+    cy.contains('mat-label', 'Cargo Ocupado', {timeout:6000}).should("be.visible")
+      .should("not.be.disabled").type(cargoOcupadoPEP,{timeout:6000})
+    cy.contains('mat-label', 'Periodo en que ocupó el cargo', {timeout:6000}).should("be.visible")
+      .should("not.be.disabled").click({force:true}).then(()=>{
+      cy.contains('span', periodoPEP, {timeout:6000}).should("be.visible")
+      .should("not.be.disabled").click({force:true})
+
+    })
+  })
+
+}else{
+
+
+}
+
+
+
+
+}
+
+
 }
 
 export default PersonaNatural;

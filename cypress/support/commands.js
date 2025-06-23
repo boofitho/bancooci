@@ -5,22 +5,20 @@ Cypress.Commands.add("Login", (URL, Usuario, Password) => {
   cy.visit(URL);
   const user = Usuario;
   const password = Password;
+  cy.wait(2000)
   
-  cy.get('body').then(($body) => {
-  if ($body.find('input#username').length > 0) {
-    cy.origin(
-      "https://keycloak-core.bytesw.cloud",
-      { args: { user, password } },
-      ({ user, password }) => {
-        cy.get("input#username").type(user);
-        cy.get("input#password").type(password);
-        cy.get("#kc-login").click();
-      }
-    );
-  } else {
-    cy.log("Ya estás logueado");
-  }
-});
+  
+    // cy.origin(
+    //   "https://keycloak-core.bytesw.cloud",
+    //   { args: { user, password } },
+    //   ({ user, password }) => {
+    //     cy.get("input#username").type(user);
+    //     cy.get("input#password").type(password);
+    //     cy.get("#kc-login").click();
+    //   }
+    // );
+ 
+
 
 
 });
