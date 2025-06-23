@@ -260,34 +260,39 @@ class PersonaNatural {
       .click({ force: true });
   } // Fin de paso 2. Datos generales persona natural
 
-
-
-//Inicio paso 3 PEP
-PersonaPep(pep,institucionPEP, cargoOcupadoPEP, periodoPEP){
-if(pep.trim().toLowerCase()=== "si"){
-  //se llena el flujo cuando es una persona con cargo publico 'PEP'
-  cy.contains('mat-label', 'Institución', {timeout:6000}).should('be.visible').should('not.be.disabled').type(`${institucionPEP}{enter}`, {timeout: 6000}).then(()=>{
-    cy.contains('mat-label', 'Cargo Ocupado', {timeout:6000}).should("be.visible")
-      .should("not.be.disabled").type(cargoOcupadoPEP,{timeout:6000})
-    cy.contains('mat-label', 'Periodo en que ocupó el cargo', {timeout:6000}).should("be.visible")
-      .should("not.be.disabled").click({force:true}).then(()=>{
-      cy.contains('span', periodoPEP, {timeout:6000}).should("be.visible")
-      .should("not.be.disabled").click({force:true})
-
-    })
-  })
-
-}else{
-
-
-}
-
-
-
-
-}
-
-
+  //Inicio paso 3 PEP
+  PersonaPep(pep, institucionPEP, cargoOcupadoPEP, periodoPEP) {
+    if (pep.trim().toLowerCase() === "si") {
+      //se llena el flujo cuando es una persona con cargo publico 'PEP'
+      cy.contains("mat-label", "Institución", { timeout: 6000 })
+        .should("be.visible")
+        .should("not.be.disabled")
+        .type(`${institucionPEP}{enter}`, { timeout: 6000 })
+        .then(() => {
+          cy.contains("mat-label", "Cargo Ocupado", { timeout: 6000 })
+            .should("be.visible")
+            .should("not.be.disabled")
+            .type(cargoOcupadoPEP, { timeout: 6000 });
+          cy.contains("mat-label", "Periodo en que ocupó el cargo", {
+            timeout: 6000,
+          })
+            .should("be.visible")
+            .should("not.be.disabled")
+            .click({ force: true })
+            .then(() => {
+              cy.contains("span", periodoPEP, { timeout: 6000 })
+                .should("be.visible")
+                .should("not.be.disabled")
+                .click({ force: true });
+        cy.contains('p', 'Agregar', {timeout:6000}).click({force:true})    
+        cy.get('.mdc-button__label').contains('span', 'Siguiente').click({force:true})    
+            });
+        });
+    } else {
+      cy.log('No es pep por lo tanto se salta el flujo')
+      cy.get('.mdc-button__label').contains('span', 'Siguiente').click({force:true})
+    }
+  }
 }
 
 export default PersonaNatural;

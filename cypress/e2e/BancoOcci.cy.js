@@ -63,12 +63,12 @@ const data = {
   dobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
   NumeroSocial: "362112657",
-  UbicacionSegundaNacionalidad: ' ESTADOS UNIDOS DE AMERICA ',
+  UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
-  pep: 'si',
+  pep: "no",
   institucionPEP: "Ministerio de energía",
-  cargoOcupadoPEP: 'Gerente general',
-  periodoPEP: " 2019 - 2022 "
+  cargoOcupadoPEP: "Gerente general",
+  periodoPEP: " 2019 - 2022 ",
 };
 
 describe("BancoOcci", () => {
@@ -119,15 +119,21 @@ describe("BancoOcci", () => {
         data.UbicacionSegundaNacionalidad
       );
 
-      cotizador.PersonaPep(data.pep, data.institucionPEP,data.cargoOcupadoPEP, data.periodoPEP )
-
-
+      cotizador.PersonaPep(
+        data.pep,
+        data.institucionPEP,
+        data.cargoOcupadoPEP,
+        data.periodoPEP
+      );
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
       cy.log("JURIDICO PAPS");
       PJ.IngresoDatosPersonaJuridica();
       PJ.Identificacion(data);
       PJ.DatosGeneralesPersonaJuridica(data);
     } else {
+      cy.log('*******************************************************')
+      cy.log('Debe de ingresar un tipo de cliente: Natural o Juridico')
+      cy.log('*******************************************************')
     }
   });
 }); // TERMINA EL IT "Exploración automática de pantalla desconocida"
