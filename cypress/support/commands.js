@@ -18,6 +18,10 @@ Cypress.Commands.add("Login", (URL, Usuario, Password) => {
     //   }
     // );
  
+cy.window().then((win) => {
+  const token = win.localStorage.getItem('access_token') || win.localStorage.getItem('id_token');
+  cy.log('TOKEN ACTUAL:', token);
+});
 
 
 

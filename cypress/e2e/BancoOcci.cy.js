@@ -60,12 +60,12 @@ const data = {
   capacidadadesEspeciales: " Ninguna ",
   ocupacion: " JEFE DE SUPERVISION ",
   //consulta si tiene dos nacionalidades
-  dobleNacionalidad: "si",
+  tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
   NumeroSocial: "362112657",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
-  pep: "no",
+  esPEP: "si",
   institucionPEP: "Ministerio de energía",
   cargoOcupadoPEP: "Gerente general",
   periodoPEP: " 2019 - 2022 ",
@@ -114,13 +114,13 @@ describe("BancoOcci", () => {
         data.capacidadadesEspeciales,
         data.ocupacion,
         data.nacionalidad,
-        data.dobleNacionalidad,
+        data.tieneDobleNacionalidad,
         data.NumeroSocial,
         data.UbicacionSegundaNacionalidad
       );
 
       cotizador.PersonaPep(
-        data.pep,
+        data.esPEP,
         data.institucionPEP,
         data.cargoOcupadoPEP,
         data.periodoPEP

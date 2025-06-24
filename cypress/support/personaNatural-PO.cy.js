@@ -96,7 +96,7 @@ class PersonaNatural {
     capacidadadesEspeciales,
     ocupacion,
     nacionalidad,
-    dobleNacionalidad,
+    tieneDobleNacionalidad,
     NumeroSocial,
     UbicacionSegundaNacionalidad
   ) {
@@ -219,7 +219,7 @@ class PersonaNatural {
           force: true,
         });
       });
-    if (dobleNacionalidad.trim().toLowerCase() === "si") {
+    if (tieneDobleNacionalidad.trim().toLowerCase() === "si") {
       // Flujo general para doble nacionalidad
       cy.contains("mat-label", "2da. Nacionalidad", { timeout: 6000 })
         .should("be.visible")
@@ -229,7 +229,7 @@ class PersonaNatural {
           cy.contains("span", nacionalidad, { timeout: 6000 }).click({
             force: true,
           });
-
+// 1. Interceptamos ANTES de todo
           // Flujo adicional si es estadounidense
           if (nacionalidad.trim().toLowerCase() === "estadounidense") {
             cy.contains("mat-label", "Social Security Number", {
@@ -261,15 +261,16 @@ class PersonaNatural {
   } // Fin de paso 2. Datos generales persona natural
 
   //Inicio paso 3 PEP
-  PersonaPep(pep, institucionPEP, cargoOcupadoPEP, periodoPEP) {
-    if (pep.trim().toLowerCase() === "si") {
+  PersonaPep(esPEP, institucionPEP, cargoOcupadoPEP, periodoPEP) {
+    if (esPEP.trim().toLowerCase() === "si") {
       //se llena el flujo cuando es una persona con cargo publico 'PEP'
       cy.contains("mat-label", "Institución", { timeout: 6000 })
         .should("be.visible")
-        .should("not.be.disabled")
+        .should("not.be.disabled").scrollIntoView()
         .type(`${institucionPEP}{enter}`, { timeout: 6000 })
         .then(() => {
           cy.contains("mat-label", "Cargo Ocupado", { timeout: 6000 })
+          
             .should("be.visible")
             .should("not.be.disabled")
             .type(cargoOcupadoPEP, { timeout: 6000 });
@@ -284,13 +285,16 @@ class PersonaNatural {
                 .should("be.visible")
                 .should("not.be.disabled")
                 .click({ force: true });
+        //Agrega los datos                
         cy.contains('p', 'Agregar', {timeout:6000}).click({force:true})    
-        cy.get('.mdc-button__label').contains('span', 'Siguiente').click({force:true})    
+        cy.wait(3000)
+        cy.get('.mdc-button__label').contains('span', 'Siguiente', {timeout:6000}).click({force:true})    
             });
         });
     } else {
       cy.log('No es pep por lo tanto se salta el flujo')
-      cy.get('.mdc-button__label').contains('span', 'Siguiente').click({force:true})
+      cy.get('.mdc-button__label').contains('span', 'Siguiente').should("be.visible")
+        .should("not.be.disabled").click({force:true})
     }
   }
 }
