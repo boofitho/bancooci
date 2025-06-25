@@ -1,5 +1,5 @@
 import MetodosGenerales from "../support/MetodosGeneralesPo.cy.js";
-import personaJuridica from "./personaJuridica.cy.js";
+import personaJuridica from "../support/personaJuridica.cy.js";
 const Generales = new MetodosGenerales();
 const PJ = new personaJuridica();      
 
@@ -11,32 +11,49 @@ const PJ = new personaJuridica();
     const data = {
       //Buscar Cliente
       tipoDocumento: "CEDULA",
-      InfoTipoDocumento: "1010199002153132",
+      InfoTipoDocumento: "1010199002151133",
       
       //Agregar Cliente
       //##### PASO 1 - Para Identificacion
       TipodePersona: "juridico",
-      RTN: "HN1010199002153132",
+      RTN: "HN1010199002151133",
       //##### PASO 2 -  Datos Generales Persona J/N? 
       TPJ: "ONG",
       RazonSoc: "Empresa XYZ SAC",
       NombreCom: "XYZ",
       Siglas: "XYZ",
-      PaisOr: "Perú",
-      CatNegocio: "Tecnología",
+      PaisOr: "Peru",
+      CatNegocio: "Abarrotes",
                         // Para DatosConstitucionEmpresa
-      TipSoc: "Sociedad Anónima",
-      FechaReg: "2022-01-01",
+      TipSoc: "SOCIEDAD COLECTIVA",
+      FechaReg: "12/6/2025",
       EnFormacion: false,
-      FechaIniOp: "2022-02-15",
+      FechaIniOp: "13/6/2025",
                         // Para RegistroMercantil
-      Numero: "RM123456",
-      tomo: "45",
-      Pagina: "123",
-      PatenteCom: "PC78910",
-      EscriPermiso: "Escritura Pública #101",
+      Numero: "33322",
+      tomo: "44441",
+      Pagina: "55555",
+      PatenteCom: "78910",
+      EscriPermiso: "33121",
       //PASO 3
-      datopaso3: "??"
+      datopaso3: "??",
+      //PASO 4
+      AuthPor:"CNBS",
+      FechaInicioJD:"19/6/2025",
+      FechaFinalizaJD:"31/7/2025",
+      PaisOrigenJD:"Guatemala",
+      CedulaJD:"1010 1990 02159",
+      UbicacionJD:"NO CREO QUE SEA NECESARIO",
+      FechaJD:"30/6/2025",
+      PrimerApellidoJD:"Messi",
+      SegundoApellidoJD:"Ronaldo",
+      PrimerNombreJD:"Lionel",
+      SegundoNombreJD:"Cristiano",
+      OtroNombreJD:"Cabra",
+      CargoJD:"Representante legal",
+      //Paso 5
+      paso5:"0405199025063"
+
     };
     
   describe("BancoOcci", () => {
@@ -63,17 +80,18 @@ const PJ = new personaJuridica();
         if(data.TipodePersona.toLowerCase () == "natural"){
       
           cy.log("AQUIIIIIII PAPUSHO") 
+          
 
 
 
 
         }else if (data.TipodePersona.toLowerCase () == "juridico") {
-
-          cy.log("JURIDICO PAPS") 
+            //PAOS 0: Indicamos que es ingreso de persona Juridica
           PJ.IngresoDatosPersonaJuridica()
+            //PAOS 2: Llenamos el formulario del paso #1 Identificacion 
           PJ.Identificacion(data)
+            //PAOS 3: Llenamos el formulario del paso #2 Datos Generales Persona Juridica
           PJ.DatosGeneralesPersonaJuridica(data)
-        
         }else{
       
 
