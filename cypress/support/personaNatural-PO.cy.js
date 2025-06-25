@@ -269,16 +269,55 @@ class PersonaNatural {
   }
 
   //Inicio paso 3 PEP
+
+  //Flujo repetitivo de empresas PEP
+  PatrimonioPEP( PatrimonioEmpresaPEP,
+    PatrimonioTipodeDocumentoPEP,
+    PatrimonioIdentificacionPEP,
+    PatrimonioActividadEconomicaPEP,){
+    cy.get(".mdc-floating-label")
+          .contains("mat-label", "Empresa", { timeout: 6000 })
+          .should("be.visible")
+          .should("not.be.disabled")
+          .type(PatrimonioEmpresaPEP, { timeout: 6000 });
+        cy.get(".mdc-floating-label")
+          .contains("mat-label", "Tipo de documento", { timeout: 6000 })
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true })
+          .then(() => {
+            cy.get(".mdc-list-item__primary-text")
+              .contains("span", PatrimonioTipodeDocumentoPEP)
+              .should("be.visible")
+              .should("not.be.disabled")
+              .click({ force: true });
+            cy.contains("label", "Identificación")
+              .parents(".mat-mdc-text-field-wrapper")
+              .find("input")
+              .type(PatrimonioIdentificacionPEP);
+          });
+        cy.get(".mdc-floating-label")
+          .contains("mat-label", "Actividad Económica", { timeout: 6000 })
+          .click({ force: true })
+          .then(() => {
+            cy.get(".mdc-list-item__primary-text")
+              .contains("span", PatrimonioActividadEconomicaPEP)
+              .should("be.visible")
+              .should("not.be.disabled")
+              .click({ force: true });
+          });
+
+
+
+
+
+  }
   PersonaPep(
     esPEP,
     institucionPEP,
     cargoOcupadoPEP,
     periodoPEP,
     EmpresaJuridicaPEP,
-    PatrimonioEmpresaPEP,
-    PatrimonioTipodeDocumentoPEP,
-    PatrimonioIdentificacionPEP,
-    PatrimonioActividadEconomicaPEP,
     PatrimonioPorcentPEP
   ) {
     if (esPEP.trim().toLowerCase() === "si") {
@@ -324,55 +363,76 @@ class PersonaNatural {
         cy.log(
           "entrando al flujo de persona que tiene acciones arriba de 25% (PEP) de una empresa"
         );
-        cy.get(".mdc-floating-label")
-          .contains("mat-label", "Empresa", { timeout: 6000 })
-          .should("be.visible")
-          .should("not.be.disabled")
-          .type(PatrimonioEmpresaPEP, { timeout: 6000 });
-        cy.get(".mdc-floating-label")
-          .contains("mat-label", "Tipo de documento", { timeout: 6000 })
-          .should("be.visible")
-          .should("not.be.disabled")
-          .click({ force: true })
-          .then(() => {
-            cy.get(".mdc-list-item__primary-text")
-              .contains("span", PatrimonioTipodeDocumentoPEP)
-              .should("be.visible")
-              .should("not.be.disabled")
-              .click({ force: true });
-            cy.contains("label", "Identificación")
-              .parents(".mat-mdc-text-field-wrapper")
-              .find("input")
-              .type(PatrimonioIdentificacionPEP);
-          });
-        cy.get(".mdc-floating-label")
-          .contains("mat-label", "Actividad Económica", { timeout: 6000 })
-          .click({ force: true })
-          .then(() => {
-            cy.get(".mdc-list-item__primary-text")
-              .contains("span", PatrimonioActividadEconomicaPEP)
-              .should("be.visible")
-              .should("not.be.disabled")
-              .click({ force: true });
-          });
+        // cy.get(".mdc-floating-label")
+        //   .contains("mat-label", "Empresa", { timeout: 6000 })
+        //   .should("be.visible")
+        //   .should("not.be.disabled")
+        //   .type(PatrimonioEmpresaPEP, { timeout: 6000 });
+        // cy.get(".mdc-floating-label")
+        //   .contains("mat-label", "Tipo de documento", { timeout: 6000 })
+        //   .should("be.visible")
+        //   .should("not.be.disabled")
+        //   .click({ force: true })
+        //   .then(() => {
+        //     cy.get(".mdc-list-item__primary-text")
+        //       .contains("span", PatrimonioTipodeDocumentoPEP)
+        //       .should("be.visible")
+        //       .should("not.be.disabled")
+        //       .click({ force: true });
+        //     cy.contains("label", "Identificación")
+        //       .parents(".mat-mdc-text-field-wrapper")
+        //       .find("input")
+        //       .type(PatrimonioIdentificacionPEP);
+        //   });
+        // cy.get(".mdc-floating-label")
+        //   .contains("mat-label", "Actividad Económica", { timeout: 6000 })
+        //   .click({ force: true })
+        //   .then(() => {
+        //     cy.get(".mdc-list-item__primary-text")
+        //       .contains("span", PatrimonioActividadEconomicaPEP)
+        //       .should("be.visible")
+        //       .should("not.be.disabled")
+        //       .click({ force: true });
+        //   });
+
 
         if (PatrimonioPorcentPEP >= 25) {
-          cy.contains("label", "% de Participación") // encuentra el label por su texto
-            .parents(".mat-mdc-text-field-wrapper") // sube al contenedor principal
-            .find("input") // selecciona el input
-            .clear()
+          cy.contains("label", "% de Participación")
+            .parents(".mat-mdc-text-field-wrapper")
+            .find("input")
             .type(PatrimonioPorcentPEP.toString());
         } else {
           throw new Error("% de Participación debe ser mayor o igual a 25");
         }
+
+        //Boton agregar
+        cy.xpath(
+          "//button[contains(@class, 'mat-mdc-button') and .//p[text()='Agregar']]"
+        )
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true });
+
+         //Boton guardar
+         cy.get(".mdc-button__label").contains('span', 'Guardar ').should("be.visible").should("not.be.disabled").click({force:true})
+         // Boton Siguiente
+         cy.xpath("//button[contains(@class, 'mdc-button')]//span[contains(@class, 'mdc-button__label') and text()='Siguiente']").should('be.visible').should('not.be.disabled').click({force:true})
+
       } else if (EmpresaJuridicaPEP === "Organización/dirección de empresas") {
+
+
+
+
+        
       } else if (
         EmpresaJuridicaPEP ===
         "Federaciones/organizaciones no lucrativas (ONG'S)"
       ) {
       } else {
-        cy.log("no tiene ningun patrimonio arriba del 25%");
-        //realizar boton para darle en siguiente
+        cy.log("no tiene ningun patrimonio");
+          // Boton Siguiente
+         cy.xpath("//button[contains(@class, 'mdc-button')]//span[contains(@class, 'mdc-button__label') and text()='Siguiente']").should('be.visible').should('not.be.disabled').click({force:true})
+
       }
     } else {
       cy.log("No es pep por lo tanto se salta el flujo");

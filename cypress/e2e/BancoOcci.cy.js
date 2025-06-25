@@ -72,7 +72,7 @@ const data = {
   //Espacio donde se debe de colocar si posee el 25% o mas del patrimonio de la estructura juridica de alguna empresa
   EmpresaJuridicaPEP: "Empresa",
   PatrimonioEmpresaPEP: "El renacimiento, S.A.",
-  PatrimonioTipodeDocumentoPEP: " 1 - CEDULA DE IDENTIDAD ",
+  PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
   PatrimonioIdentificacionPEP: "0319199433333",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
   PatrimonioPorcentPEP: 30
@@ -127,6 +127,7 @@ describe("BancoOcci", () => {
       );
   cotizador.clickpaso2()
   cy.wait(500)
+      
       cotizador.PersonaPep(
         data.esPEP,
         data.institucionPEP,
@@ -138,6 +139,7 @@ describe("BancoOcci", () => {
         data.PatrimonioActividadEconomicaPEP
       );
     
+
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
       cy.log("JURIDICO PAPS");
       PJ.IngresoDatosPersonaJuridica();
