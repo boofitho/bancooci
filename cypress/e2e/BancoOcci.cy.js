@@ -13,12 +13,12 @@ let contrasena = "byte0625";
 const data = {
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0826199564784",
+  InfoTipoDocumento: "0319199433333",
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN1010199002153134",
+  RTN: "HN0319-1994-333333",
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -48,9 +48,9 @@ const data = {
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "Cuellar",
-  PrimerNombre: "Jesus",
-  anioNacimiento: " 1995 ",
+  PrimerApellido: "Meza",
+  PrimerNombre: "Antonio",
+  anioNacimiento: " 1994 ",
   mesNacimiento: " JUL ",
   diaNacimiento: " 7 ",
   EstadoCivil: " Casado(a) ",
@@ -62,13 +62,20 @@ const data = {
   //consulta si tiene dos nacionalidades
   tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "362112657",
+  NumeroSocial: "111-22-1111",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
   esPEP: "si",
   institucionPEP: "Ministerio de energía",
   cargoOcupadoPEP: "Gerente general",
   periodoPEP: " 2019 - 2022 ",
+  //Espacio donde se debe de colocar si posee el 25% o mas del patrimonio de la estructura juridica de alguna empresa
+  EmpresaJuridicaPEP: "Empresa",
+  PatrimonioEmpresaPEP: "El renacimiento, S.A.",
+  PatrimonioTipodeDocumentoPEP: " 1 - CEDULA DE IDENTIDAD ",
+  PatrimonioIdentificacionPEP: "0319199433333",
+  PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
+  PatrimonioPorcentPEP: 30
 };
 
 describe("BancoOcci", () => {
@@ -118,13 +125,19 @@ describe("BancoOcci", () => {
         data.NumeroSocial,
         data.UbicacionSegundaNacionalidad
       );
-
+  cotizador.clickpaso2()
+  cy.wait(500)
       cotizador.PersonaPep(
         data.esPEP,
         data.institucionPEP,
         data.cargoOcupadoPEP,
-        data.periodoPEP
+        data.periodoPEP,
+        data.EmpresaJuridicaPEP,
+        data.PatrimonioEmpresaPEP,
+        data.PatrimonioTipodeDocumentoPEP,
+        data.PatrimonioActividadEconomicaPEP
       );
+    
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
       cy.log("JURIDICO PAPS");
       PJ.IngresoDatosPersonaJuridica();

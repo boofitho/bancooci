@@ -229,7 +229,7 @@ class PersonaNatural {
           cy.contains("span", nacionalidad, { timeout: 6000 }).click({
             force: true,
           });
-// 1. Interceptamos ANTES de todo
+
           // Flujo adicional si es estadounidense
           if (nacionalidad.trim().toLowerCase() === "estadounidense") {
             cy.contains("mat-label", "Social Security Number", {
@@ -254,23 +254,45 @@ class PersonaNatural {
     } else {
       cy.log("No tiene doble nacionalidad");
     }
-
-    cy.get("button.mat-mdc-raised-button")
-      .contains("Siguiente")
-      .click({ force: true });
   } // Fin de paso 2. Datos generales persona natural
 
+  clickpaso2() {
+    cy.wait(3000);
+    cy.xpath('//*[@id="cdk-stepper-0-content-1"]/div/div/button/span[4]', {
+      timeout: 6000,
+    })
+
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true }, { timeout: 6000 });
+    cy.wait(3000);
+  }
+
   //Inicio paso 3 PEP
-  PersonaPep(esPEP, institucionPEP, cargoOcupadoPEP, periodoPEP) {
+  PersonaPep(
+    esPEP,
+    institucionPEP,
+    cargoOcupadoPEP,
+    periodoPEP,
+    EmpresaJuridicaPEP,
+    PatrimonioEmpresaPEP,
+    PatrimonioTipodeDocumentoPEP,
+    PatrimonioIdentificacionPEP,
+    PatrimonioActividadEconomicaPEP,
+    PatrimonioPorcentPEP
+  ) {
     if (esPEP.trim().toLowerCase() === "si") {
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
       //se llena el flujo cuando es una persona con cargo publico 'PEP'
       cy.contains("mat-label", "Institución", { timeout: 6000 })
+        .scrollIntoView()
         .should("be.visible")
-        .should("not.be.disabled").scrollIntoView()
+        .should("not.be.disabled")
+
         .type(`${institucionPEP}{enter}`, { timeout: 6000 })
         .then(() => {
           cy.contains("mat-label", "Cargo Ocupado", { timeout: 6000 })
-          
+
             .should("be.visible")
             .should("not.be.disabled")
             .type(cargoOcupadoPEP, { timeout: 6000 });
@@ -285,16 +307,84 @@ class PersonaNatural {
                 .should("be.visible")
                 .should("not.be.disabled")
                 .click({ force: true });
-        //Agrega los datos                
-        cy.contains('p', 'Agregar', {timeout:6000}).click({force:true})    
-        cy.wait(3000)
-        cy.get('.mdc-button__label').contains('span', 'Siguiente', {timeout:6000}).click({force:true})    
+              cy.wait(3000);
+              //Agrega los datos
+              cy.contains("p", "Agregar", { timeout: 6000 }).click({
+                force: true,
+              });
+              cy.wait(3000);
+              cy.xpath('//*[@id="cdk-stepper-0-content-2"]/div/div/button')
+                .should("be.visible")
+                .should("not.be.disabled")
+                .click({ force: true });
             });
         });
+
+      if (EmpresaJuridicaPEP === "Empresa") {
+        cy.log(
+          "entrando al flujo de persona que tiene acciones arriba de 25% (PEP) de una empresa"
+        );
+        cy.get(".mdc-floating-label")
+          .contains("mat-label", "Empresa", { timeout: 6000 })
+          .should("be.visible")
+          .should("not.be.disabled")
+          .type(PatrimonioEmpresaPEP, { timeout: 6000 });
+        cy.get(".mdc-floating-label")
+          .contains("mat-label", "Tipo de documento", { timeout: 6000 })
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true })
+          .then(() => {
+            cy.get(".mdc-list-item__primary-text")
+              .contains("span", PatrimonioTipodeDocumentoPEP)
+              .should("be.visible")
+              .should("not.be.disabled")
+              .click({ force: true });
+            cy.contains("label", "Identificación")
+              .parents(".mat-mdc-text-field-wrapper")
+              .find("input")
+              .type(PatrimonioIdentificacionPEP);
+          });
+        cy.get(".mdc-floating-label")
+          .contains("mat-label", "Actividad Económica", { timeout: 6000 })
+          .click({ force: true })
+          .then(() => {
+            cy.get(".mdc-list-item__primary-text")
+              .contains("span", PatrimonioActividadEconomicaPEP)
+              .should("be.visible")
+              .should("not.be.disabled")
+              .click({ force: true });
+          });
+
+        if (PatrimonioPorcentPEP >= 25) {
+          cy.contains("label", "% de Participación") // encuentra el label por su texto
+            .parents(".mat-mdc-text-field-wrapper") // sube al contenedor principal
+            .find("input") // selecciona el input
+            .clear()
+            .type(PatrimonioPorcentPEP.toString());
+        } else {
+          throw new Error("% de Participación debe ser mayor o igual a 25");
+        }
+      } else if (EmpresaJuridicaPEP === "Organización/dirección de empresas") {
+      } else if (
+        EmpresaJuridicaPEP ===
+        "Federaciones/organizaciones no lucrativas (ONG'S)"
+      ) {
+      } else {
+        cy.log("no tiene ningun patrimonio arriba del 25%");
+        //realizar boton para darle en siguiente
+      }
     } else {
-      cy.log('No es pep por lo tanto se salta el flujo')
-      cy.get('.mdc-button__label').contains('span', 'Siguiente').should("be.visible")
-        .should("not.be.disabled").click({force:true})
+      cy.log("No es pep por lo tanto se salta el flujo");
+      // cy.get(".mdc-button__label")
+      //   .contains("span", "Siguiente")
+      //   .should("be.visible")
+      //   .should("not.be.disabled")
+      //   .click({ force: true });
+      cy.xpath('//*[@id="cdk-stepper-0-content-2"]/div/div/button')
+        .should("be.visible")
+        .should("not.be.disabled")
+        .click({ force: true });
     }
   }
 }

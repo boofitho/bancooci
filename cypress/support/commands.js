@@ -18,10 +18,6 @@ Cypress.Commands.add("Login", (URL, Usuario, Password) => {
     //   }
     // );
  
-cy.window().then((win) => {
-  const token = win.localStorage.getItem('access_token') || win.localStorage.getItem('id_token');
-  cy.log('TOKEN ACTUAL:', token);
-});
 
 
 
@@ -82,9 +78,11 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   cy.xpathBtxt(data.InfoTipoDocumento, "(//mat-label[normalize-space()='Identificación'])[1]")
   // Paso 5: Click en "Buscar"
   cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")
+  cy.wait(500)
   // Paso 6: Click en "Agregar"
   cy.xpathClk("//span[normalize-space(text()) = 'Agregar']")
   // Paso 7: Click en "Cliente"
+  cy.wait(500)
   cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
 });
 
