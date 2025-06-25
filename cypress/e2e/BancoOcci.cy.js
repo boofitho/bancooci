@@ -1,7 +1,7 @@
 import MetodosGenerales from "../support/MetodosGeneralesPo.cy.js";
 import personaJuridica from "../support/personaJuridica.cy.js";
 const Generales = new MetodosGenerales();
-const PJ = new personaJuridica();      
+const PJ = new personaJuridica();
 
     //variables para bancoocci
     let url= "https://plataforma-qa.bytesw.cloud/"
