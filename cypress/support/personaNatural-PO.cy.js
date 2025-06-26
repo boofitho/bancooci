@@ -1,3 +1,5 @@
+import { cli } from "cypress";
+
 require("cypress-xpath");
 class PersonaNatural {
   VisitaCotizador(user, password) {
@@ -266,51 +268,49 @@ class PersonaNatural {
       .should("not.be.disabled")
       .click({ force: true }, { timeout: 6000 });
     cy.wait(3000);
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
   }
 
   //Inicio paso 3 PEP
 
   //Flujo repetitivo de empresas PEP
-  PatrimonioPEP( PatrimonioEmpresaPEP,
+  PatrimonioPEP(
+    PatrimonioEmpresaPEP,
     PatrimonioTipodeDocumentoPEP,
     PatrimonioIdentificacionPEP,
-    PatrimonioActividadEconomicaPEP,){
+    PatrimonioActividadEconomicaPEP
+  ) {
     cy.get(".mdc-floating-label")
-          .contains("mat-label", "Empresa", { timeout: 6000 })
+      .contains("mat-label", "Empresa", { timeout: 6000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .type(PatrimonioEmpresaPEP, { timeout: 6000 });
+    cy.get(".mdc-floating-label")
+      .contains("mat-label", "Tipo de documento", { timeout: 6000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .then(() => {
+        cy.get(".mdc-list-item__primary-text")
+          .contains("span", PatrimonioTipodeDocumentoPEP)
           .should("be.visible")
           .should("not.be.disabled")
-          .type(PatrimonioEmpresaPEP, { timeout: 6000 });
-        cy.get(".mdc-floating-label")
-          .contains("mat-label", "Tipo de documento", { timeout: 6000 })
+          .click({ force: true });
+        cy.contains("label", "Identificación")
+          .parents(".mat-mdc-text-field-wrapper")
+          .find("input")
+          .type(PatrimonioIdentificacionPEP);
+      });
+    cy.get(".mdc-floating-label")
+      .contains("mat-label", "Actividad Económica", { timeout: 6000 })
+      .click({ force: true })
+      .then(() => {
+        cy.get(".mdc-list-item__primary-text")
+          .contains("span", PatrimonioActividadEconomicaPEP)
           .should("be.visible")
           .should("not.be.disabled")
-          .click({ force: true })
-          .then(() => {
-            cy.get(".mdc-list-item__primary-text")
-              .contains("span", PatrimonioTipodeDocumentoPEP)
-              .should("be.visible")
-              .should("not.be.disabled")
-              .click({ force: true });
-            cy.contains("label", "Identificación")
-              .parents(".mat-mdc-text-field-wrapper")
-              .find("input")
-              .type(PatrimonioIdentificacionPEP);
-          });
-        cy.get(".mdc-floating-label")
-          .contains("mat-label", "Actividad Económica", { timeout: 6000 })
-          .click({ force: true })
-          .then(() => {
-            cy.get(".mdc-list-item__primary-text")
-              .contains("span", PatrimonioActividadEconomicaPEP)
-              .should("be.visible")
-              .should("not.be.disabled")
-              .click({ force: true });
-          });
-
-
-
-
-
+          .click({ force: true });
+      });
   }
   PersonaPep(
     esPEP,
@@ -318,7 +318,19 @@ class PersonaNatural {
     cargoOcupadoPEP,
     periodoPEP,
     EmpresaJuridicaPEP,
-    PatrimonioPorcentPEP
+    PatrimonioEmpresaPEP,
+    PatrimonioTipodeDocumentoPEP,
+    PatrimonioIdentificacionPEP,
+    PatrimonioActividadEconomicaPEP,
+    PatrimonioPorcentPEP,
+    anioInicialPEP,
+    mesInicialPEP,
+    diaInicialPEP,
+    anioFinalPEP,
+    mesFinalPEP,
+    diaFinalPEP,
+    PatrimonioPuestoPEP
+
   ) {
     if (esPEP.trim().toLowerCase() === "si") {
       cy.get(".loading", { timeout: 60000 }).should("not.exist");
@@ -355,54 +367,30 @@ class PersonaNatural {
               cy.xpath('//*[@id="cdk-stepper-0-content-2"]/div/div/button')
                 .should("be.visible")
                 .should("not.be.disabled")
-                .click({ force: true });
+                .click({ force: true }, { timeout: 6000 });
             });
         });
-
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
       if (EmpresaJuridicaPEP === "Empresa") {
         cy.log(
           "entrando al flujo de persona que tiene acciones arriba de 25% (PEP) de una empresa"
         );
-        // cy.get(".mdc-floating-label")
-        //   .contains("mat-label", "Empresa", { timeout: 6000 })
-        //   .should("be.visible")
-        //   .should("not.be.disabled")
-        //   .type(PatrimonioEmpresaPEP, { timeout: 6000 });
-        // cy.get(".mdc-floating-label")
-        //   .contains("mat-label", "Tipo de documento", { timeout: 6000 })
-        //   .should("be.visible")
-        //   .should("not.be.disabled")
-        //   .click({ force: true })
-        //   .then(() => {
-        //     cy.get(".mdc-list-item__primary-text")
-        //       .contains("span", PatrimonioTipodeDocumentoPEP)
-        //       .should("be.visible")
-        //       .should("not.be.disabled")
-        //       .click({ force: true });
-        //     cy.contains("label", "Identificación")
-        //       .parents(".mat-mdc-text-field-wrapper")
-        //       .find("input")
-        //       .type(PatrimonioIdentificacionPEP);
-        //   });
-        // cy.get(".mdc-floating-label")
-        //   .contains("mat-label", "Actividad Económica", { timeout: 6000 })
-        //   .click({ force: true })
-        //   .then(() => {
-        //     cy.get(".mdc-list-item__primary-text")
-        //       .contains("span", PatrimonioActividadEconomicaPEP)
-        //       .should("be.visible")
-        //       .should("not.be.disabled")
-        //       .click({ force: true });
-        //   });
 
+        this.PatrimonioPEP(
+          PatrimonioEmpresaPEP,
+          PatrimonioTipodeDocumentoPEP,
+          PatrimonioIdentificacionPEP,
+          PatrimonioActividadEconomicaPEP
+        );
 
         if (PatrimonioPorcentPEP >= 25) {
           cy.contains("label", "% de Participación")
             .parents(".mat-mdc-text-field-wrapper")
             .find("input")
+            .clear()
             .type(PatrimonioPorcentPEP.toString());
         } else {
-          throw new Error("% de Participación debe ser mayor o igual a 25");
+          cy.log("Porcentaje menor al mínimo permitido");
         }
 
         //Boton agregar
@@ -412,35 +400,437 @@ class PersonaNatural {
           .should("be.visible")
           .should("not.be.disabled")
           .click({ force: true });
+        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        //Boton guardar
+        cy.get(".mdc-button__label")
+          .contains("span", "Guardar ")
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true });
+        // Boton Siguiente
+        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        cy.xpath('//*[@id="cdk-stepper-0-content-3"]/div/div/button')
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true });
 
-         //Boton guardar
-         cy.get(".mdc-button__label").contains('span', 'Guardar ').should("be.visible").should("not.be.disabled").click({force:true})
-         // Boton Siguiente
-         cy.xpath("//button[contains(@class, 'mdc-button')]//span[contains(@class, 'mdc-button__label') and text()='Siguiente']").should('be.visible').should('not.be.disabled').click({force:true})
 
+          //Organizacion/direccion de empresas
       } else if (EmpresaJuridicaPEP === "Organización/dirección de empresas") {
+        cy.get(".mdc-tab__text-label")
+          .contains("span", EmpresaJuridicaPEP, { timeout: 6000 })
+          .click();
+
+        this.PatrimonioPEP(
+          PatrimonioEmpresaPEP,
+          PatrimonioTipodeDocumentoPEP,
+          PatrimonioIdentificacionPEP,
+          PatrimonioActividadEconomicaPEP
+        );
+
+          cy.wait(2000)
+        // 1. Abrir el calendario de fecha inicial
+        cy.xpath(
+          '//*[@id="mat-tab-group-0-content-1"]/div/app-empresa-manage/div/form/div[3]/app-datepicker[1]/form/mat-form-field/div[1]/div/div[3]'
+        ).click({ force: true, timeout: 10000 });
+
+        // 2. Abrir selector de año/mes
+        cy.xpath("//button[@aria-label='Choose month and year']", {
+          timeout: 60000,
+        })
+          .first()
+          .should("be.visible")
+          .click({ force: true });
+
+        // 3. Función mejorada para navegación bidireccional
+        function navigateToYear(targetYear) {
+          const MAX_ATTEMPTS = 20; // Prevención de loops infinitos
+          let attempts = 0;
+
+          const searchYear = () => {
+            cy.get("body").then(($body) => {
+              attempts++;
+              if (attempts > MAX_ATTEMPTS) {
+                throw new Error(
+                  `No se encontró el año ${targetYear} después de ${MAX_ATTEMPTS} intentos`
+                );
+              }
+
+              // Verificar si el año está visible
+              const yearElement = $body.find(`[aria-label="${targetYear}"]`);
+
+              if (yearElement.length) {
+                cy.wrap(yearElement).click({ force: true });
+              } else {
+                // Determinar dirección de navegación
+                cy.get(".mat-calendar-body-cell-content span").then(
+                  ($years) => {
+                    const currentYear = parseInt($years.first().text().trim());
+                    const direction =
+                      targetYear > currentYear ? "next" : "previous";
+
+                    cy.get(`button.mat-calendar-${direction}-button`)
+                      .should("be.visible")
+                      .click({ force: true })
+                      .then(() => {
+                        // Pequeña pausa para permitir que el calendario se actualice
+                        cy.wait(300);
+                        searchYear(); // Llamada recursiva
+                      });
+                  }
+                );
+              }
+            });
+          };
+
+          searchYear();
+        }
+
+        // 4. Navegar al año deseado
+        navigateToYear(anioInicialPEP); // Usa tu variable aquí
+
+        // 5. Seleccionar mes con validación
+        cy.contains(".mat-calendar-body-cell-content", mesInicialPEP, {
+          timeout: 60000,
+        })
+          .should("be.visible")
+          .and("not.be.disabled")
+          .click({ force: true });
+
+        // 6. Seleccionar día con validación
+        cy.get(".mat-calendar-body-cell-content")
+          .contains(diaInicialPEP)
+          .should("be.visible")
+          .and("not.be.disabled")
+          .click({ force: true });//Fin fecha inicial
+
+
+cy.wait(3000)
+
+// 1. Abrir el calendario de fecha final
+        cy.xpath(
+          '//*[@id="mat-tab-group-0-content-1"]/div/app-empresa-manage/div/form/div[3]/app-datepicker[2]/form/mat-form-field/div[1]/div/div[3]/mat-datepicker-toggle/button'
+        ).click({ force: true, timeout: 10000 });
+
+        // 2. Abrir selector de año/mes
+        cy.xpath("//button[@aria-label='Choose month and year']", {
+          timeout: 60000,
+        })
+          .first()
+          .should("be.visible")
+          .click({ force: true });
+
+        // 3. Función mejorada para navegación bidireccional
+        function navigateToYear1(targetYear) {
+          const MAX_ATTEMPTS = 20; // Prevención de loops infinitos
+          let attempts = 0;
+
+          const searchYear = () => {
+            cy.get("body").then(($body) => {
+              attempts++;
+              if (attempts > MAX_ATTEMPTS) {
+                throw new Error(
+                  `No se encontró el año ${targetYear} después de ${MAX_ATTEMPTS} intentos`
+                );
+              }
+
+              // Verificar si el año está visible
+              const yearElement = $body.find(`[aria-label="${targetYear}"]`);
+
+              if (yearElement.length) {
+                cy.wrap(yearElement).click({ force: true });
+              } else {
+                // Determinar dirección de navegación
+                cy.get(".mat-calendar-body-cell-content span").then(
+                  ($years) => {
+                    const currentYear = parseInt($years.first().text().trim());
+                    const direction =
+                      targetYear > currentYear ? "next" : "previous";
+
+                    cy.get(`button.mat-calendar-${direction}-button`)
+                      .should("be.visible")
+                      .click({ force: true })
+                      .then(() => {
+                        // Pequeña pausa para permitir que el calendario se actualice
+                        cy.wait(300);
+                        searchYear(); // Llamada recursiva
+                      });
+                  }
+                );
+              }
+            });
+          };
+
+          searchYear();
+        }
+
+        // 4. Navegar al año deseado
+        navigateToYear1(anioFinalPEP); // Usa tu variable aquí
+
+        // 5. Seleccionar mes con validación
+        cy.contains(".mat-calendar-body-cell-content", mesFinalPEP, {
+          timeout: 60000,
+        })
+          .should("be.visible")
+          .and("not.be.disabled")
+          .click({ force: true });
+
+        // 6. Seleccionar día con validación
+        cy.get(".mat-calendar-body-cell-content")
+          .contains(diaFinalPEP)
+          .should("be.visible")
+          .and("not.be.disabled")
+          .click({ force: true });
+//Fin fecha Final
+        //Metodo para seleccionar puesto
+        cy.get(".mdc-floating-label").contains('mat-label', 'Puesto', {timeout:6000}).click({force:true}).then(()=>{
+          cy.get(".mdc-list-item__primary-text").contains('class', PatrimonioPuestoPEP , {timeout}).should("be.visible").should("not.be.disabled").click({force:true})
+
+        })
 
 
 
 
-        
+     //Boton agregar
+        cy.xpath(
+          "//button[contains(@class, 'mat-mdc-button') and .//p[text()='Agregar']]"
+        )
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true });
+        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        //Boton guardar
+        cy.get(".mdc-button__label")
+          .contains("span", "Guardar ")
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true });
+        // Boton Siguiente
+        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        cy.xpath('//*[@id="cdk-stepper-0-content-3"]/div/div/button')
+          .should("be.visible")
+          .should("not.be.disabled")
+
+
+
+
+
+
+
+
+
+       
       } else if (
         EmpresaJuridicaPEP ===
         "Federaciones/organizaciones no lucrativas (ONG'S)"
       ) {
+             cy.get(".mdc-tab__text-label")
+          .contains("span", EmpresaJuridicaPEP, { timeout: 6000 })
+          .click({force:true});
+
+        this.PatrimonioPEP(
+          PatrimonioEmpresaPEP,
+          PatrimonioTipodeDocumentoPEP,
+          PatrimonioIdentificacionPEP,
+          PatrimonioActividadEconomicaPEP
+        );
+
+          cy.wait(2000)
+        // 1. Abrir el calendario de fecha inicial
+        cy.xpath(
+          '//*[@id="mat-tab-group-0-content-2"]/div/app-empresa-manage/div/form/div[3]/app-datepicker[1]/form/mat-form-field/div[1]/div/div[3]/mat-datepicker-toggle/button'
+        ).click({ force: true, timeout: 10000 });
+
+        // 2. Abrir selector de año/mes
+        cy.xpath("//button[@aria-label='Choose month and year']", {
+          timeout: 60000,
+        })
+          .first()
+          .should("be.visible")
+          .click({ force: true });
+
+        // 3. Función mejorada para navegación bidireccional
+        function navigateToYear2(targetYear) {
+          const MAX_ATTEMPTS = 20; // Prevención de loops infinitos
+          let attempts = 0;
+
+          const searchYear = () => {
+            cy.get("body").then(($body) => {
+              attempts++;
+              if (attempts > MAX_ATTEMPTS) {
+                throw new Error(
+                  `No se encontró el año ${targetYear} después de ${MAX_ATTEMPTS} intentos`
+                );
+              }
+
+              // Verificar si el año está visible
+              const yearElement = $body.find(`[aria-label="${targetYear}"]`);
+
+              if (yearElement.length) {
+                cy.wrap(yearElement).click({ force: true });
+              } else {
+                // Determinar dirección de navegación
+                cy.get(".mat-calendar-body-cell-content span").then(
+                  ($years) => {
+                    const currentYear = parseInt($years.first().text().trim());
+                    const direction =
+                      targetYear > currentYear ? "next" : "previous";
+
+                    cy.get(`button.mat-calendar-${direction}-button`)
+                      .should("be.visible")
+                      .click({ force: true })
+                      .then(() => {
+                        // Pequeña pausa para permitir que el calendario se actualice
+                        cy.wait(300);
+                        searchYear(); // Llamada recursiva
+                      });
+                  }
+                );
+              }
+            });
+          };
+
+          searchYear();
+        }
+
+        // 4. Navegar al año deseado
+        navigateToYear2(anioInicialPEP); // Usa tu variable aquí
+
+        // 5. Seleccionar mes con validación
+        cy.contains(".mat-calendar-body-cell-content", mesInicialPEP, {
+          timeout: 60000,
+        })
+          .should("be.visible")
+          .and("not.be.disabled")
+          .click({ force: true });
+
+        // 6. Seleccionar día con validación
+        cy.get(".mat-calendar-body-cell-content")
+          .contains(diaInicialPEP)
+          .should("be.visible")
+          .and("not.be.disabled")
+          .click({ force: true });//Fin fecha inicial
+
+
+cy.wait(3000)
+
+// 1. Abrir el calendario de fecha final
+        cy.xpath(
+          '//*[@id="mat-tab-group-0-content-2"]/div/app-empresa-manage/div/form/div[3]/app-datepicker[2]/form/mat-form-field/div[1]/div/div[3]/mat-datepicker-toggle/button'
+        ).click({ force: true, timeout: 10000 });
+
+        // 2. Abrir selector de año/mes
+        cy.xpath("//button[@aria-label='Choose month and year']", {
+          timeout: 60000,
+        })
+          .first()
+          .should("be.visible")
+          .click({ force: true });
+
+        // 3. Función mejorada para navegación bidireccional
+        function navigateToYear3(targetYear) {
+          const MAX_ATTEMPTS = 20; // Prevención de loops infinitos
+          let attempts = 0;
+
+          const searchYear = () => {
+            cy.get("body").then(($body) => {
+              attempts++;
+              if (attempts > MAX_ATTEMPTS) {
+                throw new Error(
+                  `No se encontró el año ${targetYear} después de ${MAX_ATTEMPTS} intentos`
+                );
+              }
+
+              // Verificar si el año está visible
+              const yearElement = $body.find(`[aria-label="${targetYear}"]`);
+
+              if (yearElement.length) {
+                cy.wrap(yearElement).click({ force: true });
+              } else {
+                // Determinar dirección de navegación
+                cy.get(".mat-calendar-body-cell-content span").then(
+                  ($years) => {
+                    const currentYear = parseInt($years.first().text().trim());
+                    const direction =
+                      targetYear > currentYear ? "next" : "previous";
+
+                    cy.get(`button.mat-calendar-${direction}-button`)
+                      .should("be.visible")
+                      .click({ force: true })
+                      .then(() => {
+                        // Pequeña pausa para permitir que el calendario se actualice
+                        cy.wait(300);
+                        searchYear(); // Llamada recursiva
+                      });
+                  }
+                );
+              }
+            });
+          };
+
+          searchYear();
+        }
+
+        // 4. Navegar al año deseado
+        navigateToYear3(anioFinalPEP); // Usa tu variable aquí
+
+        // 5. Seleccionar mes con validación
+        cy.contains(".mat-calendar-body-cell-content", mesFinalPEP, {
+          timeout: 60000,
+        })
+          .should("be.visible")
+          .and("not.be.disabled")
+          .click({ force: true });
+
+        // 6. Seleccionar día con validación
+        cy.get(".mat-calendar-body-cell-content")
+          .contains(diaFinalPEP)
+          .should("be.visible")
+          .and("not.be.disabled")
+          .click({ force: true });
+//Fin fecha Final
+        //Metodo para seleccionar puesto
+        cy.get(".mdc-floating-label").contains('mat-label', 'Puesto', {timeout:6000}).click({force:true}).then(()=>{
+          cy.get(".mdc-list-item__primary-text").contains('class', PatrimonioPuestoPEP , {timeout}).should("be.visible").should("not.be.disabled").click({force:true})
+
+        })
+
+
+
+
+     //Boton agregar
+        cy.xpath(
+          "//button[contains(@class, 'mat-mdc-button') and .//p[text()='Agregar']]"
+        )
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true });
+        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        //Boton guardar
+        cy.get(".mdc-button__label")
+          .contains("span", "Guardar ")
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true });
+        // Boton Siguiente
+        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        cy.xpath('//*[@id="cdk-stepper-0-content-3"]/div/div/button')
+          .should("be.visible")
+          .should("not.be.disabled")
+
       } else {
         cy.log("no tiene ningun patrimonio");
-          // Boton Siguiente
-         cy.xpath("//button[contains(@class, 'mdc-button')]//span[contains(@class, 'mdc-button__label') and text()='Siguiente']").should('be.visible').should('not.be.disabled').click({force:true})
-
+        // Boton Siguiente
+        cy.xpath(
+          "//button[contains(@class, 'mdc-button')]//span[contains(@class, 'mdc-button__label') and text()='Siguiente']"
+        )
+          .should("be.visible")
+          .should("not.be.disabled")
+          .click({ force: true });
       }
     } else {
       cy.log("No es pep por lo tanto se salta el flujo");
-      // cy.get(".mdc-button__label")
-      //   .contains("span", "Siguiente")
-      //   .should("be.visible")
-      //   .should("not.be.disabled")
-      //   .click({ force: true });
+    
       cy.xpath('//*[@id="cdk-stepper-0-content-2"]/div/div/button')
         .should("be.visible")
         .should("not.be.disabled")
@@ -455,3 +845,78 @@ export default PersonaNatural;
 //   .should('be.visible')
 //   .should('not.be.disabled')
 //   .click({force: true});
+//------
+
+// // 1. Abrir el calendario y validar que esté visible
+// cy.get('button[aria-label="Open calendar"]')
+//   .eq(1)
+//   .click({ force: true, timeout: 10000 })
+//   .then(() => {
+//     // Validar que el calendario se abrió correctamente
+//     cy.get('.mat-calendar').should('be.visible');
+//   });
+
+// // 2. Abrir selector de año/mes
+// cy.xpath("//button[@aria-label='Choose month and year']", { timeout: 60000 })
+//   .first()
+//   .should('be.visible')
+//   .click({ force: true });
+
+// // 3. Función mejorada para navegación bidireccional
+// function navigateToYear(targetYear) {
+//   const MAX_ATTEMPTS = 20; // Prevención de loops infinitos
+//   let attempts = 0;
+
+//   const searchYear = () => {
+//     cy.get('body').then(($body) => {
+//       attempts++;
+//       if (attempts > MAX_ATTEMPTS) {
+//         throw new Error(`No se encontró el año ${targetYear} después de ${MAX_ATTEMPTS} intentos`);
+//       }
+
+//       // Verificar si el año está visible
+//       const yearElement = $body.find(`[aria-label="${targetYear}"]`);
+
+//       if (yearElement.length) {
+//         cy.wrap(yearElement).click({ force: true });
+//       } else {
+//         // Determinar dirección de navegación
+//         cy.get('.mat-calendar-body-cell-content span').then(($years) => {
+//           const currentYear = parseInt($years.first().text().trim());
+//           const direction = targetYear > currentYear ? 'next' : 'previous';
+
+//           cy.get(`button.mat-calendar-${direction}-button`)
+//             .should('be.visible')
+//             .click({ force: true })
+//             .then(() => {
+//               // Pequeña pausa para permitir que el calendario se actualice
+//               cy.wait(300);
+//               searchYear(); // Llamada recursiva
+//             });
+//         });
+//       }
+//     });
+//   };
+
+//   searchYear();
+// }
+
+// // 4. Navegar al año deseado
+// navigateToYear(anioExpiracion); // Usa tu variable aquí
+
+// // 5. Seleccionar mes con validación
+// cy.contains('.mat-calendar-body-cell-content', mesExpiracion, { timeout: 60000 })
+//   .should('be.visible')
+//   .and('not.be.disabled')
+//   .click({ force: true });
+
+// // 6. Seleccionar día con validación
+// cy.get('.mat-calendar-body-cell-content')
+//   .contains(diaExpiracion)
+//   .should('be.visible')
+//   .and('not.be.disabled')
+//   .click({ force: true });
+
+// // 7. Validar que la fecha se seleccionó correctamente
+// cy.get('input[matinput][formcontrolname="fechaExpiracion"]')
+//   .should('have.value', `${diaExpiracion}/${mesExpiracion}/${anioExpiracion}`);

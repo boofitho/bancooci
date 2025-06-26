@@ -1,6 +1,6 @@
 import MetodosGenerales from "../support/MetodosGeneralesPo.cy.js";
 import PersonaNatural from "../support/personaNatural-PO.cy.js";
-import personaJuridica from "./personaJuridica.cy.js";
+import personaJuridica from "../support/personaJuridica.cy.js";
 const cotizador = new PersonaNatural();
 const Generales = new MetodosGenerales();
 const PJ = new personaJuridica();
@@ -13,12 +13,12 @@ let contrasena = "byte0625";
 const data = {
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0319199433333",
+  InfoTipoDocumento: "0825200469864",
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0319-1994-333333",
+  RTN: "HN0825-2004-698668",
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -48,9 +48,9 @@ const data = {
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "Meza",
-  PrimerNombre: "Antonio",
-  anioNacimiento: " 1994 ",
+  PrimerApellido: "e",
+  PrimerNombre: "Cristobal",
+  anioNacimiento: " 2004 ",
   mesNacimiento: " JUL ",
   diaNacimiento: " 7 ",
   EstadoCivil: " Casado(a) ",
@@ -62,20 +62,31 @@ const data = {
   //consulta si tiene dos nacionalidades
   tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "111-22-1111",
+  NumeroSocial: "082-52-0046",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
   esPEP: "si",
   institucionPEP: "Ministerio de energía",
   cargoOcupadoPEP: "Gerente general",
   periodoPEP: " 2019 - 2022 ",
-  //Espacio donde se debe de colocar si posee el 25% o mas del patrimonio de la estructura juridica de alguna empresa
-  EmpresaJuridicaPEP: "Empresa",
-  PatrimonioEmpresaPEP: "El renacimiento, S.A.",
+  //Espacio donde se debe de colocar si alguna empresa cuando es PEP
+  EmpresaJuridicaPEP: "Organización/dirección de empresas",
+  PatrimonioEmpresaPEP: "El renacimientos, S.A.",
   PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
-  PatrimonioIdentificacionPEP: "0319199433333",
+  PatrimonioIdentificacionPEP: "HN0825-2004-698609",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
-  PatrimonioPorcentPEP: 30
+  PatrimonioPorcentPEP: 30,
+  anioInicialPEP: " 1995 ",
+  mesInicialPEP: " MAR ",
+  diaInicialPEP: " 12 ",
+  anioFinalPEP: " 2041 " ,
+  mesFinalPEP: " MAR ",
+  diaFinalPEP: " 6 ",
+  PatrimonioPuestoPEP: " Representante legal "
+
+
+
+
 };
 
 describe("BancoOcci", () => {
@@ -125,9 +136,9 @@ describe("BancoOcci", () => {
         data.NumeroSocial,
         data.UbicacionSegundaNacionalidad
       );
-  cotizador.clickpaso2()
-  cy.wait(500)
-      
+      cotizador.clickpaso2();
+      cy.wait(500);
+
       cotizador.PersonaPep(
         data.esPEP,
         data.institucionPEP,
@@ -136,19 +147,26 @@ describe("BancoOcci", () => {
         data.EmpresaJuridicaPEP,
         data.PatrimonioEmpresaPEP,
         data.PatrimonioTipodeDocumentoPEP,
-        data.PatrimonioActividadEconomicaPEP
+        data.PatrimonioIdentificacionPEP,
+        data.PatrimonioActividadEconomicaPEP,
+        data.PatrimonioPorcentPEP,
+        data.anioInicialPEP,
+        data.mesInicialPEP,
+        data.diaInicialPEP,
+        data.anioFinalPEP,
+        data.mesFinalPEP,
+        data.diaFinalPEP,
+        data.PatrimonioPuestoPEP
       );
-    
-
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
       cy.log("JURIDICO PAPS");
       PJ.IngresoDatosPersonaJuridica();
       PJ.Identificacion(data);
       PJ.DatosGeneralesPersonaJuridica(data);
     } else {
-      cy.log('*******************************************************')
-      cy.log('Debe de ingresar un tipo de cliente: Natural o Juridico')
-      cy.log('*******************************************************')
+      cy.log("*******************************************************");
+      cy.log("Debe de ingresar un tipo de cliente: Natural o Juridico");
+      cy.log("*******************************************************");
     }
   });
 }); // TERMINA EL IT "Exploración automática de pantalla desconocida"
