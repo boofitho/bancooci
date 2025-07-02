@@ -13,12 +13,12 @@ let contrasena = "byte0625";
 const data = {
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0825200469864",
+  InfoTipoDocumento: "0301200532060",
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0825-2004-698668",
+  RTN: "HN0301-2005-320119",
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -48,9 +48,9 @@ const data = {
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "e",
+  PrimerApellido: "aan",
   PrimerNombre: "Cristobal",
-  anioNacimiento: " 2004 ",
+  anioNacimiento: " 2005 ",
   mesNacimiento: " JUL ",
   diaNacimiento: " 7 ",
   EstadoCivil: " Casado(a) ",
@@ -62,7 +62,7 @@ const data = {
   //consulta si tiene dos nacionalidades
   tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "082-52-0046",
+  NumeroSocial: "001-01-2056",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
   esPEP: "si",
@@ -70,23 +70,32 @@ const data = {
   cargoOcupadoPEP: "Gerente general",
   periodoPEP: " 2019 - 2022 ",
   //Espacio donde se debe de colocar si alguna empresa cuando es PEP
-  EmpresaJuridicaPEP: "Organización/dirección de empresas",
-  PatrimonioEmpresaPEP: "El renacimientos, S.A.",
+  EmpresaJuridicaPEP: "Empresa",
+  PatrimonioEmpresaPEP: "El renacimientooss00555555, S.A.",
   PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
-  PatrimonioIdentificacionPEP: "HN0825-2004-698609",
+  PatrimonioIdentificacionPEP: "HN0301-2005-320120",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
   PatrimonioPorcentPEP: 30,
   anioInicialPEP: " 1995 ",
   mesInicialPEP: " MAR ",
   diaInicialPEP: " 12 ",
-  anioFinalPEP: " 2041 " ,
+  anioFinalPEP: " 2041 ",
   mesFinalPEP: " MAR ",
   diaFinalPEP: " 6 ",
-  PatrimonioPuestoPEP: " Representante legal "
+  PatrimonioPuestoPEP: " Representante legal ",
+   //Parentescos 'PEP'
+  apellidoMamaPEP: "Lopez",
+  primerNombreMamaPEP: "Maria",
+  direccionMamaPEP: "Ciudad",
+  // apellidoPapaPEP: "Lopez",
+  // primerNombrePapaPEP: "Roberto",
+  // direccionPapaPEP: "Ciudad",
+  tiposuegrxPEP: " Suegro ",
+  apellidosuegrxPEP: "Alvarez",
+  primerNombreSuegrxPEP: "Francisco",
+  direccionSuegrxPEP: "Ciudad",
 
-
-
-
+ 
 };
 
 describe("BancoOcci", () => {
@@ -158,6 +167,23 @@ describe("BancoOcci", () => {
         data.diaFinalPEP,
         data.PatrimonioPuestoPEP
       );
+
+      cotizador.ParentescosPEP(
+        
+        data.apellidoMamaPEP,
+        data.primerNombreMamaPEP,
+        data.direccionMamaPEP,
+        // data.apellidoPapaPEP,
+        // data.primerNombrePapaPEP,
+        // data.direccionPapaPEP,
+        data.tiposuegrxPEP,
+      
+        data.apellidosuegrxPEP,
+        data.primerNombreSuegrxPEP,
+        // data.direccionSuegrxPEP
+       
+      );
+       
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
       cy.log("JURIDICO PAPS");
       PJ.IngresoDatosPersonaJuridica();
