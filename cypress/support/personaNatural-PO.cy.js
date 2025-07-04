@@ -100,6 +100,7 @@ class PersonaNatural {
     NumeroSocial,
     UbicacionSegundaNacionalidad
   ) {
+    this.EstadoCivil = EstadoCivil; //  AQUÍ se guarda correctamente
     // Inicio de paso 2. Datos generales persona natural
     cy.contains("label", textoGenero, { timeout: 60000 })
       .scrollIntoView() // Hace scroll hasta que el elemento sea visible
@@ -839,9 +840,7 @@ class PersonaNatural {
     // direccionPapaPEP,
     tiposuegrxPEP,
     apellidosuegrxPEP,
-    primerNombreSuegrxPEP,
-    direccionSuegrxPEP,
-    
+    primerNombreSuegrxPEP
   ) {
     cy.get(".loading", { timeout: 60000 }).should("not.exist");
     //Para madre de persona PEP (datos indispensables de acuerdo al flujo)
@@ -907,45 +906,334 @@ class PersonaNatural {
         .should("not.be.disabled")
         .click({ force: true });
       cy.wait(3000);
-     cy.xpath(
-  "//app-relationship[@class='ng-star-inserted']//div//app-auto-complete//div[@class='mat-mdc-text-field-wrapper mdc-text-field mdc-text-field--outlined']"
-)
-  .click({ force: true })
-  .then(() => {
-    cy.xpath(`//mat-option//span[text()='${tiposuegrxPEP}']`)
-      .scrollIntoView()
-      .should('be.visible')
-      .click({ force: true });
-  });
+      cy.xpath(
+        "//app-relationship[@class='ng-star-inserted']//div//app-auto-complete//div[@class='mat-mdc-text-field-wrapper mdc-text-field mdc-text-field--outlined']"
+      )
+        .click({ force: true })
+        .then(() => {
+          cy.xpath(`//mat-option//span[text()='${tiposuegrxPEP}']`)
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true });
+        });
 
-cy.xpath("//app-relationship[contains(., 'Suegro')]//mat-label[normalize-space()='Primer Apellido']/ancestor::div[contains(@class,'mat-mdc-form-field')]//input")
-  .should('be.visible')
-  .type(apellidosuegrxPEP);
-
-cy.xpath("//app-relationship[contains(., 'Suegro')]//mat-label[normalize-space()='Primer Nombre']/ancestor::div[contains(@class,'mat-mdc-form-field')]//input")
-  .should('be.visible')
-  .type(primerNombreSuegrxPEP);
-  
-      cy.get(".ng-star-inserted")
-        .contains("mat-label", "Dirección")
-        .eq(0)
+      cy.xpath(
+        "//app-relationship[contains(., 'Suegro')]//mat-label[normalize-space()='Primer Apellido']/ancestor::div[contains(@class,'mat-mdc-form-field')]//input"
+      )
         .should("be.visible")
-        .should("not.be.disabled")
-        .type(direccionSuegrxPEP, { timeout: 6000 });
+        .type(apellidosuegrxPEP);
+
+      cy.xpath(
+        "//app-relationship[contains(., 'Suegro')]//mat-label[normalize-space()='Primer Nombre']/ancestor::div[contains(@class,'mat-mdc-form-field')]//input"
+      )
+        .should("be.visible")
+        .type(primerNombreSuegrxPEP);
+
       //boton agregar
       cy.get(".mdc-button__label")
         .contains("span", "Agregar ", { timeout: 6000 })
         .should("be.visible")
         .should("not.be.disabled")
         .click({ force: true, timeout: 6000 });
+      cy.wait(1000);
       //Boton guardar
       cy.get(".mdc-button__label")
         .contains("span", "Guardar ", { timeout: 6000 })
         .should("be.visible")
         .should("not.be.disabled")
         .click({ force: true, timeout: 6000 });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
+      //Boton siguiente
+      cy.xpath('//*[@id="cdk-stepper-0-content-4"]/div/div/button')
+        .should("be.visible")
+        .should("not.be.disabled")
+        .click({ force: true });
+      //Segundo boton siguiente
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
     } else {
       cy.log("no entramos al flujo ya que esta pantalla no aparece");
+    }
+  }
+
+  //pasos conyugue cuando es casado NO pep
+  esCasado(
+    tipoConyugue,
+    apellidoConyugue,
+    nombreConyugue,
+    tipoCelularConyugue,
+    numeroConyugue
+  ) {
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    cy.wait(3000);
+    if (this.EstadoCivil === " Casado(a) " && this.esPEP === "no") {
+      if (tipoConyugue === "FEMENINO") {
+        cy.get("#mat-radio-20-input").click({ force: true });
+      } else {
+        cy.get("#mat-radio-21-input").click({ force: true });
+      }
+
+      cy.xpath(
+        '(//mat-label[contains(text(),"Primer Apellido")]/ancestor::mat-form-field//input)[2]'
+      )
+        .scrollIntoView()
+        .should("be.visible")
+        .clear()
+        .type(apellidoConyugue, { delay: 50, force: true });
+
+      cy.xpath(
+        '//*[@id="cdk-stepper-0-content-3"]/div/byte-spouse-data/div/form/div[3]/byte-names/form/div/div[2]/app-input-material[1]/form/mat-form-field/div[1]'
+      )
+        .should("be.visible")
+        .and("not.be.disabled")
+        .type(nombreConyugue, { timeout: 6000 });
+
+      cy.get(".mdc-floating-label")
+        .contains("mat-label", "Tipo de Teléfono")
+        .should("be.visible")
+        .and("not.be.disabled")
+        .click({ force: true })
+        .then(() => {
+          cy.get(".mdc-list-item__primary-text")
+            .contains("span", tipoCelularConyugue)
+            .click({ force: true });
+        });
+      cy.xpath(
+        "(//mat-label[normalize-space()='Teléfono']/ancestor::div[contains(@class,'mat-mdc-form-field')]//input)[1]"
+      )
+        .should("be.visible")
+        .click({ force: true })
+        .clear()
+        .type(numeroConyugue, { timeout: 6000 });
+
+      cy.xpath("(//button[.//span[text()='Agregar']])[1]")
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.xpath(
+        "(//button[@class='mdc-button mdc-button--raised mat-mdc-raised-button mat-primary mat-mdc-button-base ng-star-inserted'])[4]"
+      )
+        .should("be.visible")
+        .click({ force: true });
+    } else {
+      cy.log("El cliente no es casado, no aparece esta pantalla");
+    }
+  }
+
+  escasadoPEP(
+    tipoConyugue,
+    apellidoConyugue,
+    nombreConyugue,
+    cedulaConyuguePEP,
+    anioExpiracionConyuguePEP,
+    mesExpiracionConyuguePEP,
+    diaExipracionConyugePEP,
+    anioNacimientoConyuguePEP,
+    mesNacimientoConyuguePEP,
+    diaNacimientoConyugePEP,
+    actividadEconomicaConyuguePEP,
+    profesionConyuguePEP,
+    pasaporteConyuguePEP,
+    nacionalidadPasaporteConyuguePEP,
+    UbicacionSegundaNacionalidadConyuguePEP,
+    numeroSocialConyuguePEP
+  ) {
+    if (this.EstadoCivil === " Casado(a) " && this.esPEP === "si") {
+      if (tipoConyugue === "FEMENINO") {
+        cy.get("#mat-radio-20-input").click({ force: true });
+      } else {
+        cy.get("#mat-radio-21-input").click({ force: true });
+      }
+
+      cy.xpath(
+        "//body[1]/app-root[1]/app-container[1]/bac-app-container[1]/div[1]/mat-drawer-container[1]/mat-drawer-content[1]/app-create-client[1]/div[1]/dyna-flow[1]/mat-stepper[1]/div[6]/div[1]/div[1]/div[1]/app-spouse[1]/div[1]/section[1]/div[1]/div[2]/mat-stepper[1]/div[1]/div[1]/div[1]/div[1]/form[1]/byte-spouse-data[1]/div[1]/form[1]/div[2]/app-documents-wrapper[1]/app-documents[1]/form[1]/table[1]/tbody[1]/tr[1]/td[1]/mat-form-field[1]/div[1]"
+      )
+        .should("be.visible")
+        .should("not.be.disabled")
+        .type(cedulaConyuguePEP, { timeout: 6000 });
+      cy.wait(3000);
+
+      cy.xpath("//input[@placeholder='Primer Apellido']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(apellidoConyugue, { force: true });
+
+      cy.xpath(
+        '//mat-label[contains(text(),"Primer Nombre")]/ancestor::mat-form-field//input'
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombreConyugue, { timeout: 6000, force: true });
+
+      // Inicio flujo fecha de expiracion
+      cy.xpath("(//button[@aria-label='Open calendar'])[3]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 10000 });
+
+      // Abre selector de mes/año
+      cy.xpath("//button[@aria-label='Choose month and year']", {
+        timeout: 60000,
+      })
+        .first()
+
+        .click({ force: true }, { timeout: 6000 });
+      function navegarHastaAnio(anioDeseado) {
+        const buscarAnio = () => {
+          cy.get("body").then(($body) => {
+            // Verifica si el año está visible en la página actual
+            if ($body.find(`span:contains(${anioDeseado})`).length > 0) {
+              cy.contains("span", anioDeseado).click({ force: true });
+            } else {
+              // Si no está visible, haz clic en el botón de navegación y vuelve a buscar
+              cy.get("button.mat-calendar-next-button")
+
+                .click()
+                .then(buscarAnio); // Llama recursivamente hasta encontrar el año
+            }
+          });
+        };
+        // Inicia la búsqueda
+        buscarAnio();
+      }
+      navegarHastaAnio(anioExpiracionConyuguePEP); // Donde anioNacimiento es "2030" en tu caso
+      cy.contains("span", mesExpiracionConyuguePEP, { timeout: 60000 })
+        .should("be.visible")
+        .should("not.be.disabled")
+        .click({ force: true });
+      cy.get(".mat-calendar-body-cell-content")
+        .contains(diaExipracionConyugePEP, { timeout: 60000 })
+        .should("be.visible")
+        .should("not.be.disabled")
+        .click({ force: true });
+      cy.wait(2000); //Fin flujo fecha de vencimiento
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      //inicio flujo fecha de nacimiento
+
+      cy.xpath("(//button[@aria-label='Open calendar'])[4]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 10000 });
+
+      // Abre selector de mes/año
+      cy.xpath("//button[@aria-label='Choose month and year']", {
+        timeout: 60000,
+      })
+        .first()
+
+        .click({ force: true }, { timeout: 6000 });
+      function navegarHastaAnio1(anioDeseado1) {
+        const buscarAnio1 = () => {
+          cy.get("body").then(($body) => {
+            // Verifica si el año está visible en la página actual
+            if ($body.find(`span:contains(${anioDeseado1})`).length > 0) {
+              cy.contains("span", anioDeseado1).click({ force: true });
+            } else {
+              // Si no está visible, haz clic en el botón de navegación y vuelve a buscar
+              cy.get("button.mat-calendar-previous-button")
+
+                .click()
+                .then(buscarAnio1); // Llama recursivamente hasta encontrar el año
+            }
+          });
+        };
+        // Inicia la búsqueda
+        buscarAnio1();
+      }
+      navegarHastaAnio1(anioNacimientoConyuguePEP); // Donde anioNacimiento es "1995" en tu caso
+      cy.contains("span", mesNacimientoConyuguePEP, { timeout: 60000 })
+        .should("be.visible")
+        .should("not.be.disabled")
+        .click({ force: true });
+      cy.get(".mat-calendar-body-cell-content")
+        .contains(diaNacimientoConyugePEP, { timeout: 60000 })
+        .should("be.visible")
+        .should("not.be.disabled")
+        .click({ force: true });
+      cy.wait(2000); //Fin flujo fecha de nacimiento
+
+      cy.xpath("(//mat-label[contains(text(),'Actividad Económica')])[2]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .then(() => {
+          cy.get(".mdc-list-item__primary-text")
+            .contains("span", actividadEconomicaConyuguePEP)
+            .click({ force: true });
+        });
+
+      cy.xpath("(//mat-label[contains(text(),'Profesión')])[2]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .then(() => {
+          cy.get(".mdc-list-item__primary-text")
+            .contains("span", profesionConyuguePEP)
+            .click({ force: true });
+        });
+      cy.xpath('(//mat-label[contains(text(),"PASAPORTE") and .//span[text()="*"]])[2]') 
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(pasaporteConyuguePEP)
+
+        .then(() => {
+          cy.xpath("(//mat-label[contains(text(),'Ubicación')])[6]").click({
+            force: true,
+          });
+          cy.get(".mdc-list-item__primary-text")
+            .contains("span", nacionalidadPasaporteConyuguePEP)
+            .click({ force: true });
+        });
+
+      //Segunda nacionalidad conyugue pep
+      cy.xpath("(//mat-label[contains(text(),'2da. Nacionalidad')])[2]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .then(() => {
+          cy.get(".mdc-list-item__primary-text")
+            .contains("span", UbicacionSegundaNacionalidadConyuguePEP)
+            .click({ force: true })
+
+        });
+
+        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      // if (UbicacionSegundaNacionalidadConyuguePEP === " ESTADOUNIDENSE ") {
+      //      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      //   cy.xpath("//mat-label[normalize-space()='Social Security Number']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]/descendant::input")
+      //     .filter(":not(:disabled)")
+      //     .first()
+      //     .scrollIntoView()
+      //     .should("be.visible")
+      //     .clear()
+      //     .type(numeroSocialConyuguePEP);
+      // } else {
+      //   cy.log("no aplica este paso ya que no tiene nacionalidad estadounidense")
+
+      // }
+
+      cy.xpath("(//button[contains(@class, 'mdc-button')]//span[contains(@class, 'mdc-button__label') and text()='Siguiente'])[6]").filter(":not(:disabled)")
+          .first()
+          .scrollIntoView()
+          .should("be.visible").click({force:true})
+    } else {
+      cy.log("No es pep casado por lo que se salta este flujo");
     }
   }
 }

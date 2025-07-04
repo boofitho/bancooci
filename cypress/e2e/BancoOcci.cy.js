@@ -13,12 +13,12 @@ let contrasena = "byte0625";
 const data = {
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200532060",
+  InfoTipoDocumento: "0301200532248",
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0301-2005-320119",
+  RTN: "HN0301-2005-320297",
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -48,7 +48,7 @@ const data = {
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "aan",
+  PrimerApellido: "bna",
   PrimerNombre: "Cristobal",
   anioNacimiento: " 2005 ",
   mesNacimiento: " JUL ",
@@ -62,7 +62,7 @@ const data = {
   //consulta si tiene dos nacionalidades
   tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "001-01-2056",
+  NumeroSocial: "001-01-2172",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
   esPEP: "si",
@@ -71,9 +71,9 @@ const data = {
   periodoPEP: " 2019 - 2022 ",
   //Espacio donde se debe de colocar si alguna empresa cuando es PEP
   EmpresaJuridicaPEP: "Empresa",
-  PatrimonioEmpresaPEP: "El renacimientooss00555555, S.A.",
+  PatrimonioEmpresaPEP: "El renacimientooss80000099, S.A.",
   PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
-  PatrimonioIdentificacionPEP: "HN0301-2005-320120",
+  PatrimonioIdentificacionPEP: "HN0301-2005-320298",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
   PatrimonioPorcentPEP: 30,
   anioInicialPEP: " 1995 ",
@@ -83,19 +83,38 @@ const data = {
   mesFinalPEP: " MAR ",
   diaFinalPEP: " 6 ",
   PatrimonioPuestoPEP: " Representante legal ",
-   //Parentescos 'PEP'
+  //Parentescos 'PEP'
   apellidoMamaPEP: "Lopez",
   primerNombreMamaPEP: "Maria",
   direccionMamaPEP: "Ciudad",
   // apellidoPapaPEP: "Lopez",
   // primerNombrePapaPEP: "Roberto",
-  // direccionPapaPEP: "Ciudad",
+
   tiposuegrxPEP: " Suegro ",
   apellidosuegrxPEP: "Alvarez",
   primerNombreSuegrxPEP: "Francisco",
-  direccionSuegrxPEP: "Ciudad",
 
- 
+  //Variables para conyugue
+  tipoConyugue: "FEMENINO",
+  apellidoConyugue: "Alfaro",
+  nombreConyugue: "Ana",
+  tipoCelularConyugue: " Celular ",
+  numeroConyugue: "50403072505",
+  //Conyugue cuando es PEP
+  cedulaConyuguePEP: "0201199500001",
+  anioExpiracionConyuguePEP: " 2030 ",
+  mesExpiracionConyuguePEP: " MAR ",
+  diaExipracionConyugePEP: " 6 ",
+  anioNacimientoConyuguePEP: " 1995 ",
+  mesNacimientoConyuguePEP: " JUL ",
+  diaNacimientoConyugePEP: " 8 ",
+  actividadEconomicaConyuguePEP: " SERVICIOS FINANCIEROS ",
+  profesionConyuguePEP: " AGENTE DE SEGUROS ",
+  pasaporteConyuguePEP: "000000000000001",
+  nacionalidadPasaporteConyuguePEP:" HONDURAS ",
+  UbicacionSegundaNacionalidadConyuguePEP: " ESTADOUNIDENSE ",
+  // numeroSocialConyuguePEP:"111-01-0000"
+  
 };
 
 describe("BancoOcci", () => {
@@ -169,7 +188,6 @@ describe("BancoOcci", () => {
       );
 
       cotizador.ParentescosPEP(
-        
         data.apellidoMamaPEP,
         data.primerNombreMamaPEP,
         data.direccionMamaPEP,
@@ -177,13 +195,37 @@ describe("BancoOcci", () => {
         // data.primerNombrePapaPEP,
         // data.direccionPapaPEP,
         data.tiposuegrxPEP,
-      
         data.apellidosuegrxPEP,
-        data.primerNombreSuegrxPEP,
-        // data.direccionSuegrxPEP
-       
+        data.primerNombreSuegrxPEP
       );
-       
+
+      cotizador.esCasado(
+        data.tipoConyugue,
+        data.apellidoConyugue,
+        data.nombreConyugue,
+        data.tipoCelularConyugue,
+        data.numeroConyugue
+      );
+
+      cotizador.escasadoPEP(
+        data.tipoConyugue,
+        data.apellidoConyugue,
+        data.nombreConyugue,
+        data.cedulaConyuguePEP,
+        data.anioExpiracionConyuguePEP,
+        data.mesExpiracionConyuguePEP,
+        data.diaExipracionConyugePEP,
+        data.anioNacimientoConyuguePEP,
+        data.mesNacimientoConyuguePEP,
+        data.diaNacimiento,
+        data.actividadEconomicaConyuguePEP,
+        data.profesionConyuguePEP,
+        data.pasaporteConyuguePEP,
+        data.nacionalidadPasaporteConyuguePEP,
+        data.UbicacionSegundaNacionalidadConyuguePEP,
+        // data.numeroSocialConyuguePEP
+
+      );
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
       cy.log("JURIDICO PAPS");
       PJ.IngresoDatosPersonaJuridica();
