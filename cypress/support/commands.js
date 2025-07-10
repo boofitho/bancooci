@@ -36,7 +36,7 @@ Cypress.Commands.add('oculto', () => {
 
 Cypress.Commands.add('xpathClk', (xpath) => {
 cy.xpath(xpath, { timeout: 60000 })
-  .scrollIntoView({ block: 'center', inline: 'center' })
+  .scrollIntoView({})
   .should('be.visible')
   .should('not.be.disabled')
   .click({force: true});
@@ -45,7 +45,7 @@ cy.xpath(xpath, { timeout: 60000 })
 
 Cypress.Commands.add('xpathBtxt', (varibale, xpath) => {
 cy.xpath(xpath, { timeout: 60000 })
-  .scrollIntoView({ block: 'center', inline: 'center' })
+  .scrollIntoView({})
   .should('be.visible')
   .should('not.be.disabled')
   .type(String(varibale) + '{enter}')
@@ -55,7 +55,7 @@ cy.xpath(xpath, { timeout: 60000 })
 
 Cypress.Commands.add('xpathBtxtClear', (varibale, xpath) => {
 cy.xpath(xpath, { timeout: 60000 })
-  .scrollIntoView({ block: 'center', inline: 'center' })
+  .scrollIntoView({})
   .should('be.visible')
   .should('not.be.disabled')
   .clear()
@@ -66,7 +66,7 @@ cy.xpath(xpath, { timeout: 60000 })
 
 Cypress.Commands.add('conClk', (cont) => {
 cy.contains(cont, { timeout: 60000 })
-  .scrollIntoView({ block: 'center', inline: 'center' })
+  .scrollIntoView({})
   .should('be.visible')
   .should('not.be.disabled')
   .click({force: true});
@@ -102,12 +102,6 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   cy.wait(500)
   cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
 });
-
-
-
-
-
-
 
 
 

@@ -12,15 +12,18 @@ const PJ = new personaJuridica();
       //Buscar Cliente
       tipoDocumento: "CEDULA",
       InfoTipoDocumento: "1010199002151133",
-      
+      //1010199002151
+      //HN1010199102151111
+      //HN10101991033121
+      //HN1010199102151
       //Agregar Cliente
       //##### PASO 1 - Para Identificacion
       TipodePersona: "juridico",
       RTN: "HN1010199002151133",
       //##### PASO 2 -  Datos Generales Persona J/N? 
       TPJ: "ONG",
-      RazonSoc: "Empresa XYZ SAC",
-      NombreCom: "XYZ",
+      RazonSoc: "Empresa 1",
+      NombreCom: "XYZboofitho",
       Siglas: "XYZ",
       PaisOr: "Peru",
       CatNegocio: "Abarrotes",

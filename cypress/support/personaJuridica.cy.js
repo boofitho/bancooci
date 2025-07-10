@@ -78,36 +78,178 @@ class personaJuridica {
 
   //### PASO #3
   CapturaDeAccionistas(data){
+      do {if(data.referencia=="Juridica"){
+      //Paso: 0 ingresamos 
+        cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
+        cy.xpathClk("(//button[contains(., 'JURIDICO')])[1]")
+      //formulario persona Juridica
+        this.AggRefJuridica(
+      // Paso #1
+      data.RTNRef,
+      // Paso #2
+      data.TipoRef, data.PorcentajeRef, 
+      // Paso #3
+      data.NombreRef, data.PaisOrRef, 
+      // Paso #4
+      data.CedulaRef, data.PasaporteRef, data.UbcPaisRef, data.Ubc2Ref, data.FechaRef, data.PrimerNombreRef, 
+      data.SegundoNombreRef, data.OtroNombreREF, data.PrimerApellidoREF, data.SegundoApellidoREF, data.GeneroRef
+      )
+      //indicara "El último elemento de cada rama debe ser una persona natural" damos click en aceptar
+      cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
+      //Ingresamos al submenu
+      cy.xpathClk("//mat-icon[text()='add']")
 
-    this.AggRefJuridica(
+
+      // data.TipoRef.lenght?
+      // data.TipoRefJ.size?
+      // totalRefJuridico = 
+      // totalReferencias = 
+
+
+      //mientras la ultima no sea juridica no continuara el flujo
+        do {if(data.referencia=="Juridica"){
+        cy.xpathClk("(//button[contains(., 'JURIDICO')])[1]")
+        this.AggRefJuridica(
       // Paso #1
       data.RTNRef,
       // Paso #2
-      data.paso2  
-    )
-    this.AggRefNatural(
-      // Paso #1
-      data.CedulaRef,
-      data.PasaporteRef,
-      data.PartidaNacRef,
-      data.RTNRef,
-      data.codTRef,
-      data.UbcRef,
-      data.Ubc2Ref,
-      data.FechaRef,
-      // Paso #2
-      data.paso2
-    )   
+      data.TipoRef, data.PorcentajeRef, 
+      // Paso #3
+      data.NombreRef, data.PaisOrRef, 
+      // Paso #4
+      data.CedulaRef, data.PasaporteRef, data.UbcPaisRef, data.Ubc2Ref, data.FechaRef, data.PrimerNombreRef, 
+      data.SegundoNombreRef, data.OtroNombreREF, data.PrimerApellidoREF, data.SegundoApellidoREF, data.GeneroRef
+        )      
+        }else if(data.referencia =="Natural"){
+        cy.xpathClk("(//button[contains(., 'NATURAL')])[1]")
+          this.AggRefNatural(
+    // Paso #1
+      data.CedulaRef, data.PasaporteRef, data.PartidaNacRef, data.RTNRef, data.codTRef, data.UbcRef, 
+      data.Ubc2Ref, data.FechaRef,    
+    // Paso #2
+      data.PaisOrRef, data.TipoRef, data.PorcentajeRef,
+    // Paso #3
+      data.PrimerNombreRef, data.SegundoNombreRef, data.OtroNombreREF, data.PrimerApellidoREF, 
+      data.SegundoApellidoREF, data.GeneroRef, data.PaisRecRef, data.RegionRef, data.DepRef, data.MunRef, 
+      data.SegundaNacionalidadRef, data.SocialSecurityRef, data.UbiSegNacRef
+        )   
+
+        }else{
+          cy.log("validar tipo de persona en referencia juridica de la rama")
+        }
+        totalRefJuridico++
+      }while(data.refJuridico  !== totalRefJuridico);
+      }else if(data.referencia =="Natural"){
+      //Paso: 0 ingresamos 
+        cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
+        cy.xpathClk("(//button[contains(., 'NATURAL')])[1]")
+      //formulario Persona Natural
+        this.AggRefNatural(
+    // Paso #1
+      data.CedulaRef, data.PasaporteRef, data.PartidaNacRef, data.RTNRef, data.codTRef, data.UbcRef, 
+      data.Ubc2Ref, data.FechaRef,    
+    // Paso #2
+      data.PaisOrRef, data.TipoRef, data.PorcentajeRef,
+    // Paso #3
+      data.PrimerNombreRef, data.SegundoNombreRef, data.OtroNombreREF, data.PrimerApellidoREF, 
+      data.SegundoApellidoREF, data.GeneroRef, data.PaisRecRef, data.RegionRef, data.DepRef, data.MunRef, 
+      data.SegundaNacionalidadRef, data.SocialSecurityRef, data.UbiSegNacRef
+      )   
+
+      }else{
+        cy.log("se terminaron")
+      }
+        totalReferencias++
+      } while (data.referencias !== totalReferencias);
+
+      
+
+
+
     //Boton siguiente Paso #3
    cy.xpathClk("(//button[contains(., 'Siguiente')])[3]");
   }
 
-  AggRefJuridica(){
-    //metodos Aggregar referencia Juridica
+  AggRefJuridica(RTNRef, TipoRef, PorcentajeRef, NombreRef, PaisOrRef, CedulaRef, PasaporteRef, UbcPaisRef, 
+    Ubc2Ref, FechaRef, PrimerNombreRef, SegundoNombreRef, OtroNombreREF, PrimerApellidoREF, 
+    SegundoApellidoREF, GeneroRef ){
+    //Paso: 1 Identificacion 
+    cy.xpathBtxt(RTNRef, "(//mat-label[contains(text(), 'REGISTRO TRIBUTARIO')]/ancestor::mat-form-field//input)[2]")
+    //Paso: 2 Información Complementaria 
+    cy.xpathBtxt(TipoRef, "(//mat-label[contains(text(), 'Tipo')]/ancestor::mat-form-field//input)[2]")
+    cy.xpathBtxt(PorcentajeRef, "//mat-label[normalize-space()='% de Participación']/ancestor::mat-form-field//input")
+    //Paso: 3 Datos Generales Persona Juridica 
+    cy.xpathBtxt(NombreRef, "(//mat-label[normalize-space()='Nombre']/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(PaisOrRef, "(//mat-label[contains(text(), 'País de Origen')]/ancestor::mat-form-field//input)[2]")
+    //Paso: 4 Representante Legal
+    cy.xpathBtxt(CedulaRef, "(//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(PasaporteRef, "(//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(UbcPaisRef, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[2]")
+    //creo que no es necesario
+    //cy.xpathBtxt(Ubc2Ref, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[3]")
+    cy.IngresoFecha(FechaRef, "(//mat-label[contains(text(), 'Seleccione una fecha')]/ancestor::mat-form-field//button)[1]")
+    cy.xpathBtxt(PrimerApellidoREF, "(//mat-label[contains(text(), 'Primer Apellido')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(SegundoApellidoREF, "(//mat-label[contains(text(), 'Segundo Apellido')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(PrimerNombreRef, "(//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(SegundoNombreRef, "(//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(OtroNombreREF, "(//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input)[1]")  
+    cy.xpathBtxt(GeneroRef, "(//mat-radio-button[contains(., '"+GeneroRef+"')])[1]")
+    //Paso: 5 Agregar 
+    cy.xpathClk("(//button[contains(., 'Agregar')])[2]") 
+    //se debede agregar un natural luego de un juridico  
+    
+    
+
   }
 
-  AggRefNatural(){
-    //metodos Aggregar referencia Natural
+  AggRefNatural(CedulaRef, PasaporteRef, PartidaNacRef, RTNRef, codTRef, 
+    UbcPaisRef, Ubc2Ref, FechaRef, PaisOrRef, TipoRef, PorcentajeRef,
+    PrimerNombreRef, SegundoNombreRef, OtroNombreREF, PrimerApellidoREF, 
+    SegundoApellidoREF, GeneroRef, PaisRecRef, RegionRef, DepRef, MunRef, 
+    SegundaNacionalidadRef, SocialSecurityRef, UbiSegNacRef){
+    //Paso: 1 Identificacion 
+    cy.xpathBtxt(CedulaRef, "(//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(PasaporteRef, "(//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(PartidaNacRef, "//mat-label[contains(text(), 'PARTIDA DE NACIMIENTO')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(RTNRef, "(//mat-label[contains(text(), 'REGISTRO TRIBUTARIO')]/ancestor::mat-form-field//input)[2]")
+    cy.xpathBtxt(codTRef, "//mat-label[contains(text(), 'CODIGO TRIBUTARIO')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(UbcPaisRef, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[2]")
+    cy.xpathBtxt(Ubc2Ref, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[3]")
+    cy.IngresoFecha(FechaRef, "(//mat-label[contains(text(), 'Seleccione una fecha')]/ancestor::mat-form-field//button)[1]")
+    cy.xpathClk("(//button[contains(., 'Siguiente paso')])[1]")
+    //Paso: 2 Información Complementaria
+    cy.xpathBtxt(PaisOrRef, "(//mat-label[contains(text(), 'País de Origen')]/ancestor::mat-form-field//input)[2]")
+    cy.xpathBtxt(TipoRef, "(//mat-label[contains(text(), 'Tipo')]/ancestor::mat-form-field//input)[2]")
+    cy.xpathBtxt(PorcentajeRef, "//mat-label[normalize-space()='% de Participación']/ancestor::mat-form-field//input")
+    cy.xpathClk("(//button[contains(., 'Siguiente paso')])[2]")
+    //Paso: 3 Datos Generales Persona natural  
+    cy.xpathBtxt(PrimerApellidoREF, "(//mat-label[contains(text(), 'Primer Apellido')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(SegundoApellidoREF, "(//mat-label[contains(text(), 'Segundo Apellido')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(PrimerNombreRef, "(//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(SegundoNombreRef, "(//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(OtroNombreREF, "(//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input)[1]")  
+    cy.xpathBtxt(GeneroRef, "(//mat-radio-button[contains(., '"+GeneroRef+"')])[1]")
+    cy.xpathBtxtClear(PaisRecRef, "(//mat-label[contains(text(), 'País de Residencia')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxtClear(RegionRef, "(//mat-label[contains(text(), 'Región')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxtClear(DepRef, "(//mat-label[contains(text(), 'Departamento')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxtClear(MunRef, "(//mat-label[contains(text(), 'Municipio')]/ancestor::mat-form-field//input)[1]")
+    if (SegundaNacionalidadRef !== null && SegundaNacionalidadRef !== undefined 
+      && SegundaNacionalidadRef.replace(/\s+/g, '') !== "" &&  SegundaNacionalidadRef.toLowerCase() !== "estadounidense") {
+    // entra solo si tiene un valor distinto de null, undefined y vacío y no es estadounidese
+    cy.xpathBtxt(SegundaNacionalidadRef, "(//mat-label[contains(text(), '2da. Nacionalidad')]/ancestor::mat-form-field//input)[1]")
+    }else if (SegundaNacionalidadRef.replace(/\s+/g, '') !== null && SegundaNacionalidadRef !== undefined 
+      && SegundaNacionalidadRef !== "" &&  SegundaNacionalidadRef.toLowerCase() == "estadounidense") {
+    // entra solo si tiene un valor distinto de null, undefined y vacío y es estadounidense
+    cy.xpathBtxt(SegundaNacionalidadRef, "(//mat-label[contains(text(), '2da. Nacionalidad')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(SocialSecurityRef, "(//mat-label[contains(text(), 'Social Security Number')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(UbiSegNacRef, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[4]")
+    }else{
+      cy.log("No  Tiene 2da. Nacionalidad")
+    }
+    //Paso: 4 Agregar 
+    cy.xpathClk("(//button[contains(., 'Agregar')])[2]")
+ 
+       
   }
   //### FIN PASO #3
 
