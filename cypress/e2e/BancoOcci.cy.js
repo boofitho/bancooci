@@ -17,7 +17,7 @@ const data = {
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
-  TipodePersona: "natural",
+  TipodePersona: "juridica",
   RTN: "HN0301-2005-320297",
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",

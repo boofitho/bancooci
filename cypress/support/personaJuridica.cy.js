@@ -305,6 +305,7 @@ class personaJuridica {
       data.FechaInicioJD,
       data.FechaFinalizaJD
       )
+      //volvimos wacho!
 
 
 

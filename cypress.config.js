@@ -5,6 +5,10 @@ module.exports = defineConfig({
   viewportWidth: 1500,
   viewportHeight: 900,
   e2e: {
+     env: {
+        //variable quemada
+          URL_VAR: "https://docs.google.com/spreadsheets/d/1OYnT7JuEha9xT1_KgyU_gIimNihaCpFdSXwWB3c2rnw/export?format=xlsx",
+      },
     testIsolation: false, //Default blank page
     pageLoadTimeout: 70000, // 120 segundos
    chromeWebSecurity: false,

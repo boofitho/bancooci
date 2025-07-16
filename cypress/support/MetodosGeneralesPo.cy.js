@@ -11,21 +11,6 @@ class MetodosGenerales{
     
     ArchivoNubeV(URL_VARIABLES){
 
-      // cy.request({
-      //   url: sheetUrl,
-      //   encoding: 'binary',
-      //   failOnStatusCode: false // Evita que Cypress falle si hay un error HTTP
-      // })
-      //   .then((response) => {
-      //     if (response.status !== 200) {
-      //       cy.log('No se pudo descargar el archivo. Verifica la conexión.');
-      //       return;
-      //     }
-      //     cy.writeFile('cypress/fixtures/variables.xlsx', response.body, 'binary');
-      //   })
-      //   .catch((err) => {
-      //     cy.log('Error en la solicitud:', err.message);
-      //   });
         const sheetUrl = URL_VARIABLES;
 
         // Hacer la petición para descargar el archivo como binario
@@ -37,6 +22,7 @@ class MetodosGenerales{
           cy.writeFile('cypress/fixtures/variables.xlsx', response.body, 'binary');
         });
       }   
+
 
       ArchivoNubeD(URL_Datos){
         const sheetUrl2 = URL_Datos;
