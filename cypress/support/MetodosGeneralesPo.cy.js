@@ -262,7 +262,9 @@ function getElementSelector($el) {
     //Fin Metodos Generales
 
 TipodePersona(persona){
+
   cy.wait(5000)
+   cy.get(".loading", { timeout: 60000 }).should("not.exist");
 cy.contains('label', persona, { timeout: 60000 }).should('be.visible').should('not.be.disabled').click({force:true});
 
 

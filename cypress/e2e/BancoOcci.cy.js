@@ -13,7 +13,7 @@ let contrasena = "byte0625";
 const data = {
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200532248",
+  InfoTipoDocumento: "0301200532554",
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
@@ -48,7 +48,7 @@ const data = {
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "bna",
+  PrimerApellido: "qia",
   PrimerNombre: "Cristobal",
   anioNacimiento: " 2005 ",
   mesNacimiento: " JUL ",
@@ -62,7 +62,7 @@ const data = {
   //consulta si tiene dos nacionalidades
   tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "001-01-2172",
+  NumeroSocial: "001-01-2477",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
   esPEP: "si",
@@ -71,9 +71,9 @@ const data = {
   periodoPEP: " 2019 - 2022 ",
   //Espacio donde se debe de colocar si alguna empresa cuando es PEP
   EmpresaJuridicaPEP: "Empresa",
-  PatrimonioEmpresaPEP: "El renacimientooss80000099, S.A.",
+  PatrimonioEmpresaPEP: "El renacimientooss64444555, S.A.",
   PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
-  PatrimonioIdentificacionPEP: "HN0301-2005-320298",
+  PatrimonioIdentificacionPEP: "HN0301-2005-320924",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
   PatrimonioPorcentPEP: 30,
   anioInicialPEP: " 1995 ",
@@ -88,7 +88,7 @@ const data = {
   primerNombreMamaPEP: "Maria",
   direccionMamaPEP: "Ciudad",
   // apellidoPapaPEP: "Lopez",
-  // primerNombrePapaPEP: "Roberto",
+  // primerNombrePapaPEP: "Roberto",s
 
   tiposuegrxPEP: " Suegro ",
   apellidosuegrxPEP: "Alvarez",
@@ -113,8 +113,26 @@ const data = {
   pasaporteConyuguePEP: "000000000000001",
   nacionalidadPasaporteConyuguePEP:" HONDURAS ",
   UbicacionSegundaNacionalidadConyuguePEP: " ESTADOUNIDENSE ",
-  // numeroSocialConyuguePEP:"111-01-0000"
-  
+  aniosResidirConuygue: "12",
+  ubicacionconyugue: "Comayagua",
+  tipoCorreoConyuguePEP: " Correo Personal ",
+  tipoTelefonoConyuguePEP: " Celular ",
+  telefonoConyuguePEP: "50409072500",
+  referenciaLaboralConyuguePEP: "NATURAL",
+  sexoReferenciaLaboralConyuguePEP: "MASCULINO",
+  primerApellidoReferenciaLaboralPEP: "Cisneros",
+  primerNombreReferenciaLaboralPEP: "Alan",
+  anioIngresoReferenciaConyuguePEP: " 1999 ",
+  mesIngresoReferenciaConyuguePEP:" APR ",
+  diaIngresoReferenciaConyugePEP:" 6 ",
+  anioEgresoReferenciaConyuguePEP: " 2020 ",
+  mesEgresoReferenciaConyuguePEP: " JAN ",
+  diaEgresoReferenciaConyugePEP: " 16 ",
+  puestoReferenciaConyuguePEP: "Tecnico",
+  direccionReferenciaLaboralConyuguePEP: "Comayagua",
+  tipoCorreoContactoConyuguePEP: " Correo Personal ",
+  tipoTelefonoContactoConyuguePEP: " Celular ",
+  telefonoContactoConyugue: "50415072500"
 };
 
 describe("BancoOcci", () => {
@@ -223,7 +241,27 @@ describe("BancoOcci", () => {
         data.pasaporteConyuguePEP,
         data.nacionalidadPasaporteConyuguePEP,
         data.UbicacionSegundaNacionalidadConyuguePEP,
-        // data.numeroSocialConyuguePEP
+        data.aniosResidirConuygue,
+        data.ubicacionconyugue,
+        data.tipoCorreoConyuguePEP,
+        data.tipoTelefonoConyuguePEP,
+        data.telefonoConyuguePEP,
+        data.referenciaLaboralConyuguePEP,
+        data.sexoReferenciaLaboralConyuguePEP,
+        data.primerApellidoReferenciaLaboralPEP,
+        data.primerNombreReferenciaLaboralPEP,
+        data.anioIngresoReferenciaConyuguePEP,
+        data.mesIngresoReferenciaConyuguePEP,
+        data.diaIngresoReferenciaConyugePEP,
+        data.anioEgresoReferenciaConyuguePEP,
+        data.mesEgresoReferenciaConyuguePEP,
+        data.diaEgresoReferenciaConyugePEP,
+        data.puestoReferenciaConyuguePEP,
+        data.direccionReferenciaLaboralConyuguePEP,
+        data.tipoCorreoContactoConyuguePEP,
+        data.tipoTelefonoContactoConyuguePEP,
+        data.telefonoContactoConyugue
+
 
       );
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
