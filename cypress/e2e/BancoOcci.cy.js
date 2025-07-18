@@ -11,14 +11,15 @@ let usuario = "OPERADORQA";
 let contrasena = "byte0625";
 
 const data = {
+  correo: "000005@gmail.com", 
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200532554",
+  InfoTipoDocumento: "0301200532633", // seguir con este   0301200532602   
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0301-2005-320923",
+  RTN: "HN0301-2005-322084",
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -27,7 +28,7 @@ const data = {
   PaisOr: "Perú",
   CatNegocio: "Tecnología",
   // Para DatosConstitucionEmpresa
-  TipSoc: "Sociedad Anónima",
+  TipSoc: "Sociedad Anónima", 
   FechaReg: "2022-01-01",
   EnFormacion: false,
   FechaIniOp: "2022-02-15",
@@ -48,12 +49,12 @@ const data = {
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "qia",
+  PrimerApellido: "uea",
   PrimerNombre: "Cristobal",
   anioNacimiento: " 2005 ",
   mesNacimiento: " JUL ",
   diaNacimiento: " 7 ",
-  EstadoCivil: " Casado(a) ",
+  EstadoCivil: " Soltero(a) ", // " Casado(a) "
   gradoAcademico: " UNIVERSITARIO ",
   profesion: " AGENTE DE VIAJES ",
   NoAniosEducacion: "15",
@@ -62,7 +63,7 @@ const data = {
   //consulta si tiene dos nacionalidades
   tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "001-01-2477",
+  NumeroSocial: "001-01-2565",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
   esPEP: "si",
@@ -71,9 +72,9 @@ const data = {
   periodoPEP: " 2019 - 2022 ",
   //Espacio donde se debe de colocar si alguna empresa cuando es PEP
   EmpresaJuridicaPEP: "Empresa",
-  PatrimonioEmpresaPEP: "El renacimientooss64444555, S.A.",
+  PatrimonioEmpresaPEP: "El renacimientooss745555555, S.A.",
   PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
-  PatrimonioIdentificacionPEP: "HN0301-2005-320924",
+  PatrimonioIdentificacionPEP: "HN0301-2005-322083",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
   PatrimonioPorcentPEP: 30,
   anioInicialPEP: " 1995 ",
@@ -96,12 +97,12 @@ const data = {
 
   //Variables para conyugue
   tipoConyugue: "FEMENINO",
-  apellidoConyugue: "Alfaro",
+  apellidoConyugue: "j", // ver
   nombreConyugue: "Ana",
   tipoCelularConyugue: " Celular ",
-  numeroConyugue: "50403072505",
+  numeroConyugue: "50403072533",
   //Conyugue cuando es PEP
-  cedulaConyuguePEP: "0201199500001",
+  cedulaConyuguePEP: "0201199500029",
   anioExpiracionConyuguePEP: " 2030 ",
   mesExpiracionConyuguePEP: " MAR ",
   diaExipracionConyugePEP: " 6 ",
@@ -110,21 +111,21 @@ const data = {
   diaNacimientoConyugePEP: " 8 ",
   actividadEconomicaConyuguePEP: " SERVICIOS FINANCIEROS ",
   profesionConyuguePEP: " AGENTE DE SEGUROS ",
-  pasaporteConyuguePEP: "000000000000001",
-  nacionalidadPasaporteConyuguePEP:" HONDURAS ",
+  pasaporteConyuguePEP: "000000000000030",
+  nacionalidadPasaporteConyuguePEP: " HONDURAS ",
   UbicacionSegundaNacionalidadConyuguePEP: " ESTADOUNIDENSE ",
   aniosResidirConuygue: "12",
   ubicacionconyugue: "Comayagua",
   tipoCorreoConyuguePEP: " Correo Personal ",
   tipoTelefonoConyuguePEP: " Celular ",
-  telefonoConyuguePEP: "50409072500",
+  telefonoConyuguePEP: "50409072527",
   referenciaLaboralConyuguePEP: "NATURAL",
   sexoReferenciaLaboralConyuguePEP: "MASCULINO",
   primerApellidoReferenciaLaboralPEP: "Cisneros",
-  primerNombreReferenciaLaboralPEP: "Alan",
+  primerNombreReferenciaLaboralPEP: "Alhn",
   anioIngresoReferenciaConyuguePEP: " 1999 ",
-  mesIngresoReferenciaConyuguePEP:" APR ",
-  diaIngresoReferenciaConyugePEP:" 6 ",
+  mesIngresoReferenciaConyuguePEP: " APR ",
+  diaIngresoReferenciaConyugePEP: " 6 ",
   anioEgresoReferenciaConyuguePEP: " 2020 ",
   mesEgresoReferenciaConyuguePEP: " JAN ",
   diaEgresoReferenciaConyugePEP: " 16 ",
@@ -132,7 +133,19 @@ const data = {
   direccionReferenciaLaboralConyuguePEP: "Comayagua",
   tipoCorreoContactoConyuguePEP: " Correo Personal ",
   tipoTelefonoContactoConyuguePEP: " Celular ",
-  telefonoContactoConyugue: "50415072500"
+  telefonoContactoConyugue: "50415072513",
+  nombreEmpresaConyuePEP: "El agua Vivaa, S.A.",
+  anioIngresoInscripcionConyuguePEP: " 2005 ",
+  mesIngresoInscripcionConyuguePEP: " MAR ",
+  diaIngresoInscripcionConyugePEP: " 19 ",
+  giroNegocioConyuguePEP: "Ventas",
+  ingresosMensualesConyuguePEP: "1000000",
+  categoriadeNegocioConyuguePEP: "Distribucion y ventas",
+  anioResidirNegocioConyuguePEP: "12",
+  ubicacionNegocioConyuguePEP: "Comayagua",
+  //variables para direccion del cliente
+  aniosResidir: "14",
+  ubicacionResidencia: "comayagua",
 };
 
 describe("BancoOcci", () => {
@@ -154,121 +167,144 @@ describe("BancoOcci", () => {
 
   it("Agregar Cliente", () => {
     cy.log("AQUIIIIIII PAPUSHO antes del if");
-    if (data.TipodePersona.toLowerCase() == "natural") {
-      Generales.TipodePersona(data.persona);
-      cy.wait(2000);
-      cotizador.IdentificacionGeneralPersonaNatural(
-        data.InfoTipoDocumento,
-        data.anio,
-        data.mes,
-        data.dia,
-        data.RTN
-      );
-      cotizador.DatosGeneralesPersonaNatural(
-        data.textoGenero,
-        data.PrimerApellido,
-        data.PrimerNombre,
-        data.anioNacimiento,
-        data.mesNacimiento,
-        data.diaNacimiento,
-        data.EstadoCivil,
-        data.gradoAcademico,
-        data.profesion,
-        data.NoAniosEducacion,
-        data.capacidadadesEspeciales,
-        data.ocupacion,
-        data.nacionalidad,
-        data.tieneDobleNacionalidad,
-        data.NumeroSocial,
-        data.UbicacionSegundaNacionalidad
-      );
-      cotizador.clickpaso2();
-      cy.wait(500);
+    if (data.TipodePersona.toLowerCase() === "natural") {
+      cotizador.validarSiSeDebeCrearCliente().then((debeCrear) => {
+        if (debeCrear) {
+          Generales.TipodePersona(data.persona);
+          cy.wait(2000);
+          cotizador.IdentificacionGeneralPersonaNatural(
+            data.InfoTipoDocumento,
+            data.anio,
+            data.mes,
+            data.dia,
+            data.RTN,
+            data.correo
+          );
+          cotizador.DatosGeneralesPersonaNatural(
+            data.textoGenero,
+            data.PrimerApellido,
+            data.PrimerNombre,
+            data.anioNacimiento,
+            data.mesNacimiento,
+            data.diaNacimiento,
+            data.EstadoCivil,
+            data.gradoAcademico,
+            data.profesion,
+            data.NoAniosEducacion,
+            data.capacidadadesEspeciales,
+            data.ocupacion,
+            data.nacionalidad,
+            data.tieneDobleNacionalidad,
+            data.NumeroSocial,
+            data.UbicacionSegundaNacionalidad
+          );
+          cotizador.clickpaso2();
+          cy.wait(500);
 
-      cotizador.PersonaPep(
-        data.esPEP,
-        data.institucionPEP,
-        data.cargoOcupadoPEP,
-        data.periodoPEP,
-        data.EmpresaJuridicaPEP,
-        data.PatrimonioEmpresaPEP,
-        data.PatrimonioTipodeDocumentoPEP,
-        data.PatrimonioIdentificacionPEP,
-        data.PatrimonioActividadEconomicaPEP,
-        data.PatrimonioPorcentPEP,
-        data.anioInicialPEP,
-        data.mesInicialPEP,
-        data.diaInicialPEP,
-        data.anioFinalPEP,
-        data.mesFinalPEP,
-        data.diaFinalPEP,
-        data.PatrimonioPuestoPEP
-      );
+          cotizador.PersonaPep(
+            data.esPEP,
+            data.institucionPEP,
+            data.cargoOcupadoPEP,
+            data.periodoPEP,
+            data.EmpresaJuridicaPEP,
+            data.PatrimonioEmpresaPEP,
+            data.PatrimonioTipodeDocumentoPEP,
+            data.PatrimonioIdentificacionPEP,
+            data.PatrimonioActividadEconomicaPEP,
+            data.PatrimonioPorcentPEP,
+            data.anioInicialPEP,
+            data.mesInicialPEP,
+            data.diaInicialPEP,
+            data.anioFinalPEP,
+            data.mesFinalPEP,
+            data.diaFinalPEP,
+            data.PatrimonioPuestoPEP
+          );
 
-      cotizador.ParentescosPEP(
-        data.apellidoMamaPEP,
-        data.primerNombreMamaPEP,
-        data.direccionMamaPEP,
-        // data.apellidoPapaPEP,
-        // data.primerNombrePapaPEP,
-        // data.direccionPapaPEP,
-        data.tiposuegrxPEP,
-        data.apellidosuegrxPEP,
-        data.primerNombreSuegrxPEP
-      );
+          cotizador.ParentescosPEP(
+            data.apellidoMamaPEP,
+            data.primerNombreMamaPEP,
+            data.direccionMamaPEP,
+            data.tiposuegrxPEP,
+            data.apellidosuegrxPEP,
+            data.primerNombreSuegrxPEP
+          );
 
-      cotizador.esCasado(
-        data.tipoConyugue,
-        data.apellidoConyugue,
-        data.nombreConyugue,
-        data.tipoCelularConyugue,
-        data.numeroConyugue
-      );
+          cotizador.esCasado(
+            data.tipoConyugue,
+            data.apellidoConyugue,
+            data.nombreConyugue,
+            data.tipoCelularConyugue,
+            data.numeroConyugue
+          );
 
-      cotizador.escasadoPEP(
-        data.tipoConyugue,
-        data.apellidoConyugue,
-        data.nombreConyugue,
-        data.cedulaConyuguePEP,
-        data.anioExpiracionConyuguePEP,
-        data.mesExpiracionConyuguePEP,
-        data.diaExipracionConyugePEP,
-        data.anioNacimientoConyuguePEP,
-        data.mesNacimientoConyuguePEP,
-        data.diaNacimiento,
-        data.actividadEconomicaConyuguePEP,
-        data.profesionConyuguePEP,
-        data.pasaporteConyuguePEP,
-        data.nacionalidadPasaporteConyuguePEP,
-        data.UbicacionSegundaNacionalidadConyuguePEP,
-        data.aniosResidirConuygue,
-        data.ubicacionconyugue,
-        data.tipoCorreoConyuguePEP,
-        data.tipoTelefonoConyuguePEP,
-        data.telefonoConyuguePEP,
-        data.referenciaLaboralConyuguePEP,
-        data.sexoReferenciaLaboralConyuguePEP,
-        data.primerApellidoReferenciaLaboralPEP,
-        data.primerNombreReferenciaLaboralPEP,
-        data.anioIngresoReferenciaConyuguePEP,
-        data.mesIngresoReferenciaConyuguePEP,
-        data.diaIngresoReferenciaConyugePEP,
-        data.anioEgresoReferenciaConyuguePEP,
-        data.mesEgresoReferenciaConyuguePEP,
-        data.diaEgresoReferenciaConyugePEP,
-        data.puestoReferenciaConyuguePEP,
-        data.direccionReferenciaLaboralConyuguePEP,
-        data.tipoCorreoContactoConyuguePEP,
-        data.tipoTelefonoContactoConyuguePEP,
-        data.telefonoContactoConyugue
+          cotizador.escasadoPEP(
+            data.tipoConyugue,
+            data.apellidoConyugue,
+            data.nombreConyugue,
+            data.cedulaConyuguePEP,
+            data.anioExpiracionConyuguePEP,
+            data.mesExpiracionConyuguePEP,
+            data.diaExipracionConyugePEP,
+            data.anioNacimientoConyuguePEP,
+            data.mesNacimientoConyuguePEP,
+            data.diaNacimiento,
+            data.actividadEconomicaConyuguePEP,
+            data.profesionConyuguePEP,
+            data.pasaporteConyuguePEP,
+            data.nacionalidadPasaporteConyuguePEP,
+            data.UbicacionSegundaNacionalidadConyuguePEP,
+            data.aniosResidirConuygue,
+            data.ubicacionconyugue,
+            data.tipoCorreoConyuguePEP,
+            data.tipoTelefonoConyuguePEP,
+            data.telefonoConyuguePEP,
+            data.referenciaLaboralConyuguePEP,
+            data.sexoReferenciaLaboralConyuguePEP,
+            data.primerApellidoReferenciaLaboralPEP,
+            data.primerNombreReferenciaLaboralPEP,
+            data.anioIngresoReferenciaConyuguePEP,
+            data.mesIngresoReferenciaConyuguePEP,
+            data.diaIngresoReferenciaConyugePEP,
+            data.anioEgresoReferenciaConyuguePEP,
+            data.mesEgresoReferenciaConyuguePEP,
+            data.diaEgresoReferenciaConyugePEP,
+            data.puestoReferenciaConyuguePEP,
+            data.direccionReferenciaLaboralConyuguePEP,
+            data.tipoCorreoContactoConyuguePEP,
+            data.tipoTelefonoContactoConyuguePEP,
+            data.telefonoContactoConyugue,
+            data.nombreEmpresaConyuePEP,
+            data.anioIngresoInscripcionConyuguePEP,
+            data.mesIngresoInscripcionConyuguePEP,
+            data.diaIngresoInscripcionConyugePEP,
+            data.giroNegocioConyuguePEP,
+            data.ingresosMensualesConyuguePEP,
+            data.categoriadeNegocioConyuguePEP,
+            data.anioResidirNegocioConyuguePEP,
+            data.ubicacionNegocioConyuguePEP
+          );
 
-
-      );
+          cotizador.direccionCliente(
+            data.aniosResidir,
+            data.ubicacionResidencia,
+          )
+        } else {
+          cy.log("Cliente ya existe. No se creará.");
+          cotizador.ClienteCreadoParcialmente(
+           data.esPEP,
+           data.EstadoCivil,
+           
+      
+          );
+        }
+      });
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
       cy.log("JURIDICO PAPS");
       PJ.IngresoDatosPersonaJuridica();
       PJ.Identificacion(data);
       PJ.DatosGeneralesPersonaJuridica(data);
+      [];
     } else {
       cy.log("*******************************************************");
       cy.log("Debe de ingresar un tipo de cliente: Natural o Juridico");
@@ -276,3 +312,4 @@ describe("BancoOcci", () => {
     }
   });
 }); // TERMINA EL IT "Exploración automática de pantalla desconocida"
+
