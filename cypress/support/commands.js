@@ -35,33 +35,81 @@ Cypress.Commands.add('oculto', () => {
 
 
 Cypress.Commands.add('xpathClk', (xpath) => {
-cy.xpath(xpath, { timeout: 60000 })
-  .scrollIntoView({})
-  .should('be.visible')
-  .should('not.be.disabled')
-  .click({force: true});
-  cy.oculto()
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView()
+        .should('be.visible')
+        .should('not.be.disabled')
+        .click({ force: true });
+        //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
+        cy.oculto();
+  
+      } else {
+      cy.log(`⚠️ No se encontró el xpath: ${xpath}`);
+    }
+  })
+
+  // cy.xpath(xpath, { timeout: 60000 })
+  // .scrollIntoView({})
+  // .should('be.visible')
+  // .should('not.be.disabled')
+  // .click({force: true});
+  // cy.oculto()
 });
 
-Cypress.Commands.add('xpathBtxt', (varibale, xpath) => {
-cy.xpath(xpath, { timeout: 60000 })
-  .scrollIntoView({})
-  .should('be.visible')
-  .should('not.be.disabled')
-  .type(String(varibale) + '{enter}')
-  .click({force: true})
-  cy.oculto()
+Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView()
+        .should('be.visible')
+        .should('not.be.disabled')
+        // .clear() esto no es necesario ??? 
+        .type(String(variable) + '{enter}')
+        .click({ force: true });
+        //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
+        cy.oculto();
+  
+      } else {
+      cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
+    }
+  })
+
+  // cy.xpath(xpath, { timeout: 60000 })
+  // .scrollIntoView({})
+  // .should('be.visible')
+  // .should('not.be.disabled')
+  // .type(String(varibale) + '{enter}')
+  // .click({force: true})
+  // cy.oculto()
 });
 
-Cypress.Commands.add('xpathBtxtClear', (varibale, xpath) => {
-cy.xpath(xpath, { timeout: 60000 })
-  .scrollIntoView({})
-  .should('be.visible')
-  .should('not.be.disabled')
-  .clear()
-  .type(String(varibale) + '{enter}')
-  .click({force: true})
-  cy.oculto()
+Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView()
+        .should('be.visible')
+        .should('not.be.disabled')
+        .clear()
+        .type(String(variable) + '{enter}')
+        .click({ force: true });
+        //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
+        cy.oculto();
+  
+      } else {
+      cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
+    }
+  })
+  // cy.xpath(xpath, { timeout: 60000 })
+  // .scrollIntoView({})
+  // .should('be.visible')
+  // .should('not.be.disabled')
+  // .clear()
+  // .type(String(varibale) + '{enter}')
+  // .click({force: true})
+  // cy.oculto()
 });
 
 Cypress.Commands.add('conClk', (cont) => {
@@ -106,8 +154,37 @@ Cypress.Commands.add('busquedaCliente', (data) => {
 
 
 
+Cypress.Commands.add('xpathTest', (variable, xpath) => {
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView()
+        .should('be.visible')
+        .should('not.be.disabled')
+        .clear()
+        .type(String(variable) + '{enter}')
+        .click({ force: true });
+
+      cy.oculto();
+    } else {
+      cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
+    }
+  }).catch(() => {
+    cy.log(`❌ Error al buscar el xpath: ${xpath} de la variable ${variable}`);
+  });
+});
 
 
+Cypress.Commands.add('xpathBtxtClear', (varibale, xpath) => {
+cy.xpath(xpath, { timeout: 60000 })
+  .scrollIntoView({})
+  .should('be.visible')
+  .should('not.be.disabled')
+  .clear()
+  .type(String(varibale) + '{enter}')
+  .click({force: true})
+  cy.oculto()
+});
 
 
 

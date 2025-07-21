@@ -17,7 +17,7 @@ const data = {
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
-  TipodePersona: "juridica",
+  TipodePersona: "Jurídica",
   RTN: "HN0301-2005-320297",
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
@@ -264,7 +264,7 @@ describe("BancoOcci", () => {
 
 
       );
-    } else if (data.TipodePersona.toLowerCase() == "juridico") {
+    } else if (data.TipodePersona.toLowerCase() == "jurídica") {
       cy.log("JURIDICO PAPS");
       PJ.IngresoDatosPersonaJuridica();
       PJ.Identificacion(data);
