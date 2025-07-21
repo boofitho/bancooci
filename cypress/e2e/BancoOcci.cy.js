@@ -11,15 +11,15 @@ let usuario = "OPERADORQA";
 let contrasena = "byte0625";
 
 const data = {
-  correo: "000005@gmail.com", 
+  correo: "000021@gmail.com",
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200532633", // seguir con este   0301200532602   
+  InfoTipoDocumento: "0301200532660", // seguir con este   0301200532602
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0301-2005-322084",
+  RTN: "HN0301-2005-322123",
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -28,7 +28,7 @@ const data = {
   PaisOr: "Perú",
   CatNegocio: "Tecnología",
   // Para DatosConstitucionEmpresa
-  TipSoc: "Sociedad Anónima", 
+  TipSoc: "Sociedad Anónima",
   FechaReg: "2022-01-01",
   EnFormacion: false,
   FechaIniOp: "2022-02-15",
@@ -49,12 +49,12 @@ const data = {
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "uea",
+  PrimerApellido: "uya",
   PrimerNombre: "Cristobal",
   anioNacimiento: " 2005 ",
   mesNacimiento: " JUL ",
   diaNacimiento: " 7 ",
-  EstadoCivil: " Soltero(a) ", // " Casado(a) "
+  EstadoCivil: " Soltero(a) ", //  " Soltero(a) "  " Casado(a) "
   gradoAcademico: " UNIVERSITARIO ",
   profesion: " AGENTE DE VIAJES ",
   NoAniosEducacion: "15",
@@ -63,7 +63,7 @@ const data = {
   //consulta si tiene dos nacionalidades
   tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "001-01-2565",
+  NumeroSocial: "001-01-2586",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
   esPEP: "si",
@@ -72,9 +72,9 @@ const data = {
   periodoPEP: " 2019 - 2022 ",
   //Espacio donde se debe de colocar si alguna empresa cuando es PEP
   EmpresaJuridicaPEP: "Empresa",
-  PatrimonioEmpresaPEP: "El renacimientooss745555555, S.A.",
+  PatrimonioEmpresaPEP: "El renacimientooss767777777, S.A.",
   PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
-  PatrimonioIdentificacionPEP: "HN0301-2005-322083",
+  PatrimonioIdentificacionPEP: "HN0301-2005-322122",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
   PatrimonioPorcentPEP: 30,
   anioInicialPEP: " 1995 ",
@@ -97,12 +97,12 @@ const data = {
 
   //Variables para conyugue
   tipoConyugue: "FEMENINO",
-  apellidoConyugue: "j", // ver
+  apellidoConyugue: "x", // ver
   nombreConyugue: "Ana",
   tipoCelularConyugue: " Celular ",
-  numeroConyugue: "50403072533",
+  numeroConyugue: "50403072542",
   //Conyugue cuando es PEP
-  cedulaConyuguePEP: "0201199500029",
+  cedulaConyuguePEP: "0201199400053",
   anioExpiracionConyuguePEP: " 2030 ",
   mesExpiracionConyuguePEP: " MAR ",
   diaExipracionConyugePEP: " 6 ",
@@ -111,18 +111,18 @@ const data = {
   diaNacimientoConyugePEP: " 8 ",
   actividadEconomicaConyuguePEP: " SERVICIOS FINANCIEROS ",
   profesionConyuguePEP: " AGENTE DE SEGUROS ",
-  pasaporteConyuguePEP: "000000000000030",
+  pasaporteConyuguePEP: "000000000000044",
   nacionalidadPasaporteConyuguePEP: " HONDURAS ",
   UbicacionSegundaNacionalidadConyuguePEP: " ESTADOUNIDENSE ",
   aniosResidirConuygue: "12",
   ubicacionconyugue: "Comayagua",
   tipoCorreoConyuguePEP: " Correo Personal ",
   tipoTelefonoConyuguePEP: " Celular ",
-  telefonoConyuguePEP: "50409072527",
+  telefonoConyuguePEP: "50409072541",
   referenciaLaboralConyuguePEP: "NATURAL",
   sexoReferenciaLaboralConyuguePEP: "MASCULINO",
   primerApellidoReferenciaLaboralPEP: "Cisneros",
-  primerNombreReferenciaLaboralPEP: "Alhn",
+  primerNombreReferenciaLaboralPEP: "Alin",
   anioIngresoReferenciaConyuguePEP: " 1999 ",
   mesIngresoReferenciaConyuguePEP: " APR ",
   diaIngresoReferenciaConyugePEP: " 6 ",
@@ -133,7 +133,7 @@ const data = {
   direccionReferenciaLaboralConyuguePEP: "Comayagua",
   tipoCorreoContactoConyuguePEP: " Correo Personal ",
   tipoTelefonoContactoConyuguePEP: " Celular ",
-  telefonoContactoConyugue: "50415072513",
+  telefonoContactoConyugue: "50415072526",
   nombreEmpresaConyuePEP: "El agua Vivaa, S.A.",
   anioIngresoInscripcionConyuguePEP: " 2005 ",
   mesIngresoInscripcionConyuguePEP: " MAR ",
@@ -146,6 +146,19 @@ const data = {
   //variables para direccion del cliente
   aniosResidir: "14",
   ubicacionResidencia: "comayagua",
+  tipoCorreoContactoCliente: " Correo de Trabajo ",
+  tipoTelefonoContactoCliente: " Celular ",
+  telefonoContactoCliente: "50421082513",
+
+  //Dependencia economica
+  tieneDependenciaEconomica: "si",
+  parentescoDependenciaEconomica: " Papá ",
+  cedulaDependenciaEconomica: "0302195500011",
+  anioExpiracionDependenciaEconomica: " 2030 ",
+  mesExpiracionDependenciaEconomica: " MAR ",
+  diaExpiracionDependenciaEconomica: " 17 ",
+  apellidoDependenciaEconomica: "f",
+  nombredependenciaEconomica: "Luis",
 };
 
 describe("BancoOcci", () => {
@@ -287,16 +300,26 @@ describe("BancoOcci", () => {
 
           cotizador.direccionCliente(
             data.aniosResidir,
-            data.ubicacionResidencia,
+            data.ubicacionResidencia
+          );
+
+          cotizador.contactoCliente(
+            data.tipoCorreoContactoCliente,
+            data.tipoTelefonoContactoCliente,
+            data.telefonoContactoCliente
+          );
+
+          cotizador.dependenciaEconomica(
+            data.tieneDependenciaEconomica,
+            data.parentescoDependenciaEconomica,
+            data.cedulaConyuguePEP,
+            data.anioExpiracionDependenciaEconomica,
+            data.mesExpiracionDependenciaEconomica,
+            data.diaExpiracionDependenciaEconomica
           )
         } else {
           cy.log("Cliente ya existe. No se creará.");
-          cotizador.ClienteCreadoParcialmente(
-           data.esPEP,
-           data.EstadoCivil,
-           
-      
-          );
+          cotizador.ClienteCreadoParcialmente(data.esPEP, data.EstadoCivil);
         }
       });
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
@@ -312,4 +335,3 @@ describe("BancoOcci", () => {
     }
   });
 }); // TERMINA EL IT "Exploración automática de pantalla desconocida"
-
