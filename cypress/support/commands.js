@@ -112,23 +112,6 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
   // cy.oculto()
 });
 
-Cypress.Commands.add('conClk', (cont) => {
-cy.contains(cont, { timeout: 60000 })
-  .scrollIntoView({})
-  .should('be.visible')
-  .should('not.be.disabled')
-  .click({force: true});
-  cy.oculto()
-});
-
-Cypress.Commands.add('conBtxt', (varibale, cont) => {
-cy.contains(cont, { timeout: 60000 })
-  .should('be.visible')
-  .should('not.be.disabled')
-  .type(String(varibale))
-  .click({force: true})
-  cy.oculto()
-});
 
 Cypress.Commands.add('busquedaCliente', (data) => {
   // Paso 1: Ingresa a buscar cliente
@@ -151,30 +134,6 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
 });
 
-
-
-
-Cypress.Commands.add('xpathTest', (variable, xpath) => {
-  cy.xpath(xpath, { timeout: 60000 }).then($el => {
-    if ($el.length > 0) {
-      cy.wrap($el)
-        .scrollIntoView()
-        .should('be.visible')
-        .should('not.be.disabled')
-        .clear()
-        .type(String(variable) + '{enter}')
-        .click({ force: true });
-
-      cy.oculto();
-    } else {
-      cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
-    }
-  }).catch(() => {
-    cy.log(`❌ Error al buscar el xpath: ${xpath} de la variable ${variable}`);
-  });
-});
-
-
 Cypress.Commands.add('xpathBtxtClear', (varibale, xpath) => {
 cy.xpath(xpath, { timeout: 60000 })
   .scrollIntoView({})
@@ -185,11 +144,6 @@ cy.xpath(xpath, { timeout: 60000 })
   .click({force: true})
   cy.oculto()
 });
-
-
-
-
-
 
 Cypress.Commands.add("ingresoJson", (valorJson) => {
   cy.get("body").then(() => {
@@ -217,31 +171,6 @@ Cypress.Commands.add("ingresoJson", (valorJson) => {
   });
 });
 
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add("IngresoFecha", (Fecha, xpAbrirFecha, ) => {
 

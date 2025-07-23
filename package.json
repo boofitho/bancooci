@@ -13,5 +13,8 @@
     "cypress": "^14.5.0",
     "cypress-plugin-tab": "^1.0.5",
     "cypress-xpath": "^2.0.1"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
   }
 }

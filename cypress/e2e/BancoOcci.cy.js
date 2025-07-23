@@ -5,38 +5,13 @@ const cotizador = new PersonaNatural();
 const Generales = new MetodosGenerales();
 const PJ = new personaJuridica();
 
-//variables para bancoocci
-let url = "https://plataforma-qa.bytesw.cloud/";
-let usuario = "OPERADORQA";
-let contrasena = "byte0625";
+const URL_Var = Cypress.env('URL_VAR');       //link URL´s para descargar los documentos 
 
-const data = {
-  //Buscar Cliente
-  tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200532554",
+let ArrayVar = []; // Variable global para almacenar las variables
+let ArrayDat = []; // Variable global para almacenar los datos
 
-  //Agregar Cliente
-  //##### PASO 1 - Para Identificacion
-  TipodePersona: "Jurídica",
-  RTN: "HN0301-2005-320297",
-  //##### PASO 2 -  Datos Generales Persona J/N?
-  TPJ: "ONG",
-  RazonSoc: "Empresa XYZ SAC",
-  NombreCom: "XYZ",
-  Siglas: "XYZ",
-  PaisOr: "Perú",
-  CatNegocio: "Tecnología",
-  // Para DatosConstitucionEmpresa
-  TipSoc: "Sociedad Anónima",
-  FechaReg: "2022-01-01",
-  EnFormacion: false,
-  FechaIniOp: "2022-02-15",
-  // Para RegistroMercantil
-  Numero: "RM123456",
-  tomo: "45",
-  Pagina: "123",
-  PatenteCom: "PC78910",
-  EscriPermiso: "Escritura Pública #101",
+
+const dataquemada = {
   //PASO 3
   datopaso3: "??",
 
@@ -136,134 +111,64 @@ const data = {
 };
 
 describe("BancoOcci", () => {
+
   Cypress.on("uncaught:exception", (err, Runnable) => {
     return false;
   });
 
   before("Ingreso e inicio de sesion", () => {
-    cy.Login(url, usuario, contrasena);
-  }); // TERMINA EL IT LOGIN
-  it("Agregar Cliente", () => {
-    //Notificacion '¿Desea suscribirse a las notificaciones?'
-    //        cy.xpathClk("//h2[contains(text(), '¿Desea suscribirse a las notificaciones?')]/following::button[normalize-space(text())='Si'][1]")
-    //Notificacion 'Aceptar Notificaciones en Chrome.'
-    //        cy.xpathClk("//h2[contains(text(), 'Aceptar Notificaciones en Chrome.')]/following::button[contains(text(), 'Cerrar')][1]")
-    // Ingresamos y buscamos el cliente
-    cy.busquedaCliente(data);
-  });
+     cy.log(URL_Var)
+      //Descarga el de archivo variables
+      Generales.ArchivoNubeV(URL_Var)
 
-  it("Agregar Cliente", () => {
+      //Lee archivo de variables y guarda en un array los resultados 
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/variables.xlsx" }).then((DatosVar) => {
+        DatosVar.forEach((filaVar) => {
+          ArrayVar.push(filaVar)
+        })
+      }); 
+    
+    
+      const folderPath = 'cypress/screenshots';  // Aquí coloca la ruta de la carpeta de capturas u otros archivos que quieras borrar
+      cy.task('deleteAllFiles', folderPath);
+
+ }); // TERMINA BEFORE
+
+  it('Descarga de archivos nesesarios', () => {
+    Generales.ArchivoDatos(ArrayVar[0].URL_DATOS)             // Descarga archivo de tx
+  })// TERMINA EL IT DESCARGA DE ARCHIVOS
+
+it('Login', () => {
+  cy.Login(ArrayVar[0].URL_Sitio, ArrayVar[0].Usuario, ArrayVar[0].Password);
+})
+
+it("Busqueda de cliente", () => {
+});
+
+it("Agregar cliente", () => {
+  
+  //lectura del archivo "Datos"
+  cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx" }).then((Datos) => {
+    Datos.forEach((data, index) => {
+    ArrayDat.push(data)
+    cy.log(`Procesando fila #${index + 1}`);
+
+
+    cy.busquedaCliente(data);
+
     cy.log("AQUIIIIIII PAPUSHO antes del if");
     if (data.TipodePersona.toLowerCase() == "natural") {
-      Generales.TipodePersona(data.persona);
+      Generales.TipodePersona(data);
       cy.wait(2000);
-      cotizador.IdentificacionGeneralPersonaNatural(
-        data.InfoTipoDocumento,
-        data.anio,
-        data.mes,
-        data.dia,
-        data.RTN
-      );
-      cotizador.DatosGeneralesPersonaNatural(
-        data.textoGenero,
-        data.PrimerApellido,
-        data.PrimerNombre,
-        data.anioNacimiento,
-        data.mesNacimiento,
-        data.diaNacimiento,
-        data.EstadoCivil,
-        data.gradoAcademico,
-        data.profesion,
-        data.NoAniosEducacion,
-        data.capacidadadesEspeciales,
-        data.ocupacion,
-        data.nacionalidad,
-        data.tieneDobleNacionalidad,
-        data.NumeroSocial,
-        data.UbicacionSegundaNacionalidad
-      );
+      cotizador.IdentificacionGeneralPersonaNatural(data);
+      cotizador.DatosGeneralesPersonaNatural(data);
       cotizador.clickpaso2();
       cy.wait(500);
 
-      cotizador.PersonaPep(
-        data.esPEP,
-        data.institucionPEP,
-        data.cargoOcupadoPEP,
-        data.periodoPEP,
-        data.EmpresaJuridicaPEP,
-        data.PatrimonioEmpresaPEP,
-        data.PatrimonioTipodeDocumentoPEP,
-        data.PatrimonioIdentificacionPEP,
-        data.PatrimonioActividadEconomicaPEP,
-        data.PatrimonioPorcentPEP,
-        data.anioInicialPEP,
-        data.mesInicialPEP,
-        data.diaInicialPEP,
-        data.anioFinalPEP,
-        data.mesFinalPEP,
-        data.diaFinalPEP,
-        data.PatrimonioPuestoPEP
-      );
-
-      cotizador.ParentescosPEP(
-        data.apellidoMamaPEP,
-        data.primerNombreMamaPEP,
-        data.direccionMamaPEP,
-        // data.apellidoPapaPEP,
-        // data.primerNombrePapaPEP,
-        // data.direccionPapaPEP,
-        data.tiposuegrxPEP,
-        data.apellidosuegrxPEP,
-        data.primerNombreSuegrxPEP
-      );
-
-      cotizador.esCasado(
-        data.tipoConyugue,
-        data.apellidoConyugue,
-        data.nombreConyugue,
-        data.tipoCelularConyugue,
-        data.numeroConyugue
-      );
-
-      cotizador.escasadoPEP(
-        data.tipoConyugue,
-        data.apellidoConyugue,
-        data.nombreConyugue,
-        data.cedulaConyuguePEP,
-        data.anioExpiracionConyuguePEP,
-        data.mesExpiracionConyuguePEP,
-        data.diaExipracionConyugePEP,
-        data.anioNacimientoConyuguePEP,
-        data.mesNacimientoConyuguePEP,
-        data.diaNacimiento,
-        data.actividadEconomicaConyuguePEP,
-        data.profesionConyuguePEP,
-        data.pasaporteConyuguePEP,
-        data.nacionalidadPasaporteConyuguePEP,
-        data.UbicacionSegundaNacionalidadConyuguePEP,
-        data.aniosResidirConuygue,
-        data.ubicacionconyugue,
-        data.tipoCorreoConyuguePEP,
-        data.tipoTelefonoConyuguePEP,
-        data.telefonoConyuguePEP,
-        data.referenciaLaboralConyuguePEP,
-        data.sexoReferenciaLaboralConyuguePEP,
-        data.primerApellidoReferenciaLaboralPEP,
-        data.primerNombreReferenciaLaboralPEP,
-        data.anioIngresoReferenciaConyuguePEP,
-        data.mesIngresoReferenciaConyuguePEP,
-        data.diaIngresoReferenciaConyugePEP,
-        data.anioEgresoReferenciaConyuguePEP,
-        data.mesEgresoReferenciaConyuguePEP,
-        data.diaEgresoReferenciaConyugePEP,
-        data.puestoReferenciaConyuguePEP,
-        data.direccionReferenciaLaboralConyuguePEP,
-        data.tipoCorreoContactoConyuguePEP,
-        data.tipoTelefonoContactoConyuguePEP,
-        data.telefonoContactoConyugue
-
-
-      );
+      cotizador.PersonaPep(data);
+      cotizador.ParentescosPEP(data);
+      cotizador.esCasado(data);
+      cotizador.escasadoPEP(data);
     } else if (data.TipodePersona.toLowerCase() == "jurídica") {
       cy.log("JURIDICO PAPS");
       PJ.IngresoDatosPersonaJuridica();
@@ -274,5 +179,7 @@ describe("BancoOcci", () => {
       cy.log("Debe de ingresar un tipo de cliente: Natural o Juridico");
       cy.log("*******************************************************");
     }
-  });
+      })//FIN LECTURA FOREACH DATOS
+    })//FIN LECTURA ARCHIVO "DATOS"  
+  })//TERMINA IT AGREGAR CLIENTE
 }); // TERMINA EL IT "Exploración automática de pantalla desconocida"

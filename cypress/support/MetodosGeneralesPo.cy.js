@@ -24,7 +24,7 @@ class MetodosGenerales{
       }   
 
 
-      ArchivoNubeD(URL_Datos){
+      ArchivoDatos(URL_Datos){
         const sheetUrl2 = URL_Datos;
 
         // Hacer la petición para descargar el archivo como binario
@@ -33,7 +33,7 @@ class MetodosGenerales{
           encoding: 'binary'
         }).then((response) => {
           // Guardar el archivo en la carpeta fixtures
-          cy.writeFile('cypress/fixtures/datosTX.xlsx', response.body, 'binary');
+          cy.writeFile('cypress/fixtures/datos.xlsx', response.body, 'binary');
         });
       }
 
