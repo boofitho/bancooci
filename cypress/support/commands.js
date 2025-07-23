@@ -30,43 +30,91 @@ Cypress.Commands.add("oculto", () => {
   cy.get(".loading", { timeout: 60000 }).should("not.exist");
 });
 
-Cypress.Commands.add("xpathClk", (xpath) => {
-  cy.xpath(xpath, { timeout: 60000 })
-    .scrollIntoView({ block: "center", inline: "center" })
-    .should("be.visible")
-    .should("not.be.disabled")
-    .click({ force: true });
-  cy.oculto();
+Cypress.Commands.add('xpathClk', (xpath) => {
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView()
+        .should('be.visible')
+        .should('not.be.disabled')
+        .click({ force: true });
+        //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
+        cy.oculto();
+  
+      } else {
+      cy.log(`⚠️ No se encontró el xpath: ${xpath}`);
+    }
+  })
+
+  // cy.xpath(xpath, { timeout: 60000 })
+  // .scrollIntoView({})
+  // .should('be.visible')
+  // .should('not.be.disabled')
+  // .click({force: true});
+  // cy.oculto()
 });
 
-Cypress.Commands.add("xpathBtxt", (varibale, xpath) => {
-  cy.xpath(xpath, { timeout: 60000 })
-    .scrollIntoView({ block: "center", inline: "center" })
-    .should("be.visible")
-    .should("not.be.disabled")
-    .type(String(varibale) + "{enter}")
-    .click({ force: true });
-  cy.oculto();
+Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView()
+        .should('be.visible')
+        .should('not.be.disabled')
+        // .clear() esto no es necesario ??? 
+        .type(String(variable) + '{enter}')
+        .click({ force: true });
+        //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
+        cy.oculto();
+  
+      } else {
+      cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
+    }
+  })
+
+  // cy.xpath(xpath, { timeout: 60000 })
+  // .scrollIntoView({})
+  // .should('be.visible')
+  // .should('not.be.disabled')
+  // .type(String(varibale) + '{enter}')
+  // .click({force: true})
+  // cy.oculto()
 });
 
-Cypress.Commands.add("xpathBtxtClear", (varibale, xpath) => {
-  cy.xpath(xpath, { timeout: 60000 })
-    .scrollIntoView({ block: "center", inline: "center" })
-    .should("be.visible")
-    .should("not.be.disabled")
-    .clear()
-    .type(String(varibale) + "{enter}")
-    .click({ force: true });
-  cy.oculto();
+Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView()
+        .should('be.visible')
+        .should('not.be.disabled')
+        .clear()
+        .type(String(variable) + '{enter}')
+        .click({ force: true });
+        //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
+        cy.oculto();
+  
+      } else {
+      cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
+    }
+  })
+  // cy.xpath(xpath, { timeout: 60000 })
+  // .scrollIntoView({})
+  // .should('be.visible')
+  // .should('not.be.disabled')
+  // .clear()
+  // .type(String(varibale) + '{enter}')
+  // .click({force: true})
+  // cy.oculto()
 });
 
-Cypress.Commands.add("conClk", (cont) => {
-  cy.contains(cont, { timeout: 60000 })
-    .scrollIntoView({ block: "center", inline: "center" })
-    .should("be.visible")
-    .should("not.be.disabled")
-    .click({ force: true });
-  cy.oculto();
+Cypress.Commands.add('conClk', (cont) => {
+cy.contains(cont, { timeout: 60000 })
+  .scrollIntoView({})
+  .should('be.visible')
+  .should('not.be.disabled')
+  .click({force: true});
+  cy.oculto()
 });
 
 Cypress.Commands.add("conBtxt", (varibale, cont) => {
@@ -120,7 +168,76 @@ Cypress.Commands.add("busquedaCliente", (data) => {
       cy.get(".loading", { timeout: 600000 }).should("not.exist");
     }
   });
+
+})
+
+
+Cypress.Commands.add('xpathTest', (variable, xpath) => {
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView()
+        .should('be.visible')
+        .should('not.be.disabled')
+        .clear()
+        .type(String(variable) + '{enter}')
+        .click({ force: true });
+
+      cy.oculto();
+    } else {
+      cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
+    }
+  }).catch(() => {
+    cy.log(`❌ Error al buscar el xpath: ${xpath} de la variable ${variable}`);
+  });
 });
+
+
+Cypress.Commands.add('xpathBtxtClear', (varibale, xpath) => {
+cy.xpath(xpath, { timeout: 60000 })
+  .scrollIntoView({})
+  .should('be.visible')
+  .should('not.be.disabled')
+  .clear()
+  .type(String(varibale) + '{enter}')
+  .click({force: true})
+  cy.oculto()
+});
+
+
+  Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
+    cy.log("entra a validar")
+    cy.get('body').then(($body) => {
+      const modal = $body.find('.swal2-popup.swal2-modal.swal2-show');
+      if (modal.length > 0) {
+        cy.get('.swal2-popup.swal2-modal.swal2-show', { timeout: 10000 }).should('be.visible');
+        cy.contains('button.swal2-deny', 'Local').click({force:true});
+        cy.get("#user")
+                .filter(":not(:disabled)")
+          .first()
+          .scrollIntoView()
+          .should("be.visible").type("OPERADORQA")
+          cy.wait(300)
+          cy.get("#password").filter(":not(:disabled)")
+          .first()
+          .scrollIntoView()
+          .should("be.visible").type("byte0625")
+          cy.wait(300)
+          cy.get("#reason").filter(":not(:disabled)")
+          .first()
+          .scrollIntoView()
+          .should("be.visible").type(motivo)
+          cy.wait(500)
+          cy.xpath("//button[contains(@class, 'swal2-confirm') and text()='Autorizar']").click({force:true})
+          cy.wait(500)
+          cy.xpath("//button[contains(@class, 'swal2-confirm') and text()='Continuar']").click({force:true})
+          
+
+      }
+    });
+  });
+
+
 
 Cypress.Commands.add("ingresoJson", (valorJson) => {
   cy.get("body").then(() => {
