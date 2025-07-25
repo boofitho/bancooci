@@ -49,6 +49,45 @@ class PersonaNatural {
       .click({ force: true });
     cy.wait(2000);
   }
+
+  calendarioPrevious(anioPrevious, mesPrevious, diaPrevious) {
+    // Abre selector de mes/año
+    cy.xpath("//button[@aria-label='Choose month and year']", {
+      timeout: 60000,
+    })
+      .first()
+
+      .click({ force: true }, { timeout: 6000 });
+    function navegarHastaAnio(anioDeseado) {
+      const buscarAnio = () => {
+        cy.get("body").then(($body) => {
+          // Verifica si el año está visible en la página actual
+          if ($body.find(`span:contains(${anioDeseado})`).length > 0) {
+            cy.contains("span", anioDeseado).click({ force: true });
+          } else {
+            // Si no está visible, haz clic en el botón de navegación y vuelve a buscar
+            cy.get("button.mat-calendar-previous-button")
+
+              .click()
+              .then(buscarAnio); // Llama recursivamente hasta encontrar el año
+          }
+        });
+      };
+      // Inicia la búsqueda
+      buscarAnio();
+    }
+    navegarHastaAnio(anioPrevious);
+    cy.contains("span", mesPrevious, { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    cy.get(".mat-calendar-body-cell-content")
+      .contains(diaPrevious, { timeout: 60000 })
+      .should("be.visible")
+      .should("not.be.disabled")
+      .click({ force: true });
+    cy.wait(2000);
+  }
   IngresoPersonaNatural(usuarioAgregar) {
     //Metodo para agregar tipo de persona
     //Ingreso de persona natural
@@ -121,10 +160,9 @@ class PersonaNatural {
       .should("be.visible")
       .should("not.be.disabled")
       .click({ force: true });
-      cy.wait(3000)
-      cy.seleccionarAutorizacionLocal("Autorizacion RTN");
-           cy.seleccionarAutorizacionLocal("Menor de edad");
-
+    cy.wait(3000);
+    cy.seleccionarAutorizacionLocal("Autorizacion RTN");
+    cy.wait(1000);
   } //fin ingreso de datos persona natural 1. Identificación general
 
   DatosGeneralesPersonaNatural(
@@ -317,6 +355,9 @@ class PersonaNatural {
     cy.wait(3000);
     cy.get(".loading", { timeout: 60000 }).should("not.exist");
     cy.wait(2000);
+    cy.seleccionarAutorizacionLocal("Menor de edad");
+    cy.wait(2000);
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
   }
 
   //Inicio paso 3 PEP
@@ -2484,73 +2525,73 @@ class PersonaNatural {
         .should("be.visible")
         .click({ force: true });
       cy.get(".loading", { timeout: 60000 }).should("not.exist");
-      // } else if (+this.anioNacimiento.trim() <= 2007) {
-      //   cy.log("Debe de ingresar ya que es menor de edad");
-      //   cy.xpath(
-      //     "//mat-label[normalize-space()='Parentesco']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//mat-select"
-      //   )
-      //     .filter(":not(:disabled)")
-      //     .first()
-      //     .scrollIntoView()
-      //     .should("be.visible")
-      //     .click({ force: true });
-      //   cy.wait(500);
-      //   cy.contains("span", parentescoDependenciaEconomica).click({
-      //     force: true,
-      //   });
-      //   cy.wait(500);
-      //   cy.xpath(
-      //     "(//mat-label[contains(normalize-space(.), 'CEDULA DE IDENTIDAD')]/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[2]"
-      //   )
-      //     .filter(":not(:disabled)")
-      //     .first()
-      //     .scrollIntoView()
-      //     .should("be.visible")
-      //     .type(cedulaDependenciaEconomica, { force: true });
-      //   cy.wait(500);
+    } else if (+this.anioNacimiento.trim() >= 2007) {
+      cy.log("Debe de ingresar ya que es menor de edad");
+      cy.xpath(
+        "//mat-label[normalize-space()='Parentesco']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//mat-select"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.wait(500);
+      cy.contains("span", parentescoDependenciaEconomica).click({
+        force: true,
+      });
+      cy.wait(500);
+      cy.xpath(
+        "(//mat-label[contains(normalize-space(.), 'CEDULA DE IDENTIDAD')]/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[2]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(cedulaDependenciaEconomica, { force: true });
+      cy.wait(500);
 
-      //   cy.xpath("(//button[@aria-label='Open calendar'])[3]")
-      //     .filter(":not(:disabled)")
-      //     .first()
-      //     .scrollIntoView()
-      //     .should("be.visible")
-      //     .click({ force: true });
-      //   //Entrar al calendario
-      //   this.calendarioNext(anioNext, mesNext, diaNext);
-      //   cy.wait(500);
-      //   cy.xpath(
-      //     '(//mat-label[normalize-space(text())="Primer Apellido"]/ancestor::mat-form-field//input)[2]'
-      //   )
-      //     .filter(":not(:disabled)")
-      //     .first()
-      //     .scrollIntoView()
-      //     .should("be.visible")
-      //     .type(apellidoDependenciaEconomica, { force: true });
-      //   cy.wait(500);
-      //   cy.xpath(
-      //     '(//mat-label[normalize-space(text())="Primer Nombre"]/ancestor::mat-form-field//input)[2]'
-      //   )
-      //     .filter(":not(:disabled)")
-      //     .first()
-      //     .scrollIntoView()
-      //     .should("be.visible")
-      //     .type(nombredependenciaEconomica, { force: true });
-      //   cy.wait(500);
-      //   cy.xpath("(//button[.//span[normalize-space()='Agregar']])[4]")
-      //     .filter(":not(:disabled)")
-      //     .first()
-      //     .scrollIntoView()
-      //     .should("be.visible")
-      //     .click({ force: true });
+      cy.xpath("(//button[@aria-label='Open calendar'])[3]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      //Entrar al calendario
+      this.calendarioNext(anioNext, mesNext, diaNext);
+      cy.wait(500);
+      cy.xpath(
+        '(//mat-label[normalize-space(text())="Primer Apellido"]/ancestor::mat-form-field//input)[2]'
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(apellidoDependenciaEconomica, { force: true });
+      cy.wait(500);
+      cy.xpath(
+        '(//mat-label[normalize-space(text())="Primer Nombre"]/ancestor::mat-form-field//input)[2]'
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombredependenciaEconomica, { force: true });
+      cy.wait(500);
+      cy.xpath("(//button[.//span[normalize-space()='Agregar']])[4]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
 
-      //   cy.get(".loading", { timeout: 60000 }).should("not.exist");
-      //   cy.wait(500);
-      //   cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[6]")
-      //     .filter(":not(:disabled)")
-      //     .first()
-      //     .scrollIntoView()
-      //     .should("be.visible")
-      //     .click({ force: true });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.wait(500);
+      cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[6]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
     } else if (tieneDependenciaEconomica === "si" && this.esPEP === "si") {
       cy.log("tiene dependencia economica y es soltero pero es PEP");
 
@@ -2624,86 +2665,10 @@ class PersonaNatural {
         .click({ force: true });
     } else if (
       tieneDependenciaEconomica === "si" &&
-      this.EstadoCivil == " Casado(a) " &&
+      this.EstadoCivil === " Casado(a) " &&
       this.esPEP !== "si"
     ) {
       //flujo cuando tiene dependencia economica es casado y no es pep
-      cy.log("cualquier tipo de situacion de estado civil menos casado");
-      cy.xpath(
-        "//span[normalize-space()='¿Depende economicamente de alguien?']"
-      ).click({ force: true });
-      cy.wait(500);
-      cy.xpath(
-        "//mat-label[normalize-space()='Parentesco']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//mat-select"
-      )
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-      cy.wait(500);
-      cy.contains("span", parentescoDependenciaEconomica).click({
-        force: true,
-      });
-      cy.wait(500);
-      cy.xpath(
-        "(//mat-label[contains(normalize-space(.), 'CEDULA DE IDENTIDAD')]/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[2]"
-      )
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(cedulaDependenciaEconomica, { force: true });
-      cy.wait(500);
-      cy.xpath("(//button[@aria-label='Open calendar'])[3]")
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-      //Entrar al calendario
-      this.calendarioNext(anioNext, mesNext, diaNext);
-      cy.wait(500);
-      cy.get(".loading", { timeout: 1500000 }).should("not.exist");
-
-      cy.xpath(
-        '(//mat-label[normalize-space(text())="Primer Apellido"]/ancestor::mat-form-field//input)[2]'
-      )
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(apellidoDependenciaEconomica, { force: true });
-      cy.wait(500);
-      cy.xpath(
-        '(//mat-label[normalize-space(text())="Primer Nombre"]/ancestor::mat-form-field//input)[2]'
-      )
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(nombredependenciaEconomica, { force: true });
-      cy.wait(500);
-      cy.xpath("(//button[.//span[normalize-space()='Agregar']])[4]")
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
-      cy.wait(500);
-      cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[6]")
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-    } else if (
-      tieneDependenciaEconomica === "si" &&
-      this.EstadoCivil !== " Casado(a) " &&
-      this.esPEP !== "si"
-    ) {
-      //puede ser soltero, viudo u otro 
       cy.log("cualquier tipo de situacion de estado civil menos casado");
       cy.xpath(
         "//span[normalize-space()='¿Depende economicamente de alguien?']"
@@ -2775,6 +2740,82 @@ class PersonaNatural {
         .should("be.visible")
         .click({ force: true });
     } else if (
+      tieneDependenciaEconomica === "si" &&
+      this.EstadoCivil !== " Casado(a) " &&
+      this.esPEP !== "si"
+    ) {
+      //puede ser soltero, viudo u otro
+      cy.log("cualquier tipo de situacion de estado civil menos casado");
+      cy.xpath(
+        "//span[normalize-space()='¿Depende economicamente de alguien?']"
+      ).click({ force: true });
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space()='Parentesco']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//mat-select"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.wait(500);
+      cy.contains("span", parentescoDependenciaEconomica).click({
+        force: true,
+      });
+      cy.wait(500);
+      cy.xpath(
+        "(//mat-label[contains(normalize-space(.), 'CEDULA DE IDENTIDAD')]/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[2]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(cedulaDependenciaEconomica, { force: true });
+      cy.wait(500);
+      cy.xpath("(//button[@aria-label='Open calendar'])[3]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      //Entrar al calendario
+      this.calendarioNext(anioNext, mesNext, diaNext);
+      cy.wait(500);
+      cy.get(".loading", { timeout: 1500000 }).should("not.exist");
+
+      cy.xpath(
+        '(//mat-label[normalize-space(text())="Primer Apellido"]/ancestor::mat-form-field//input)[2]'
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(apellidoDependenciaEconomica, { force: true });
+      cy.wait(500);
+      cy.xpath(
+        '(//mat-label[normalize-space(text())="Primer Nombre"]/ancestor::mat-form-field//input)[2]'
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombredependenciaEconomica, { force: true });
+      cy.wait(500);
+      cy.xpath("(//button[.//span[normalize-space()='Agregar']])[4]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.wait(500);
+      cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[6]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    } else if (
       tieneDependenciaEconomica === "no" &&
       this.esPEP === "si" &&
       this.EstadoCivil === " Casado(a) "
@@ -2821,6 +2862,693 @@ class PersonaNatural {
         .should("be.visible")
         .click({ force: true });
     }
+    cy.get(".loading", { timeout: 1500000 }).should("not.exist");
+  }
+
+  Dependientes(
+    tieneDependiente,
+    parentescoDependiente,
+    apellidoDependiente,
+    primerNombreDependiente
+  ) {
+    if (
+      this.esPEP === "si" &&
+      this.EstadoCivil === " Casado(a) " &&
+      tieneDependiente === "si"
+    ) {
+      cy.log("Flujo cuando es PEP Casado y se tiene dependientes");
+      cy.xpath(
+        "(//mat-label[normalize-space()='Parentesco']/ancestor::mat-form-field//input)[1]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", parentescoDependiente).click({ force: true });
+        });
+
+      cy.xpath(
+        "(//mat-label[normalize-space()='Primer Apellido']/ancestor::mat-form-field//input)[4]"
+      )
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(apellidoDependiente);
+      cy.wait(500);
+      cy.xpath(
+        "(//mat-label[normalize-space()='Primer Nombre']/ancestor::mat-form-field//input)[4]"
+      )
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(primerNombreDependiente);
+      cy.wait(500);
+      cy.xpath("(//button[.//span[contains(text(), 'Agregar')]])[10]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.wait(500);
+      cy.xpath("(//button[.//span[contains(text(), 'Guardar')]])[1]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 1500000 }).should("not.exist");
+      cy.xpath("(//button[.//span[contains(text(), 'Siguiente')]])[17]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    } else if (
+      +this.anioNacimiento.trim() >= 2007 &&
+      tieneDependiente !== "si"
+    ) {
+      cy.log("Es menor de edad, no deberia de tener dependientes economicos");
+      cy.get(".loading", { timeout: 1500000 }).should("not.exist");
+      cy.xpath("(//button[.//span[contains(text(), 'Siguiente')]])[7]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    } else if (
+      tieneDependiente === "si" &&
+      this.esPEP === "si" &&
+      this.EstadoCivil !== " Casado(a) "
+    ) {
+      cy.log("Flujo cuando es PEP, no es casado y se tiene dependientes");
+      cy.xpath(
+        "(//mat-label[normalize-space()='Parentesco']/ancestor::mat-form-field//input)[1]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", parentescoDependiente).click({ force: true });
+        });
+
+      cy.xpath(
+        "(//mat-label[normalize-space()='Primer Apellido']/ancestor::mat-form-field//input)[3]"
+      )
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(apellidoDependiente);
+      cy.wait(500);
+      cy.xpath(
+        "(//mat-label[normalize-space()='Primer Nombre']/ancestor::mat-form-field//input)[3]"
+      )
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(primerNombreDependiente);
+      cy.wait(500);
+      cy.xpath("(//button[.//span[contains(text(), 'Agregar')]])[4]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.wait(500);
+      cy.xpath("(//button[.//span[contains(text(), 'Guardar')]])[1]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 1500000 }).should("not.exist");
+      cy.xpath("(//button[.//span[contains(text(), 'Siguiente')]])[9]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    } else if (
+      tieneDependiente === "si" &&
+      this.EstadoCivil !== " Casado(a) " &&
+      this.esPEP !== "si"
+    ) {
+      cy.log(
+        "Flujo cuando no es PEP, no es casado, es soltero o viudo etc pero tiene dependientes"
+      );
+      cy.xpath(
+        "(//mat-label[normalize-space()='Parentesco']/ancestor::mat-form-field//input)[1]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", parentescoDependiente).click({ force: true });
+        });
+
+      cy.xpath(
+        "(//mat-label[normalize-space()='Primer Apellido']/ancestor::mat-form-field//input)[3]"
+      )
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(apellidoDependiente);
+      cy.wait(500);
+      cy.xpath(
+        "(//mat-label[normalize-space()='Primer Nombre']/ancestor::mat-form-field//input)[3]"
+      )
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(primerNombreDependiente);
+      cy.wait(500);
+      cy.xpath("(//button[.//span[contains(text(), 'Agregar')]])[4]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.wait(500);
+      cy.xpath("(//button[.//span[contains(text(), 'Guardar')]])[1]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 1500000 }).should("not.exist");
+      cy.xpath("(//button[.//span[contains(text(), 'Siguiente')]])[7]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    } else if (
+      tieneDependiente === "si" &&
+      this.EstadoCivil === " Casado(a) " &&
+      this.esPEP !== "si"
+    ) {
+      cy.log("Flujo cuando no es PEP y es casado pero tiene dependientes");
+      cy.xpath(
+        "(//mat-label[normalize-space()='Parentesco']/ancestor::mat-form-field//input)[1]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", parentescoDependiente).click({ force: true });
+        });
+
+      cy.xpath(
+        "(//mat-label[normalize-space()='Primer Apellido']/ancestor::mat-form-field//input)[4]"
+      )
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(apellidoDependiente);
+      cy.wait(500);
+      cy.xpath(
+        "(//mat-label[normalize-space()='Primer Nombre']/ancestor::mat-form-field//input)[4]"
+      )
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(primerNombreDependiente);
+      cy.wait(500);
+      cy.xpath("(//button[.//span[contains(text(), 'Agregar')]])[5]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.wait(500);
+      cy.xpath("(//button[.//span[contains(text(), 'Guardar')]])[1]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 1500000 }).should("not.exist");
+      cy.xpath("(//button[.//span[contains(text(), 'Siguiente')]])[8]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    } else if (
+      this.esPEP === "si" &&
+      this.EstadoCivil === " Casado(a) " &&
+      tieneDependiente !== "si"
+    ) {
+      cy.log("Flujo cuando no tiene dependientes, es pep y es casado");
+      cy.xpath("(//button[.//span[contains(text(), 'Siguiente')]])[17]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    } else if (
+      tieneDependiente !== "si" &&
+      this.esPEP === "si" &&
+      this.EstadoCivil !== " Casado(a) "
+    ) {
+      cy.log("Flujo cuando es PEP, no es casado y no tiene dependientes");
+      cy.xpath("(//button[.//span[contains(text(), 'Siguiente')]])[9]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    } else if (
+      tieneDependiente !== "si" &&
+      this.EstadoCivil !== " Casado(a) " &&
+      this.esPEP !== "si"
+    ) {
+      cy.log(
+        "Flujo cuando no es PEP, no es casado, es soltero o viudo etc y no tiene dependientes"
+      );
+      cy.xpath("(//button[.//span[contains(text(), 'Siguiente')]])[7]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    } else if (
+      tieneDependiente !== "si" &&
+      this.EstadoCivil === " Casado(a) " &&
+      this.esPEP !== "si"
+    ) {
+      cy.log("Flujo cuando no es PEP y es casado pero no tiene dependientes");
+
+      cy.xpath("(//button[.//span[contains(text(), 'Siguiente')]])[8]")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+    }
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
+  }
+
+  perfilEconomico(
+    afectoISRCliente,
+    actividadEconomicaCliente,
+    claseCliente,
+    situacionlaboralCliente
+  ) {
+    this.situacionlaboralCliente = situacionlaboralCliente;
+    if (this.esPEP === "si" && this.EstadoCivil === " Casado(a) ") {
+      cy.log("es pep y es casado");
+      //if para afecto ISR
+      if (afectoISRCliente !== "si") {
+        cy.xpath("//label[normalize-space()='Afecto a ISR']")
+          .filter(":not(:disabled)")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .click({ force: true });
+      } else {
+        cy.log("se salta este paso");
+      }
+      cy.xpath(
+        "(//mat-label[normalize-space()='Actividad Económica']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[3]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", actividadEconomicaCliente).click({ force: true });
+        });
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space()='Clase de Cliente']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", claseCliente).click({ force: true });
+        });
+      cy.xpath(
+        "//mat-label[normalize-space()='Situación Laboral']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", situacionlaboralCliente).click({ force: true });
+        });
+
+      cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[18]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.seleccionarAutorizacionLocal("No afecto ISR");
+    } else if (+this.anioNacimiento.trim() >= 2007) {
+      cy.log("Flujo menor de edad");
+      //if para afecto ISR
+      if (afectoISRCliente === "si" || afectoISRCliente !== "si") {
+        cy.log("es menor de edad, no afecta ISR");
+        cy.xpath("//label[normalize-space()='Afecto a ISR']")
+          .filter(":not(:disabled)")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .click({ force: true });
+      } else {
+        cy.log("no debe de salirse de este paso");
+      }
+      cy.xpath(
+        "(//mat-label[normalize-space()='Actividad Económica']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[1]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", actividadEconomicaCliente).click({ force: true });
+        });
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space()='Clase de Cliente']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", claseCliente).click({ force: true });
+        });
+      cy.xpath(
+        "//mat-label[normalize-space()='Situación Laboral']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", situacionlaboralCliente).click({ force: true });
+        });
+
+      cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[8]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.wait(2000);
+      cy.seleccionarAutorizacionLocal("No afecto ISR por ser menor de edad");
+    } else if (this.esPEP === "si" && this.EstadoCivil !== " Casado(a) ") {
+      cy.log("es PEP y tiene diferente estado civil, menos casado");
+      //if para afecto ISR
+      if (afectoISRCliente !== "si") {
+        cy.xpath("//label[normalize-space()='Afecto a ISR']")
+          .filter(":not(:disabled)")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .click({ force: true });
+      } else {
+        cy.log("se salta este paso");
+      }
+      cy.xpath(
+        "//mat-label[normalize-space()='Actividad Económica']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", actividadEconomicaCliente).click({ force: true });
+        });
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space()='Clase de Cliente']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", claseCliente).click({ force: true });
+        });
+      cy.xpath(
+        "//mat-label[normalize-space()='Situación Laboral']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", situacionlaboralCliente).click({ force: true });
+        });
+
+      cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[10]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.seleccionarAutorizacionLocal("No afecto ISR");
+    } else if (this.esPEP !== "si" && this.EstadoCivil !== " Casado(a) ") {
+      cy.log("No es PEP y tiene diferente estado civil, menos casado");
+      //if para afecto ISR
+      if (afectoISRCliente !== "si") {
+        cy.xpath("//label[normalize-space()='Afecto a ISR']")
+          .filter(":not(:disabled)")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .click({ force: true });
+      } else {
+        cy.log("se salta este paso");
+      }
+      cy.xpath(
+        "//mat-label[normalize-space()='Actividad Económica']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", actividadEconomicaCliente).click({ force: true });
+        });
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space()='Clase de Cliente']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", claseCliente).click({ force: true });
+        });
+      cy.xpath(
+        "//mat-label[normalize-space()='Situación Laboral']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", situacionlaboralCliente).click({ force: true });
+        });
+
+      cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[8]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.seleccionarAutorizacionLocal("No afecto ISR");
+    } else if (this.EstadoCivil === " Casado(a) " && this.esPEP !== "si") {
+      cy.log("Flujo no es pep y es casado");
+      //if para afecto ISR
+      if (afectoISRCliente !== "si") {
+        cy.xpath("//label[normalize-space()='Afecto a ISR']")
+          .filter(":not(:disabled)")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .click({ force: true });
+      } else {
+        cy.log("se salta este paso");
+      }
+      cy.xpath(
+        "//mat-label[normalize-space()='Actividad Económica']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", actividadEconomicaCliente).click({ force: true });
+        });
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space()='Clase de Cliente']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", claseCliente).click({ force: true });
+        });
+      cy.xpath(
+        "//mat-label[normalize-space()='Situación Laboral']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true })
+        .wait(500)
+        .then(() => {
+          cy.contains("span", situacionlaboralCliente).click({ force: true });
+        });
+
+      cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[9]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.seleccionarAutorizacionLocal("No afecto ISR");
+    }
+
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
+  }
+
+  datosDelNegocio(
+    nombreEmpresaCliente,
+    anioPrevious,
+    mesPrevious,
+    diaPrevious,
+    giroNegocioCliente,
+    ingresoMensuales,
+    categoriaDeNegocioCliente,
+    aniosResidirCliente,
+    ubicacionCliente
+  ) {
+    if (
+      this.esPEP === "si" &&
+      this.EstadoCivil === " Casado(a) " &&
+      (this.situacionlaboralCliente === " Comerciante/Asalariado " ||
+       this.situacionlaboralCliente === " Comerciante ")
+    ) {
+      cy.log(
+        "Datos del negocio cuando es comerciante y/o comerciante/Asalariado"
+      );
+      cy.xpath("(//button[.//span[contains(text(), 'Agregar')]])[9]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+      cy.xpath("(//button[@aria-label='Open calendar'])[9]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
+      cy.wait(500);
+      cy.xpath("//input[@placeholder='Giro del Negocio']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .tab()
+        .type(ingresoMensuales, { force: true })
+        .tab()
+        .type(categoriaDeNegocioCliente, { force: true });
+      cy.xpath("(//input[@placeholder='Ingrese los años de residir'])[3]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(aniosResidirCliente, { timeout: 6000 });
+      cy.xpath(
+        "(//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[5]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(ubicacionCliente, { timeout: 6000 })
+        .wait(500)
+        .then(() => {
+          cy.get(".mat-mdc-option").eq(2).click({ force: true });
+        });
+
+      cy.xpath("(//button[.//span[text()='Buscar']])[5]")
+        .scrollIntoView()
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("(//button[.//span[normalize-space(text())='Guardar']])[5]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.xpath("(//button[.//span[text()='Siguiente']])[19]")
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    } else if (+this.anioNacimiento.trim() >= 200) {
+      cy.log("Flujo cuando es menor de edad");
+    } else {
+    }
+        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
   }
 
   //************************************************************************/

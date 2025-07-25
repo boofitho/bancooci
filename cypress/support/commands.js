@@ -204,38 +204,60 @@ cy.xpath(xpath, { timeout: 60000 })
   cy.oculto()
 });
 
+Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
+  cy.log("entra a validar");
+  
+  cy.get('body').then(($body) => {
+    const modal = $body.find('.swal2-popup.swal2-modal.swal2-show');
+    
+    if (modal.length > 0) {
+      // Esperar a que el modal esté visible
+      cy.get('.swal2-popup.swal2-modal.swal2-show', { timeout: 10000 }).should('be.visible');
+      
+      // Clic en botón "Local"
+      cy.xpath("//button[normalize-space()='Local']").click({ force: true });
+      
+      // Llenar usuario
+      cy.get("#user")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type("OPERADORQA");
 
-  Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
-    cy.log("entra a validar")
-    cy.get('body').then(($body) => {
-      const modal = $body.find('.swal2-popup.swal2-modal.swal2-show');
-      if (modal.length > 0) {
-        cy.get('.swal2-popup.swal2-modal.swal2-show', { timeout: 10000 }).should('be.visible');
-        cy.contains('button.swal2-deny', 'Local').click({force:true});
-        cy.get("#user")
-                .filter(":not(:disabled)")
-          .first()
-          .scrollIntoView()
-          .should("be.visible").type("OPERADORQA")
-          cy.wait(300)
-          cy.get("#password").filter(":not(:disabled)")
-          .first()
-          .scrollIntoView()
-          .should("be.visible").type("byte0625")
-          cy.wait(300)
-          cy.get("#reason").filter(":not(:disabled)")
-          .first()
-          .scrollIntoView()
-          .should("be.visible").type(motivo)
-          cy.wait(500)
-          cy.xpath("//button[contains(@class, 'swal2-confirm') and text()='Autorizar']").click({force:true})
-          cy.wait(500)
-          cy.xpath("//button[contains(@class, 'swal2-confirm') and text()='Continuar']").click({force:true})
-          
+      cy.wait(300);
 
-      }
-    });
+      // Llenar contraseña
+      cy.get("#password")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type("byte0625");
+
+      cy.wait(300);
+
+      // Llenar motivo
+      cy.get("#reason")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(motivo);
+
+      cy.wait(500);
+
+      // Click en "Autorizar"
+      cy.xpath("//button[normalize-space()='Autorizar']").click({ force: true });
+
+      cy.wait(500);
+
+      // Click en "Continuar"
+      cy.xpath("//button[normalize-space()='Continuar']").click({ force: true });
+    }
   });
+});
+
 
 
 

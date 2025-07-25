@@ -11,15 +11,15 @@ let usuario = "OPERADORQA";
 let contrasena = "byte0625";
 
 const data = {
-  correo: "000060@gmail.com",
+  correo: "000125@gmail.com",
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301201032711", // seguir con este   0301200532602   0301200532709
+  InfoTipoDocumento: "0301200532780", // seguir con este      0301200532709
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: " ", //HN0301-2005-322219
+  RTN: "HN0301-2005-322324", //
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -49,12 +49,12 @@ const data = {
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "wza",
+  PrimerApellido: "asc",
   PrimerNombre: "Cristobal",
-  anioNacimiento: " 2010 ",
+  anioNacimiento: " 2005 ",
   mesNacimiento: " JUL ",
   diaNacimiento: " 7 ",
-  EstadoCivil: " Soltero(a) ", //  " Soltero(a) "  " Casado(a) "
+  EstadoCivil: " Casado(a) ", //  " Soltero(a) "  " Casado(a) "
   gradoAcademico: " UNIVERSITARIO ",
   profesion: " AGENTE DE VIAJES ",
   NoAniosEducacion: "15",
@@ -63,18 +63,18 @@ const data = {
   //consulta si tiene dos nacionalidades
   tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "001-01-2632",
+  NumeroSocial: "001-01-2707",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
-  esPEP: "no",
+  esPEP: "si",
   institucionPEP: "Ministerio de energía",
   cargoOcupadoPEP: "Gerente general",
   periodoPEP: " 2019 - 2022 ",
   //Espacio donde se debe de colocar si alguna empresa cuando es PEP
   EmpresaJuridicaPEP: "Empresa",
-  PatrimonioEmpresaPEP: "El renacimientooss812222222, S.A.",
+  PatrimonioEmpresaPEP: "El renacimientooss866777777, S.A.",
   PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
-  PatrimonioIdentificacionPEP: "HN0301-2005-322194",
+  PatrimonioIdentificacionPEP: "HN0301-2005-322323",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
   PatrimonioPorcentPEP: 30,
   anioInicialPEP: " 1995 ",
@@ -89,7 +89,7 @@ const data = {
   primerNombreMamaPEP: "Maria",
   direccionMamaPEP: "Ciudad",
   // apellidoPapaPEP: "Lopez",
-  // primerNombrePapaPEP: "Roberto",s
+  // primerNombrePapaPEP: "Roberto",
 
   tiposuegrxPEP: " Suegro ",
   apellidosuegrxPEP: "Alvarez",
@@ -97,12 +97,12 @@ const data = {
 
   //Variables para conysugue
   tipoConyugue: "FEMENINO",
-  apellidoConyugue: "bo", // ver
+  apellidoConyugue: "cp", // ver
   nombreConyugue: "Ana",
   tipoCelularConyugue: " Celular ",
-  numeroConyugue: "50403072552",
+  numeroConyugue: "5040307258914",
   //Conyugue cuando es PEP
-  cedulaConyuguePEP: "0209199200016",
+  cedulaConyuguePEP: "0209199200049",
   anioExpiracionConyuguePEP: " 2030 ",
   mesExpiracionConyuguePEP: " MAR ",
   diaExipracionConyugePEP: " 6 ",
@@ -111,18 +111,18 @@ const data = {
   diaNacimientoConyugePEP: " 8 ",
   actividadEconomicaConyuguePEP: " SERVICIOS FINANCIEROS ",
   profesionConyuguePEP: " AGENTE DE SEGUROS ",
-  pasaporteConyuguePEP: "000000000000068",
+  pasaporteConyuguePEP: "000000000000102",
   nacionalidadPasaporteConyuguePEP: " HONDURAS ",
   UbicacionSegundaNacionalidadConyuguePEP: " ESTADOUNIDENSE ",
   aniosResidirConuygue: "12",
   ubicacionconyugue: "Comayagua",
   tipoCorreoConyuguePEP: " Correo Personal ",
   tipoTelefonoConyuguePEP: " Celular ",
-  telefonoConyuguePEP: "50409072564",
+  telefonoConyuguePEP: "50409072596",
   referenciaLaboralConyuguePEP: "NATURAL",
   sexoReferenciaLaboralConyuguePEP: "MASCULINO",
   primerApellidoReferenciaLaboralPEP: "Cisneros",
-  primerNombreReferenciaLaboralPEP: "Aljn",
+  primerNombreReferenciaLaboralPEP: "Alvn",
   anioIngresoReferenciaConyuguePEP: " 1999 ",
   mesIngresoReferenciaConyuguePEP: " APR ",
   diaIngresoReferenciaConyugePEP: " 6 ",
@@ -133,7 +133,7 @@ const data = {
   direccionReferenciaLaboralConyuguePEP: "Comayagua",
   tipoCorreoContactoConyuguePEP: " Correo Personal ",
   tipoTelefonoContactoConyuguePEP: " Celular ",
-  telefonoContactoConyugue: "50415072547",
+  telefonoContactoConyugue: "50415072575",
   nombreEmpresaConyuePEP: "El agua Vivaa, S.A.",
   anioIngresoInscripcionConyuguePEP: " 2005 ",
   mesIngresoInscripcionConyuguePEP: " MAR ",
@@ -148,17 +148,40 @@ const data = {
   ubicacionResidencia: "comayagua",
   tipoCorreoContactoCliente: " Correo de Trabajo ",
   tipoTelefonoContactoCliente: " Celular ",
-  telefonoContactoCliente: "50421082539",  //importante
+  telefonoContactoCliente: "50421090037",  //importante
 
   //Dependencia economica
-  tieneDependenciaEconomica: "no",
+  tieneDependenciaEconomica: "si",
   parentescoDependenciaEconomica: " Papá ",
-  cedulaDependenciaEconomica: "0302195500031",
+  cedulaDependenciaEconomica: "0302195500087",
   anioExpiracionDependenciaEconomica: " 2030 ",
   mesExpiracionDependenciaEconomica: " MAR ",
   diaExpiracionDependenciaEconomica: " 17 ",
-  apellidoDependenciaEconomica: "ab",
+  apellidoDependenciaEconomica: "bu",
   nombredependenciaEconomica: "Luis",
+  //Dependientes
+  tieneDependiente: "si",
+  parentescoDependiente: " Nieto ",
+  apellidoDependiente: "aw",
+  primerNombreDependiente: "Francisco",
+  //Actividad Econmica
+  afectoISRCliente: "si",
+  actividadEconomicaCliente: " SERVICIOS FINANCIEROS ",
+  claseCliente: " PUBLICO EN GENERAL ",
+  situacionlaboralCliente: " Comerciante/Asalariado ", // Comerciante/Asalariado 
+  
+  //Datos del negocio cuandos es comerciante
+nombreEmpresaCliente: "El llano, S.A.",
+anioPrevious: " 1999 ",
+mesPrevious: " MAR ",
+diaPrevious: " 12 ",
+giroNegocioCliente: "Ventas",
+ingresoMensuales: "10000",
+categoriaDeNegocioCliente: "Distribuciones",
+aniosResidirCliente: "10",
+ubicacionCliente: "Cortes",
+
+
 };
 
 describe("BancoOcci", () => {
@@ -317,7 +340,39 @@ describe("BancoOcci", () => {
             data.mesExpiracionDependenciaEconomica,
             data.diaExpiracionDependenciaEconomica,
             data.apellidoDependenciaEconomica,
-            data.nombredependenciaEconomica
+            data.nombredependenciaEconomica,
+            data.situacionlaboralCliente
+
+          )
+
+          cotizador.Dependientes(
+            data.tieneDependiente,
+            data.parentescoDependiente,
+            data.apellidoDependiente,
+            data.primerNombreDependiente
+
+
+          )
+
+          cotizador.perfilEconomico(
+            data.tieneDependiente,
+            data.actividadEconomicaCliente,
+            data.claseCliente,
+            data.situacionlaboralCliente
+
+
+          )
+
+          cotizador.datosDelNegocio(
+            data.nombreEmpresaCliente,
+            data.anioPrevious,
+            data.mesPrevious,
+            data.diaPrevious,
+            data.giroNegocioCliente,
+            data.ingresoMensuales,
+            data.categoriaDeNegocioCliente,
+            data.aniosResidirCliente,
+            data.ubicacionCliente
 
           )
         } else {
