@@ -3470,7 +3470,7 @@ class PersonaNatural {
       this.esPEP === "si" &&
       this.EstadoCivil === " Casado(a) " &&
       (this.situacionlaboralCliente === " Comerciante/Asalariado " ||
-       this.situacionlaboralCliente === " Comerciante ")
+        this.situacionlaboralCliente === " Comerciante ")
     ) {
       cy.log(
         "Datos del negocio cuando es comerciante y/o comerciante/Asalariado"
@@ -3536,19 +3536,303 @@ class PersonaNatural {
         .scrollIntoView()
         .should("be.visible")
         .click({ force: true });
-        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
       cy.xpath("(//button[.//span[text()='Siguiente']])[19]")
         .filter(":not(:disabled)")
         .first()
         .should("be.visible")
         .click({ force: true, timeout: 6000 });
       cy.get(".loading", { timeout: 60000 }).should("not.exist");
-    } else if (+this.anioNacimiento.trim() >= 200) {
-      cy.log("Flujo cuando es menor de edad");
-    } else {
-    }
-        cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    } else if (
+      +this.anioNacimiento.trim() >= 2007 &&
+      (this.situacionlaboralCliente === " Comerciante/Asalariado " ||
+        this.situacionlaboralCliente === " Comerciante ")
+    ) {
+      cy.log("Flujo cuando es menor de edad y es comerciante ");
+      cy.xpath("(//button[.//span[contains(text(), 'Agregar')]])[4]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+      cy.xpath("(//button[@aria-label='Open calendar'])[6]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
+      cy.wait(500);
+      cy.xpath("//input[@placeholder='Giro del Negocio']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .tab()
+        .type(ingresoMensuales, { force: true })
+        .tab()
+        .type(categoriaDeNegocioCliente, { force: true });
+      cy.xpath("(//input[@placeholder='Ingrese los años de residir'])[2]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(aniosResidirCliente, { timeout: 6000 });
+      cy.xpath(
+        "(//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[3]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(ubicacionCliente, { timeout: 6000 })
+        .wait(500)
+        .then(() => {
+          cy.get(".mat-mdc-option").eq(2).click({ force: true });
+        });
 
+      cy.xpath("(//button[.//span[text()='Buscar']])[3]")
+        .scrollIntoView()
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("(//button[.//span[normalize-space(text())='Guardar']])[4]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.xpath("(//button[.//span[text()='Siguiente']])[9]")
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+    } else if (this.esPEP === "si" && this.EstadoCivil !== " Casado(a) ") {
+      cy.log(
+        "Es PEP, pero no es Casado, datos del negocio cuando es comerciante y/o comerciante/Asalariado"
+      );
+      cy.xpath("(//button[.//span[contains(text(), 'Agregar')]])[3]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+      cy.xpath("(//button[@aria-label='Open calendar'])[5]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
+      cy.wait(500);
+      cy.xpath("//input[@placeholder='Giro del Negocio']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .tab()
+        .type(ingresoMensuales, { force: true })
+        .tab()
+        .type(categoriaDeNegocioCliente, { force: true });
+      cy.xpath("(//input[@placeholder='Ingrese los años de residir'])[2]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(aniosResidirCliente, { timeout: 6000 });
+      cy.xpath(
+        "(//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[3]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(ubicacionCliente, { timeout: 6000 })
+        .wait(500)
+        .then(() => {
+          cy.get(".mat-mdc-option").eq(2).click({ force: true });
+        });
+
+      cy.xpath("(//button[.//span[text()='Buscar']])[3]")
+        .scrollIntoView()
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("(//button[.//span[normalize-space(text())='Guardar']])[5]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.xpath("(//button[.//span[text()='Siguiente']])[11]")
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    } else if (this.esPEP !== "si" && this.EstadoCivil !== " Casado(a) ") {
+      cy.log("No es PEP y tiene diferente estado civil, menos casado");
+      cy.xpath("(//button[.//span[contains(text(), 'Agregar')]])[3]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+      cy.xpath("(//button[@aria-label='Open calendar'])[5]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
+      cy.wait(500);
+      cy.xpath("//input[@placeholder='Giro del Negocio']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .tab()
+        .type(ingresoMensuales, { force: true })
+        .tab()
+        .type(categoriaDeNegocioCliente, { force: true });
+      cy.xpath("(//input[@placeholder='Ingrese los años de residir'])[2]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(aniosResidirCliente, { timeout: 6000 });
+      cy.xpath(
+        "(//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[3]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(ubicacionCliente, { timeout: 6000 })
+        .wait(500)
+        .then(() => {
+          cy.get(".mat-mdc-option").eq(2).click({ force: true });
+        });
+
+      cy.xpath("(//button[.//span[text()='Buscar']])[3]")
+        .scrollIntoView()
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("(//button[.//span[normalize-space(text())='Guardar']])[5]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.xpath("(//button[.//span[text()='Siguiente']])[9]")
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    } else if (this.EstadoCivil === " Casado(a) " && this.esPEP !== "si") {
+      cy.log("Flujo no es pep y es casado");
+      cy.xpath("(//button[.//span[contains(text(), 'Agregar')]])[4]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+      cy.xpath("(//button[@aria-label='Open calendar'])[5]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
+      cy.wait(500);
+      cy.xpath("//input[@placeholder='Giro del Negocio']")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .tab()
+        .type(ingresoMensuales, { force: true })
+        .tab()
+        .type(categoriaDeNegocioCliente, { force: true });
+      cy.xpath("(//input[@placeholder='Ingrese los años de residir'])[2]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(aniosResidirCliente, { timeout: 6000 });
+      cy.xpath(
+        "(//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input)[3]"
+      )
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(ubicacionCliente, { timeout: 6000 })
+        .wait(500)
+        .then(() => {
+          cy.get(".mat-mdc-option").eq(2).click({ force: true });
+        });
+
+      cy.xpath("(//button[.//span[text()='Buscar']])[3]")
+        .scrollIntoView()
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.xpath("(//button[.//span[normalize-space(text())='Guardar']])[5]")
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.xpath("(//button[.//span[text()='Siguiente']])[10]")
+        .filter(":not(:disabled)")
+        .first()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    }else {
+      cy.log("no es comerciante entonces no entra al flujo", {timeout:2500})
+
+    }
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
   }
 
   //************************************************************************/

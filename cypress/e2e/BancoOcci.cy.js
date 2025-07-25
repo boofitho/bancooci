@@ -11,15 +11,15 @@ let usuario = "OPERADORQA";
 let contrasena = "byte0625";
 
 const data = {
-  correo: "000125@gmail.com",
+  correo: "000139@gmail.com",
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200532780", // seguir con este      0301200532709
+  InfoTipoDocumento: "0301200532792", // seguir con este      0301200532709
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0301-2005-322324", //
+  RTN: "HN0301-2005-322340", //
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -49,7 +49,7 @@ const data = {
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "asc",
+  PrimerApellido: "afd",
   PrimerNombre: "Cristobal",
   anioNacimiento: " 2005 ",
   mesNacimiento: " JUL ",
@@ -63,18 +63,18 @@ const data = {
   //consulta si tiene dos nacionalidades
   tieneDobleNacionalidad: "si",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "001-01-2707",
+  NumeroSocial: "001-01-2720",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
-  esPEP: "si",
+  esPEP: "no",
   institucionPEP: "Ministerio de energía",
   cargoOcupadoPEP: "Gerente general",
   periodoPEP: " 2019 - 2022 ",
   //Espacio donde se debe de colocar si alguna empresa cuando es PEP
   EmpresaJuridicaPEP: "Empresa",
-  PatrimonioEmpresaPEP: "El renacimientooss866777777, S.A.",
+  PatrimonioEmpresaPEP: "El renacimientooss877777778, S.A.",
   PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
-  PatrimonioIdentificacionPEP: "HN0301-2005-322323",
+  PatrimonioIdentificacionPEP: "HN0301-2005-322327",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
   PatrimonioPorcentPEP: 30,
   anioInicialPEP: " 1995 ",
@@ -97,12 +97,12 @@ const data = {
 
   //Variables para conysugue
   tipoConyugue: "FEMENINO",
-  apellidoConyugue: "cp", // ver
+  apellidoConyugue: "cs", // ver
   nombreConyugue: "Ana",
   tipoCelularConyugue: " Celular ",
-  numeroConyugue: "5040307258914",
+  numeroConyugue: "50403072592",
   //Conyugue cuando es PEP
-  cedulaConyuguePEP: "0209199200049",
+  cedulaConyuguePEP: "0209199200050",
   anioExpiracionConyuguePEP: " 2030 ",
   mesExpiracionConyuguePEP: " MAR ",
   diaExipracionConyugePEP: " 6 ",
@@ -111,18 +111,18 @@ const data = {
   diaNacimientoConyugePEP: " 8 ",
   actividadEconomicaConyuguePEP: " SERVICIOS FINANCIEROS ",
   profesionConyuguePEP: " AGENTE DE SEGUROS ",
-  pasaporteConyuguePEP: "000000000000102",
+  pasaporteConyuguePEP: "000000000000103",
   nacionalidadPasaporteConyuguePEP: " HONDURAS ",
   UbicacionSegundaNacionalidadConyuguePEP: " ESTADOUNIDENSE ",
   aniosResidirConuygue: "12",
   ubicacionconyugue: "Comayagua",
   tipoCorreoConyuguePEP: " Correo Personal ",
   tipoTelefonoConyuguePEP: " Celular ",
-  telefonoConyuguePEP: "50409072596",
+  telefonoConyuguePEP: "50409072597",
   referenciaLaboralConyuguePEP: "NATURAL",
   sexoReferenciaLaboralConyuguePEP: "MASCULINO",
   primerApellidoReferenciaLaboralPEP: "Cisneros",
-  primerNombreReferenciaLaboralPEP: "Alvn",
+  primerNombreReferenciaLaboralPEP: "Alwn",
   anioIngresoReferenciaConyuguePEP: " 1999 ",
   mesIngresoReferenciaConyuguePEP: " APR ",
   diaIngresoReferenciaConyugePEP: " 6 ",
@@ -148,21 +148,21 @@ const data = {
   ubicacionResidencia: "comayagua",
   tipoCorreoContactoCliente: " Correo de Trabajo ",
   tipoTelefonoContactoCliente: " Celular ",
-  telefonoContactoCliente: "50421090037",  //importante
+  telefonoContactoCliente: "50421090047",  //importante
 
   //Dependencia economica
   tieneDependenciaEconomica: "si",
   parentescoDependenciaEconomica: " Papá ",
-  cedulaDependenciaEconomica: "0302195500087",
+  cedulaDependenciaEconomica: "0302195500098",
   anioExpiracionDependenciaEconomica: " 2030 ",
   mesExpiracionDependenciaEconomica: " MAR ",
   diaExpiracionDependenciaEconomica: " 17 ",
-  apellidoDependenciaEconomica: "bu",
+  apellidoDependenciaEconomica: "fb",
   nombredependenciaEconomica: "Luis",
   //Dependientes
   tieneDependiente: "si",
   parentescoDependiente: " Nieto ",
-  apellidoDependiente: "aw",
+  apellidoDependiente: "bh",
   primerNombreDependiente: "Francisco",
   //Actividad Econmica
   afectoISRCliente: "si",
