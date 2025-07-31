@@ -248,12 +248,12 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
       cy.wait(500);
 
       // Click en "Autorizar"
-      cy.xpath("//button[normalize-space()='Autorizar']").click({ force: true });
+      cy.xpath("//button[normalize-space()='Autorizar']").click({ force: true, timeout:6000  });
 
       cy.wait(500);
 
       // Click en "Continuar"
-      cy.xpath("//button[normalize-space()='Continuar']").click({ force: true });
+      cy.xpath("//button[normalize-space()='Continuar']").click({ force: true, timeout:6000 });
     }
   });
 });
