@@ -48,15 +48,7 @@ Cypress.Commands.add('xpathClk', (xpath) => {
       } else {
       cy.log(`⚠️ No se encontró el xpath: ${xpath}`);
     }
-  })
-
-  // cy.xpath(xpath, { timeout: 60000 })
-  // .scrollIntoView({})
-  // .should('be.visible')
-  // .should('not.be.disabled')
-  // .click({force: true});
-  // cy.oculto()
-});
+  })});
 
 Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
   cy.xpath(xpath, { timeout: 60000 }).then($el => {

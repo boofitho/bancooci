@@ -275,53 +275,12 @@ class personaJuridica {
 
   //### PASO #5
   RepresentanteLegal(data){
-      this.DatosGeneralesRL(
-      data.GeneroRL,
-      data.CedulaRL,
-      data.PasaporteRL,
-      data.UbicacionRL,
-      data.FechaExpJD,
-      data.priApellidoRL,
-      data.segApellidoRL,
-      data.priNombreRL,
-      data.segNombreRL,
-      data.OtroNombreRL,
-      data.fechaNombramiento,
-      data.fechaExpNombramiento,
-      data.NacionalidadRLesta,
-      data.ProfesiónRL    
-      )
-      this.DireccionRL(
-      data.paisRL,
-      data.aniosRL,
-      data.ubicacionRL,
-      data.agenciaCercanaRL,
-      data.infDireccionRL,
-      data.especRL,
-      data.segApellidoRL,
-      data.dirRefBusqRL,
-      data.latitudRL,
-      data.longitudRL
-      )
-      this.DatosGeneralesRL(
-      data.GeneroRL,
-      data.CedulaRL,
-      data.PasaporteRL,
-      data.UbicacionRL,
-      data.FechaExpJD,
-      data.priApellidoRL,
-      data.segApellidoRL,
-      data.priNombreRL,
-      data.segNombreRL,
-      data.OtroNombreRL,
-      data.fechaNombramiento,
-      data.fechaExpNombramiento,
-      data.NacionalidadRLesta,
-      data.ProfesiónRL    
-      )
+      this.DatosGeneralesRL(data)
+      this.DireccionRL(data)
+      this.DatosGeneralesRL(data)
 
     }
-    DatosGeneralesRL(data,){
+    DatosGeneralesRL(data){
          
       cy.xpathClk("(//mat-radio-button[contains(., '"+data.GeneroRL+"')])") //calidar este por que no ingresamos nada
       cy.xpathBtxt(data.CedulaRL, "(//mat-label[contains(normalize-space(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[2]")
@@ -415,7 +374,7 @@ class personaJuridica {
       cy.xpathClk("(//button[contains(., 'Siguiente')])[1]")
 
     }
-    InfOpera(){
+    InfOpera(data){
   
       //leer documento para agregar las monedas que correspondan 
       cy.xpathBtxt(data.Pais ,"(//mat-label[normalize-space(.)='País']/ancestor::mat-form-field//input)[1]")
@@ -429,13 +388,13 @@ class personaJuridica {
       cy.xpathClk("(//button[contains(., 'Siguiente')])[2]")
 
     }
-    Relaciones(){
+    Relaciones(data){
       cy.xpathBtxt(data.relGrupoEcono ,"(//mat-label[normalize-space(.)='Relación con Grupo Económico']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.relGrupFinan ,"(//mat-label[normalize-space(.)='Relación con Grupo Financiero']/ancestor::mat-form-field//input)[1]")
 
       cy.xpathClk("(//button[contains(., 'Siguiente')])[3]")
     }
-    PrincProvee(){
+    PrincProvee(data){
       //leer documento para agregar las monedas que correspondan 
       cy.xpathBtxt(data.Proveedor ,"(//mat-label[normalize-space(.)='Proveedor']/ancestor::mat-form-field//input)[1]")
       cy.xpathClk("(//button[contains(., 'Agregar')])[2]")
@@ -462,22 +421,20 @@ class personaJuridica {
     //### FIN PASO #6
 
     //### PASO #7
-
     Contacto(data){
       //tiene que correr el archivo y agregar segun la cantidad que encuentre
       this.correo(data)
       //tiene que correr el archivo y agregar segun la cantidad que encuentre
       this.celular(data)
       //tiene que correr el archivo y agregar segun la cantidad que encuentre y luego dar agregar 
-      cy.xpathClk("(//button[contains(., 'Agregar')])[5]")
-
+      cy.xpathClk("(//button[contains(., 'Guardar')])[1]")
     }
     correo(data){
       //ingreso de correo
       cy.xpathClk("(//mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select)[1]")  //mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select
       cy.xpathClk("//mat-option[normalize-space()='"+data.tipoCorreo+"']") // validar el comando si da problema y posuible solucion a TPJ
       cy.IngresoFecha(data.correo, "(//mat-label[normalize-space(.)='Correo']/ancestor::mat-form-field//input)[1]")
-      cy.xpathClk("(//button[contains(., 'Agregar')])[3]")
+      cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
       //fin ingrerso correo
     }
     celular(data){
@@ -487,9 +444,588 @@ class personaJuridica {
       cy.xpathClk("(//mat-label[normalize-space() = 'Ubicación']/ancestor::mat-form-field//mat-select)[1]")  //mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select
       cy.xpathClk("//mat-option[normalize-space()='"+data.Ubicacion+"']") // validar el comando si da problema y posuible solucion a TPJ
                    
-      cy.xpathClk("(//button[contains(., 'Agregar')])[4]")
+      cy.xpathClk("(//button[contains(., 'Agregar')])[2]")
+    }
+    //### FIN PASO #7
+
+    //### PASO #8
+    FATCA(data){
+    if (data.a){
+      cy.xpathClk("//span[normalize-space(text()) = 'Entidad No Financiera Hondureña Sin Dueños Sustanciales de EE.UU.']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")
+        if(data.aClienteRecalcitrante){
+          cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+        }else{
+          cy.log("FATCA no seleccionado inciso 'a' apartado 'Cliente recalcitrante' = "+ data.aClienteRecalcitrante)
+        }
+      }else{
+      cy.log("FATCA no seleccionado inciso 'a' = "+ data.a)
+    }
+    if (data.b){
+      cy.xpathClk("//span[normalize-space(text()) = 'Entidad No Financiera Hondureña Con Dueños Sustanciales de EE.UU.']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")
+        if(data.TipoEntidad){
+          cy.xpathClk("//mat-radio-button[.//label[normalize-space(text()) = '"+data.TipoEntidad+"']]//input[@type='radio']")
+        }else{
+          cy.log("FATCA no seleccionado tipo de entidad del inciso 'b' = "+ data.TipoEntidad)
+        }
+      }else{
+      cy.log("FATCA no seleccionado inciso 'b' = "+ data.b)
+    }
+    if (data.c){
+      cy.xpathClk("//span[normalize-space(text()) = 'Persona Jurídica Constituida en EE.UU.']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")
+        if(data.a && data.cClienteRecalcitrante){
+          cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[2]")
+        }else if(!data.a && data.cClienteRecalcitrante){
+          cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+        }else{
+          cy.log("FATCA no seleccionado inciso c cliente recalcitrante "+ data.cClienteRecalcitrante)
+        }        
+          cy.xpathBtxt(data.cGIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+          cy.xpathBtxt(data.cUbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")     
+        }else{
+      cy.log("FATCA no seleccionado inciso"+ data.c)
+    }
+    if (data.d){
+      cy.xpathClk("//span[normalize-space(text()) = 'Instituciones Financieras, de Seguros y Otros Interes FATCA']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")
+        if(data.I){
+
+          cy.xpathClk("//span[normalize-space(text()) = 'Fondos de Pensión']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+
+          if(data.a && data.c && data.IClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[3]")
+          }else if((data.a || data.c) && data.IClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[2]")
+          }else if((!data.a && !data.c) && data.IClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+          }else{
+            cy.log("FATCA no seleccionado apartado 'I' cliente recalcitrante "+ data.cClienteRecalcitrante)
+          }        
+          if(data.c){
+            cy.xpathBtxt(data.IGIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+            cy.xpathBtxt(data.IUbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
+          }else{
+            cy.xpathBtxt(data.IGIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+            cy.xpathBtxt(data.IUbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")     
+          }
+        }else{
+          cy.log("FATCA no seleccionado inciso 'd' apartado 'I' = "+ data.I)
+        }
+
+        if(data.II){
+          
+          cy.xpathClk("//span[normalize-space(text()) = 'Ins. Financieras Considerada Cumplidoras']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+
+          if(data.II1){
+            cy.xpathClk("//span[normalize-space(text()) = 'Ins. Financiera - Clientes de Base Local']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+            
+            const valoresCR = [data.a, data.c, data.I];
+            const verdaderos = valoresCR.filter(Boolean).length;
+            
+            if(verdaderos === 3 && data.II1ClienteRecalcitrante ){
+              cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[4]")
+            }else if((verdaderos === 2) && data.II1ClienteRecalcitrante){
+              cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[3]")
+            }else if((verdaderos === 1) && data.II1ClienteRecalcitrante){
+              cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[2]")
+            }else if((verdaderos === 0) && data.II1ClienteRecalcitrante){
+              cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+            }else{
+              cy.log("FATCA no seleccionado apartado 'I' cliente recalcitrante "+ data.II1ClienteRecalcitrante)
+            }
+
+            const valoresGU = [data.c, data.I];
+            const verdaderoGU = valoresGU.filter(Boolean).length;
+
+          if((verdaderoGU === 2)){
+            cy.xpathBtxt(data.II1GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
+            cy.xpathBtxt(data.II1UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
+          }else if ((verdaderoGU === 1)){
+            cy.xpathBtxt(data.II1GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+            cy.xpathBtxt(data.II1UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
+          }else{
+            cy.xpathBtxt(data.II1GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+            cy.xpathBtxt(data.II1UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
+          }        
+          }else{
+            cy.log("FATCA no seleccionado apartado 'II 1'  "+ data.II1)
+          } 
+          
+          if(data.II2){
+            cy.xpathClk("//span[normalize-space(text()) = 'Banco Local']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+            
+          const valoresCR = [data.a, data.c, data.I, data.II1];
+          const verdaderos = valoresCR.filter(Boolean).length;
+            
+          if(verdaderos === 4 && data.II2ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[5]")
+          }else if((verdaderos === 3) && data.II2ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[4]")
+          }else if((verdaderos === 2) && data.II2ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[3]")
+          }else if((verdaderos === 1) && data.II2ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[2]")
+          }else if((verdaderos === 0) && data.II2ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+          }else{
+            cy.log("FATCA no seleccionado apartado 'I' cliente recalcitrante "+ data.II2ClienteRecalcitrante)
+          }
+
+            const valoresGU = [data.c, data.I, data.II1];
+            const verdaderoGU = valoresGU.filter(Boolean).length;
+
+          if((verdaderoGU === 3)){
+            cy.xpathBtxt(data.II2GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
+            cy.xpathBtxt(data.II2UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
+          }else if ((verdaderoGU === 2)){
+            cy.xpathBtxt(data.II2GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
+            cy.xpathBtxt(data.II2UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
+          }else if ((verdaderoGU === 1)){
+            cy.xpathBtxt(data.II2GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+            cy.xpathBtxt(data.II2UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
+          }else{
+            cy.xpathBtxt(data.II2GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+            cy.xpathBtxt(data.II2UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
+          }        
+          }else{
+            cy.log("FATCA no seleccionado apartado 'II 2'  "+ data.II2)
+          } 
+
+          if(data.II3){
+            cy.xpathClk("//span[normalize-space(text()) = 'Ins. Financiera - Con Cuentas de Bajo VL.']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+            
+          const valoresCR = [data.a, data.c, data.I, data.II1, data.II2];
+          const verdaderos = valoresCR.filter(Boolean).length;
+            
+          if(verdaderos === 5 && data.II3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[6]")
+          }else if((verdaderos === 4) && data.II3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[5]")
+          }else if((verdaderos === 3) && data.II3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[4]")
+          }else if((verdaderos === 2) && data.II3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[3]")
+          }else if((verdaderos === 1) && data.II3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[2]")
+          }else if((verdaderos === 0) && data.II3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+          }else{
+            cy.log("FATCA no seleccionado apartado 'I' cliente recalcitrante "+ data.II3ClienteRecalcitrante)
+          }
+
+            const valoresGU = [data.c, data.I, data.II1, data.II2];
+            const verdaderoGU = valoresGU.filter(Boolean).length;
+
+          if((verdaderoGU === 4)){
+            cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+          }else if ((verdaderoGU === 3)){
+            cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
+          }else if ((verdaderoGU === 2)){
+            cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
+          }else if ((verdaderoGU === 1)){
+            cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
+          }else{
+            cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
+          }        
+          }else{
+            cy.log("FATCA no seleccionado apartado 'II 2'  "+ data.II3)
+          } 
+
+          if(data.II4){
+            cy.xpathClk("//span[normalize-space(text()) = 'Emisor de Tarjetas de Crédito']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+            
+          const valoresCR = [data.a, data.c, data.I, data.II1, data.II2, data.II3];
+          const verdaderos = valoresCR.filter(Boolean).length;
+            
+          if(verdaderos === 6 && data.II4ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[7]")
+          }else if((verdaderos === 5) && data.II4ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[6]")
+          }else if((verdaderos === 4) && data.II4ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[5]")
+          }else if((verdaderos === 3) && data.II4ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[4]")
+          }else if((verdaderos === 2) && data.II4ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[3]")
+          }else if((verdaderos === 1) && data.II4ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[2]")
+          }else if((verdaderos === 0) && data.II4ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+          }else{
+            cy.log("FATCA no seleccionado apartado 'I' cliente recalcitrante "+ data.II4ClienteRecalcitrante)
+          }
+
+            const valoresGU = [data.c, data.I, data.II1, data.II2, data.II3];
+            const verdaderoGU = valoresGU.filter(Boolean).length;
+
+          if((verdaderoGU === 5)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[6]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+          }else if ((verdaderoGU === 4)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+          }else if ((verdaderoGU === 3)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
+          }else if ((verdaderoGU === 2)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
+          }else if ((verdaderoGU === 1)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
+          }else{
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
+          }        
+          }else{
+            cy.log("FATCA no seleccionado apartado 'II 2'  "+ data.II4)
+          } 
+
+        }else{
+          cy.log("FATCA no seleccionado inciso 'd' apartado 'I' = "+ data.II)
+        }
+
+        if(data.III){
+          
+          cy.xpathClk("//span[normalize-space(text()) = 'Ins. de Inversión y Relacionadas']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+
+          if(data.III1){
+            cy.xpathClk("//span[normalize-space(text()) = 'Fideicomiso']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+          }else{
+            cy.log("FATCA no seleccionado inciso 'III 1' = "+ data.III1)
+          }
+
+          if(data.III2){
+            cy.xpathClk("//span[normalize-space(text()) = 'Fondo Jubilación']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+          }else{
+            cy.log("FATCA no seleccionado inciso 'III 1' = "+ data.III2)
+          }
+
+          if(data.III3){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Otros']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox'])[1]")         
+                     
+          const valoresCR = [data.a, data.c, data.I, data.II1, data.II2, data.II3, data.II4];
+          const verdaderos = valoresCR.filter(Boolean).length;
+            
+          if(verdaderos === 7 && data.III3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[8]")
+          }else if((verdaderos === 6) && data.III3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[7]")
+          }else if((verdaderos === 5) && data.III3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[6]")
+          }else if((verdaderos === 4) && data.III3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[5]")
+          }else if((verdaderos === 3) && data.III3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[4]")
+          }else if((verdaderos === 2) && data.III3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[3]")
+          }else if((verdaderos === 1) && data.II4ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[2]")
+          }else if((verdaderos === 0) && data.III3ClienteRecalcitrante){
+            cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+          }else{
+            cy.log("FATCA no seleccionado apartado 'I' cliente recalcitrante "+ data.III3ClienteRecalcitrante)
+          }
+
+            const valoresGU = [data.c, data.I, data.II1, data.II2, data.II3, data.II4];
+            const verdaderoGU = valoresGU.filter(Boolean).length;
+
+          if((verdaderoGU === 6)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[7]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
+          }else if ((verdaderoGU === 5)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[6]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+          }else if ((verdaderoGU === 4)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+          }else if ((verdaderoGU === 3)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
+          }else if ((verdaderoGU === 2)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
+          }else if ((verdaderoGU === 1)){
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
+          }else{
+            cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
+          }        
+
+          }else{
+            cy.log("FATCA no seleccionado inciso 'III 1' = "+ data.III3)
+          }
+
+        }else{
+          cy.log("FATCA no seleccionado inciso 'd' apartado 'III' = "+ data.III)
+        }
+
+        if(data.IV){
+
+          cy.xpathClk("//span[normalize-space(text()) = 'Ins. Financieras Reportan Bajo IGA Modo 1']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+          
+        }else{
+          cy.log("FATCA no seleccionado inciso 'd' apartado 'IV' = "+ data.IV)
+        }
+
+        if(data.V){
+
+          cy.xpathClk("//span[normalize-space(text()) = 'Ins. Financieras Reportan Bajo IGA Modo 2']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+          
+        }else{
+          cy.log("FATCA no seleccionado inciso 'd' apartado 'V' = "+ data.V)
+        }
+
+        if(data.VI){
+
+          cy.xpathClk("//span[normalize-space(text()) = 'Ins. Financieras Participantes Acuerdo IRS']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+          
+        }else{
+          cy.log("FATCA no seleccionado inciso 'd' apartado 'VI' = "+ data.VI)
+        }
+
+        if(data.VII){
+
+          cy.xpathClk("//span[normalize-space(text()) = 'Ins. Financieras Documentadas por Dueño']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+          
+        }else{
+          cy.log("FATCA no seleccionado inciso 'd' apartado 'VII' = "+ data.VII)
+        }
+        
+        if(data.III && data.VIII){
+
+          cy.xpathClk("(//span[normalize-space(text()) = 'Otros']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox'])[2]")         
+
+          if(data.VIII1){
+            
+            cy.xpathClk("//span[normalize-space(text()) = 'Entidad Gubernamental Hondureña']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+
+          }else{
+            
+            cy.log("FATCA no seleccionado inciso 'd' apartado 'VIII 1' = "+ data.VIII1)
+
+          }
+
+          if(data.VIII2){
+            
+            cy.xpathClk("//span[normalize-space(text()) = 'Banco Central Emisor']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+
+          }else{
+            
+            cy.log("FATCA no seleccionado inciso 'd' apartado 'VIII 2' = "+ data.VIII2)
+
+          }
+
+          if(data.VIII3){
+            
+            cy.xpathClk("//span[normalize-space(text()) = 'Organización Internacional']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+
+          }else{
+            
+            cy.log("FATCA no seleccionado inciso 'd' apartado 'VIII 3' = "+ data.VIII3)
+
+          }
+
+          if(data.VIII4){
+           
+              cy.xpathClk("(//span[normalize-space(text()) = 'Otros']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox'])[3]")         
+
+              const valoresCR = [data.a, data.c, data.I, data.II1, data.II2, data.II3, data.II4, data.III3];
+              const verdaderos = valoresCR.filter(Boolean).length;
+                
+              if(verdaderos === 8 && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[9]")
+              }else if((verdaderos === 7) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[8]")
+              }else if((verdaderos === 6) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[7]")
+              }else if((verdaderos === 5) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[6]")
+              }else if((verdaderos === 4) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[5]")
+              }else if((verdaderos === 3) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[4]")
+              }else if((verdaderos === 2) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[3]")
+              }else if((verdaderos === 1) && data.II4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[2]")
+              }else if((verdaderos === 0) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+              }else{
+                cy.log("FATCA no seleccionado apartado 'I' cliente recalcitrante "+ data.VIII4ClienteRecalcitrante)
+              }
+
+                const valoresGU = [data.c, data.I, data.II1, data.II2, data.II3, data.II4, data.III3];
+                const verdaderoGU = valoresGU.filter(Boolean).length;
+
+              if((verdaderoGU === 7)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[8]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[8]")     
+              }else if ((verdaderoGU === 6)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[7]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
+              }else if ((verdaderoGU === 5)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[6]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+              }else if ((verdaderoGU === 4)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+              }else if ((verdaderoGU === 3)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
+              }else if ((verdaderoGU === 2)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
+              }else if ((verdaderoGU === 1)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
+              }else{
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
+              }        
+
+
+          }else{
+
+            cy.log("FATCA no seleccionado inciso 'd' apartado 'VIII 4' = "+ data.VIII4)
+
+          }
+
+        }else if (!data.III && data.VIII){
+
+          cy.xpathClk("(//span[normalize-space(text()) = 'Otros']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox'])[1]")         
+
+          if(data.VIII1){
+            
+            cy.xpathClk("//span[normalize-space(text()) = 'Entidad Gubernamental Hondureña']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+
+          }else{
+            
+            cy.log("FATCA no seleccionado inciso 'd' apartado 'VIII 1' = "+ data.VIII1)
+
+          }
+
+          if(data.VIII2){
+            
+            cy.xpathClk("//span[normalize-space(text()) = 'Banco Central Emisor']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+
+          }else{
+            
+            cy.log("FATCA no seleccionado inciso 'd' apartado 'VIII 2' = "+ data.VIII2)
+
+          }
+
+          if(data.VIII3){
+            
+            cy.xpathClk("//span[normalize-space(text()) = 'Organización Internacional']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")         
+
+          }else{
+            
+            cy.log("FATCA no seleccionado inciso 'd' apartado 'VIII 3' = "+ data.VIII3)
+
+          }
+
+          if(data.VIII4){
+           
+          cy.xpathClk("(//span[normalize-space(text()) = 'Otros']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox'])[2]")         
+
+              const valoresCR = [data.a, data.c, data.I, data.II1, data.II2, data.II3, data.II4, data.III3];
+              const verdaderos = valoresCR.filter(Boolean).length;
+                
+              if(verdaderos === 8 && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[9]")
+              }else if((verdaderos === 7) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[8]")
+              }else if((verdaderos === 6) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[7]")
+              }else if((verdaderos === 5) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[6]")
+              }else if((verdaderos === 4) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[5]")
+              }else if((verdaderos === 3) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[4]")
+              }else if((verdaderos === 2) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[3]")
+              }else if((verdaderos === 1) && data.II4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[2]")
+              }else if((verdaderos === 0) && data.VIII4ClienteRecalcitrante){
+                cy.xpathClk("(//span[normalize-space(text()) = 'Cliente Recalcitrante']/parent::div//input[@type='checkbox'])[1]")
+              }else{
+                cy.log("FATCA no seleccionado apartado 'I' cliente recalcitrante "+ data.VIII4ClienteRecalcitrante)
+              }
+
+                const valoresGU = [data.c, data.I, data.II1, data.II2, data.II3, data.II4, data.III3];
+                const verdaderoGU = valoresGU.filter(Boolean).length;
+
+              if((verdaderoGU === 7)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[8]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[8]")     
+              }else if ((verdaderoGU === 6)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[7]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
+              }else if ((verdaderoGU === 5)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[6]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+              }else if ((verdaderoGU === 4)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+              }else if ((verdaderoGU === 3)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
+              }else if ((verdaderoGU === 2)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
+              }else if ((verdaderoGU === 1)){
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
+              }else{
+                cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
+              }        
+
+
+          }else{
+
+            cy.log("FATCA no seleccionado inciso 'd' apartado 'VIII 4' = "+ data.VIII4)
+
+          }
+
+        }else{
+
+          cy.log("FATCA no seleccionado inciso 'd' apartadp 'VIII' "+ data.VIII)
+
+        }
+
+    }else{
+      cy.log("FATCA no seleccionado inciso 'd' = "+ data.d)
     }
 
+    cy.xpathBtxt(data.Observaciones, "//div[@class='angular-editor-textarea' and @contenteditable='true']")
+
+  }
+    //### FIN PASO #8
+
+    //### PASO #9
+    referencia(data){
+      
+    }
+    //### FIN PASO #9
+
+    //### PASO #10
+    DigitDoc(data){
+      
+    }
+    //### FIN PASO #10
+
+    //### PASO #10
+    Finalizado(data){
+      
+    }
+    //### FIN PASO #10
 }
 
 
