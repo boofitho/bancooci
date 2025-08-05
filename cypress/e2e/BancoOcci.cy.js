@@ -1,6 +1,7 @@
 import MetodosGenerales from "../support/MetodosGeneralesPo.cy.js";
 import PersonaNatural from "../support/personaNatural-PO.cy.js";
 import personaJuridica from "../support/personaJuridica.cy.js";
+
 const cotizador = new PersonaNatural();
 const Generales = new MetodosGenerales();
 const PJ = new personaJuridica();
@@ -11,15 +12,15 @@ let usuario = "OPERADORQA";
 let contrasena = "byte0625";
 
 const data = {
-  correo: "00019521@gmail.com",
+  correo: "000196583@gmail.com",
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200532928", // seguir con este      0301200532709
+  InfoTipoDocumento: "0301200533035", // seguir con este      0301200532709
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0301-2005-322572", //
+  RTN: "HN0301-2005-322774", //
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -45,14 +46,14 @@ const data = {
   //Validacion de fecha de expiracion de documento
   persona: " Natural",
   anio: " 2026 ",
-  mes: " NOV ",
+  mes: " NOV. ",
   dia: " 6 ",
   //Paso 2
   textoGenero: " Masculino",
-  PrimerApellido: "adj",
+  PrimerApellido: "ain",
   PrimerNombre: "Cristobal",
   anioNacimiento: " 2005 ",
-  mesNacimiento: " JUL ",
+  mesNacimiento: " JUL. ",
   diaNacimiento: " 7 ",
   EstadoCivil: " Soltero(a) ", //  " Soltero(a) "  " Casado(a) "
   gradoAcademico: " UNIVERSITARIO ",
@@ -61,12 +62,12 @@ const data = {
   capacidadadesEspeciales: " Ninguna ",
   ocupacion: " JEFE DE SUPERVISION ",
   //consulta si tiene dos nacionalidades
-  tieneDobleNacionalidad: "si",
+  tieneDobleNacionalidad: "no",
   nacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "001-01-2819",
+  NumeroSocial: "001-01-2866",
   UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
   //paso 3 persona expuesta politicamente
-  esPEP: "si",
+  esPEP: "no",
   institucionPEP: "Ministerio de energía",
   cargoOcupadoPEP: "Gerente general",
   periodoPEP: " 2019 - 2022 ",
@@ -81,7 +82,7 @@ const data = {
   mesInicialPEP: " MAR ",
   diaInicialPEP: " 12 ",
   anioFinalPEP: " 2041 ",
-  mesFinalPEP: " MAR ",
+  mesFinalPEP: " MAR. ",
   diaFinalPEP: " 6 ",
   PatrimonioPuestoPEP: " Representante legal ",
   //Parentescos 'PEP'
@@ -100,11 +101,11 @@ const data = {
   apellidoConyugue: "ob", // ver
   nombreConyugue: "Ana",
   tipoCelularConyugue: " Celular ",
-  numeroConyugue: "50403072620",
+  numeroConyugue: "50403072621",
   //Conyugue cuando es PEP
   cedulaConyuguePEP: "0209199200077",
   anioExpiracionConyuguePEP: " 2030 ",
-  mesExpiracionConyuguePEP: " MAR ",
+  mesExpiracionConyuguePEP: " MAR. ",
   diaExipracionConyugePEP: " 6 ",
   anioNacimientoConyuguePEP: " 1995 ",
   mesNacimientoConyuguePEP: " JUL ",
@@ -125,10 +126,10 @@ const data = {
   primerApellidoReferenciaLaboralPEP: "Cisneros",
   primerNombreReferenciaLaboralPEP: "Allvn",
   anioIngresoReferenciaConyuguePEP: " 1999 ",
-  mesIngresoReferenciaConyuguePEP: " APR ",
+  mesIngresoReferenciaConyuguePEP: " APR. ",
   diaIngresoReferenciaConyugePEP: " 6 ",
   anioEgresoReferenciaConyuguePEP: " 2020 ",
-  mesEgresoReferenciaConyuguePEP: " JAN ",
+  mesEgresoReferenciaConyuguePEP: " ENE. ",
   diaEgresoReferenciaConyugePEP: " 16 ",
   puestoReferenciaConyuguePEP: "Tecnico",
   direccionReferenciaLaboralConyuguePEP: "Comayagua",
@@ -137,7 +138,7 @@ const data = {
   telefonoContactoConyugue: "50415072599",
   nombreEmpresaConyuePEP: "El agua Vivaa, S.A.",
   anioIngresoInscripcionConyuguePEP: " 2005 ",
-  mesIngresoInscripcionConyuguePEP: " MAR ",
+  mesIngresoInscripcionConyuguePEP: " MAR. ",
   diaIngresoInscripcionConyugePEP: " 19 ",
   giroNegocioConyuguePEP: "Ventas",
   ingresosMensualesConyuguePEP: "1000000",
@@ -149,32 +150,32 @@ const data = {
   ubicacionResidencia: "comayagua",
   tipoCorreoContactoCliente: " Correo de Trabajo ",
   tipoTelefonoContactoCliente: " Celular ",
-  telefonoContactoCliente: "50421090154", //importante
+  telefonoContactoCliente: "50421090254", //importante
 
   //Dependencia economica
   tieneDependenciaEconomica: "si",
   parentescoDependenciaEconomica: " Papá ",
-  cedulaDependenciaEconomica: "0302195500202",
+  cedulaDependenciaEconomica: "0302195500297",
   anioExpiracionDependenciaEconomica: " 2030 ",
-  mesExpiracionDependenciaEconomica: " MAR ",
+  mesExpiracionDependenciaEconomica: " MAR. ",
   diaExpiracionDependenciaEconomica: " 17 ",
-  apellidoDependenciaEconomica: "lzd",
+  apellidoDependenciaEconomica: "mif",
   nombredependenciaEconomica: "Luis",
   //Dependientes
   tieneDependiente: "si",
   parentescoDependiente: " Nieto ",
-  apellidoDependiente: "cd",
+  apellidoDependiente: "qig",
   primerNombreDependiente: "Francisco",
   //Actividad Econmica
   afectoISRCliente: "si",
   actividadEconomicaCliente: " SERVICIOS FINANCIEROS ",
   claseCliente: " PUBLICO EN GENERAL ",
-  situacionlaboralCliente: " Comerciante/Asalariado ", // Comerciante/Asalariado
+  situacionlaboralCliente: " Asalariado ", // Comerciante/Asalariado
 
   //Datos del negocio cuandos es comerciante
   nombreEmpresaCliente: "El llano, S.A.",
   anioPrevious: " 1999 ",
-  mesPrevious: " MAR ",
+  mesPrevious: " MAR. ",
   diaPrevious: " 12 ",
   giroNegocioCliente: "Ventas",
   ingresoMensuales: "10000",
@@ -197,7 +198,7 @@ const data = {
   tieneTinFatcaCliente: "No",
   esClienteRecalcitrante: "Si",
   tipoCelularFatcaCliente: " Celular ",
-  telefonoFatcaCliente: "20200000003",
+  telefonoFatcaCliente: "20200000071",
   codigoZipFatcaCliente: "20001",
 
   //Referencias laborales cuando es Comerciante/Asalariado
@@ -211,21 +212,55 @@ const data = {
   salarioReferenciaLaboralCliente: " 100000.01 - 200000 ",
   nombreEmpresaReferenciaLaboralCliente: "El Conejo, S.A.",
   ubicacionReferencialLaboralCliente: "Choluteca",
-  tipoCorreoReferencialLaboralCliente: " Correo Personal ", 
+  tipoCorreoReferencialLaboralCliente: " Correo Personal ",
   tipoTelefonoReferenciaLaboralCliente: " Laboral ",
-  telefonoReferencialLaboralCliente: "50431072502",
+  telefonoReferencialLaboralCliente: "50490072581",
 
   //Referencias Clientes
-referenciasBancarias: "si", 
-    //tipo de cuenta las cuales pueden ser: Cuentas / Tarjetas o Préstamos
-tipodeCuentaReferenciaCliente: "Cuentas", 
-origenCuentaReferenciaCliente: "Local",
-    //Variablles si tiene cuentas
- numerodeReferenciaCuentaBancariaCliente: "0100000000000001",  
-productoCuentaReferenciaBancariaCliente: "Monetarios", // Monetarios u Ahorros
-aperturaAproximadaCuentaReferenciaBancariaCliente: "02/05/2001", 
-insittucionCuentaReferenciaBancariaCliente: "Bancatlan", 
+  referenciasBancarias: "no",
+  //tipo de cuenta las cuales pueden ser: Cuentas / Tarjetas o Préstamos
+  tipodeCuentaReferenciaCliente: "Cuentas",
+  origenCuentaReferenciaCliente: "Local",
+  //Variablles si tiene cuentas
+  numerodeReferenciaCuentaBancariaCliente: "0100000000000057",
+  productoCuentaReferenciaBancariaCliente: "Monetarios", // Monetarios u Ahorros
+  aperturaAproximadaCuentaReferenciaBancariaCliente: "02/05/2001",
+  institucionCuentaReferenciaBancariaCliente: "Banco atlantida, s.a.",
+  //variables cuando ingresa tarjeta de credito
+  numeroTarjetaReferenciaBancariaCliente: "0000000000000025",
+  productoTarjetaReferenciaLaboralCliente: "American Express",
+  limiteCreditoTarjetaReferenciaBancariaCliente: "150000",
+  fechaVencimientoTarjetaReferenciaBancariaCliente: "31/08/2027",
+  institucionTarjetaReferenciaLaboralCliente: "Banco atlantida, s.a.",
+  //Variables cuando hay préstamos
+  numeroPrestamoReferenciaBancariaCliente: "9234505",
+  tipodePrestamoReferenciaBancariaCliente: "Hipotecario",
+  montoDeudaPrestamoReferenciaBancariaCliente: "1000000",
+  fechaAperturaAproximadaPrestamoReferenciaBancariaCliente: "31/07/2021",
+  institucionPrestamoReferenciaLaboralCliente: "Banco atlantida, s.a.",
+  //Variables cuando hay referencias Comerciales
+  tieneReferenciasComerciales: "no",
+  nombreReferenciaComercialCliente: "El comercio2, S.A.",
+  direccionReferencialComercialCliente: "Comayagua",
+  tipoCorreoReferenciaComercialCliente: "Correo de Trabajo",
+  correoReferenciaLaboralCliente: "Elcomercio2",
+  tipoTelefonoReferenciaComercialCliente: "Celular",
+  numeroTelefonoReferenciaComercialCliente: "50401082538",
+  //Referencias Familiares
+  tieneReferenciasFamiliares: "no",
+  parentescoReferenciaFamiliarCliente: "Primo",
+  apellidoReferenciaFamiliarCliente: "Alvarez",
+  nombreReferenciaFamiliarCliente: "Diego",
+  tipoTelefonoReferenciaFamiliarCliente: "Celular",
+  telefonoReferenciaFamiliarCliente: "50408042518",
+  //Referencias Personales
+  tieneReferenciasPersonales: "no",
+  apellidoreferenciaPersonalCliente: "Meany",
+  nombreReferenciaPersonalCliente: "Rodrigo",
+  tipoTelefonoReferenciaPersonalCliente: "Laboral",
+  telefonoReferenciaPersonalCliente: "50408052514",
 
+  //Digitalizar Documentos
 
 };
 
@@ -445,26 +480,52 @@ describe("BancoOcci", () => {
             data.fechaEgresoReferenciaLaboralCliente,
             data.puestoReferenciaLaboralCliente,
             data.salarioReferenciaLaboralCliente,
-            data.nombreEmpresaReferenciaLaboralCliente, 
+            data.nombreEmpresaReferenciaLaboralCliente,
             data.ubicacionReferencialLaboralCliente,
             data.tipoCorreoReferencialLaboralCliente,
             data.tipoTelefonoReferenciaLaboralCliente,
             data.telefonoReferencialLaboralCliente
-
           );
 
           cotizador.referencias(
-            data.referenciasBancarias, 
-            data.tipodeCuentaReferenciaCliente, 
+            data.referenciasBancarias,
+            data.tipodeCuentaReferenciaCliente,
             data.origenCuentaReferenciaCliente,
             data.numerodeReferenciaCuentaBancariaCliente,
             data.productoCuentaReferenciaBancariaCliente,
             data.aperturaAproximadaCuentaReferenciaBancariaCliente,
-            data.insittucionCuentaReferenciaBancariaCliente
+            data.institucionCuentaReferenciaBancariaCliente,
+            data.numeroTarjetaReferenciaBancariaCliente,
+            data.productoTarjetaReferenciaLaboralCliente,
+            data.limiteCreditoTarjetaReferenciaBancariaCliente,
+            data.fechaVencimientoTarjetaReferenciaBancariaCliente,
+            data.institucionTarjetaReferenciaLaboralCliente,
+            data.numeroPrestamoReferenciaBancariaCliente,
+            data.tipodePrestamoReferenciaBancariaCliente,
+            data.montoDeudaPrestamoReferenciaBancariaCliente,
+            data.fechaAperturaAproximadaPrestamoReferenciaBancariaCliente,
+            data.institucionPrestamoReferenciaLaboralCliente,
+            data.tieneReferenciasComerciales,
+            data.nombreReferenciaComercialCliente,
+            data.direccionReferencialComercialCliente,
+            data.tipoCorreoReferenciaComercialCliente,
+            data.correoReferenciaLaboralCliente,
+            data.tipoTelefonoReferenciaComercialCliente,
+            data.numeroTelefonoReferenciaComercialCliente,
+            data.tieneReferenciasFamiliares,
+            data.parentescoReferenciaFamiliarCliente,
+            data.apellidoReferenciaFamiliarCliente,
+            data.nombreReferenciaFamiliarCliente,
+            data.tipoTelefonoReferenciaFamiliarCliente,
+            data.telefonoReferenciaFamiliarCliente,
+            data.tieneReferenciasPersonales,
+            data.apellidoreferenciaPersonalCliente,
+            data.nombreReferenciaPersonalCliente,
+            data.tipoTelefonoReferenciaPersonalCliente,
+            data.telefonoReferenciaPersonalCliente
+          );
 
-
-
-          )
+          cotizador.digitalizacionDocumentos()
         } else {
           cy.log("Cliente ya existe. No se creará.");
           cotizador.ClienteCreadoParcialmente(data.esPEP, data.EstadoCivil);

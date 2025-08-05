@@ -327,8 +327,12 @@ class PersonaNatural {
               .type(NumeroSocial, { timeout: 6000 })
               .then(() => {
                 cy.xpath(
-                  "//*[@id='cdk-stepper-0-content-1']/div/app-general-data-natural-person/div/form/div[2]/app-nationality-and-residence-panel/div/form/div[4]/div/app-documents-wrapper/app-documents/form/table/tbody/tr/td[2]/mat-form-field/div[1]"
+                  "//mat-label[normalize-space(text())='Ubicación']/ancestor::mat-form-field//input"
                 )
+                  .filter(":visible:not([disabled])")
+                  .first()
+                  .scrollIntoView()
+                  .should("be.visible")
                   .click({ force: true })
                   .wait(500)
                   .then(() => {
@@ -3522,12 +3526,12 @@ class PersonaNatural {
         .click({ force: true });
       this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
       cy.wait(500);
-      cy.xpath("//input[@placeholder='Giro del Negocio']")
+      cy.xpath('//input[@placeholder="Giro del Negocio"]')
         .filter(":not(:disabled)")
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .type(giroNegocioCliente, { force: true })
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
@@ -3596,12 +3600,12 @@ class PersonaNatural {
         .click({ force: true });
       this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
       cy.wait(500);
-      cy.xpath("//input[@placeholder='Giro del Negocio']")
+      cy.xpath('//input[@placeholder="Giro del Negocio"]')
         .filter(":not(:disabled)")
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .type(giroNegocioCliente, { force: true })
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
@@ -3672,12 +3676,12 @@ class PersonaNatural {
         .click({ force: true });
       this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
       cy.wait(500);
-      cy.xpath("//input[@placeholder='Giro del Negocio']")
+      cy.xpath('//input[@placeholder="Giro del Negocio"]')
         .filter(":not(:disabled)")
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .type(giroNegocioCliente, { force: true })
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
@@ -3747,12 +3751,12 @@ class PersonaNatural {
         .click({ force: true });
       this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
       cy.wait(500);
-      cy.xpath("//input[@placeholder='Giro del Negocio']")
+      cy.xpath('//input[@placeholder="Giro del Negocio"]')
         .filter(":not(:disabled)")
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .type(giroNegocioCliente, { force: true })
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
@@ -3822,12 +3826,12 @@ class PersonaNatural {
         .click({ force: true });
       this.calendarioPrevious(anioPrevious, mesPrevious, diaPrevious);
       cy.wait(500);
-      cy.xpath("//input[@placeholder='Giro del Negocio']")
+      cy.xpath('//input[@placeholder="Giro del Negocio"]')
         .filter(":not(:disabled)")
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type(giroNegocioCliente, { timeout: 6000, force: true })
+        .type(giroNegocioCliente, { force: true })
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
@@ -4046,14 +4050,7 @@ class PersonaNatural {
         }
       });
       cy.wait(500);
-      cy.xpath(
-        "//span[@class='mdc-button__label'][normalize-space()='Siguiente']"
-      )
-        .filter(":visible:not([disabled])") // Solo inputs visibles y habilitados
-        .first() // Toma el primero que cumpla
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
+      cy.xpath("//p[normalize-space(text())='Observaciones']").scrollIntoView();
     }
     cy.xpath(
       "//span[@class='mdc-button__label'][normalize-space()='Siguiente']"
@@ -4082,7 +4079,10 @@ class PersonaNatural {
     tipoTelefonoReferenciaLaboralCliente,
     telefonoReferencialLaboralCliente
   ) {
-    if (this.situacionlaboralCliente === " Comerciante/Asalariado ") {
+    if (
+      this.situacionlaboralCliente === " Comerciante/Asalariado " ||
+      " Asalariado "
+    ) {
       cy.log("Flujo cuando es Comerciante/asalariado");
       if (referenciaTipoPersona === "Natural") {
         cy.xpath("//label[@class='mdc-label' and text()='Natural']")
@@ -4340,7 +4340,7 @@ class PersonaNatural {
         .scrollIntoView()
         .should("be.visible")
         .click({ force: true, timeout: 6000 });
-      cy.wait(500);
+      cy.wait(1500);
       cy.xpath("//button[@mat-raised-button and .//span[text()='Siguiente']]")
         .filter(":visible:not([disabled])")
         .first()
@@ -4360,9 +4360,40 @@ class PersonaNatural {
     numerodeReferenciaCuentaBancariaCliente,
     productoCuentaReferenciaBancariaCliente,
     aperturaAproximadaCuentaReferenciaBancariaCliente,
-    insittucionCuentaReferenciaBancariaCliente
+    institucionCuentaReferenciaBancariaCliente,
+    numeroTarjetaReferenciaBancariaCliente,
+    productoTarjetaReferenciaLaboralCliente,
+    limiteCreditoTarjetaReferenciaBancariaCliente,
+    fechaVencimientoTarjetaReferenciaBancariaCliente,
+    institucionTarjetaReferenciaLaboralCliente,
+    numeroPrestamoReferenciaBancariaCliente,
+    tipodePrestamoReferenciaBancariaCliente,
+    montoDeudaPrestamoReferenciaBancariaCliente,
+    fechaAperturaAproximadaPrestamoReferenciaBancariaCliente,
+    institucionPrestamoReferenciaLaboralCliente,
+    //Referencas Comerciales
+    tieneReferenciasComerciales,
+    nombreReferenciaComercialCliente,
+    direccionReferencialComercialCliente,
+    tipoCorreoReferenciaComercialCliente,
+    correoReferenciaLaboralCliente,
+    tipoTelefonoReferenciaComercialCliente,
+    numeroTelefonoReferenciaComercialCliente,
+    //Referencias Familiares
+    tieneReferenciasFamiliares,
+    parentescoReferenciaFamiliarCliente,
+    apellidoReferenciaFamiliarCliente,
+    nombreReferenciaFamiliarCliente,
+    tipoTelefonoReferenciaFamiliarCliente,
+    telefonoReferenciaFamiliarCliente,
+    //Referencias Personales
+    tieneReferenciasPersonales,
+    apellidoreferenciaPersonalCliente,
+    nombreReferenciaPersonalCliente,
+    tipoTelefonoReferenciaPersonalCliente,
+    telefonoReferenciaPersonalCliente
   ) {
-    if (referenciasBancarias === "si" || "Si") {
+    if (referenciasBancarias === "si" || referenciasBancarias === "Si") {
       cy.xpath(
         "//mat-panel-title[text()=' Referencias Bancarias ']/ancestor::mat-expansion-panel-header"
       )
@@ -4371,8 +4402,8 @@ class PersonaNatural {
         .scrollIntoView()
         .should("be.visible")
         .click({ force: true, timeout: 6000 });
-      cy.wait(
-        "//mat-label[text()='Tipo de Cuenta']/ancestor::div[contains(@classF,'mat-mdc-text-field-wrapper')]//input"
+      cy.xpath(
+        "//mat-label[contains(., 'Tipo de Cuenta')]/ancestor::div[contains(@class, 'mat-mdc-form-field-flex')]//input"
       )
         .filter(":visible:not([disabled])")
         .first()
@@ -4444,25 +4475,537 @@ class PersonaNatural {
           .first()
           .scrollIntoView()
           .should("be.visible")
-          .type(insittucionCuentaReferenciaBancariaCliente);
+          .type(institucionCuentaReferenciaBancariaCliente);
+        cy.wait(500);
+        cy.get(".mat-mdc-autocomplete-panel mat-option")
+          .eq(0)
+          .click({ force: true });
+        cy.wait(500);
+      } else if (tipodeCuentaReferenciaCliente === "Tarjetas") {
+        cy.log("Entrando a fluno tiene referencia bancaria tipo tarjeta");
+        cy.xpath("//input[@placeholder='Número Tarjeta']")
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .type(numeroTarjetaReferenciaBancariaCliente);
         cy.wait(500);
         cy.xpath(
-          "//button[contains(@class, 'mat-mdc-outlined-button') and .//span[normalize-space()='Agregar']]"
+          "//mat-label[text()='Producto Cuenta']/ancestor::div[contains(@class, 'mat-mdc-form-field-flex')]//mat-select "
+        )
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .click({ force: true, timeout: 6000 });
+        cy.xpath(
+          `//mat-option//span[
+    contains(@class, 'mdc-list-item__primary-text') 
+    and contains(normalize-space(text()), '${productoTarjetaReferenciaLaboralCliente}')
+  ]`
+        ).click({ force: true });
+
+        cy.wait(500);
+        cy.xpath("//input[@placeholder='Límite de crédito']")
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .type(limiteCreditoTarjetaReferenciaBancariaCliente, {
+            timeout: 6000,
+          });
+
+        cy.xpath("//input[@placeholder='Fecha Vencimiento']")
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .type(fechaVencimientoTarjetaReferenciaBancariaCliente, {
+            timeout: 6000,
+          });
+
+        cy.xpath(
+          "//mat-label[contains(text(),'Institución')]/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//input[@role='combobox']"
+        )
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .type(institucionTarjetaReferenciaLaboralCliente, { timeout: 6000 });
+        cy.wait(500);
+        cy.get(".mat-mdc-option").eq(0).click();
+      } else if (tipodeCuentaReferenciaCliente === "Préstamos") {
+        cy.log("Entrando a fluno tiene referencia bancaria tipo Préstamos");
+        const numeroCompleto = numeroPrestamoReferenciaBancariaCliente.padStart(
+          16,
+          "0"
+        );
+
+        cy.xpath(
+          "//mat-label[contains(text(),'Numero Prestamo')]/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//input"
+        )
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .type(numeroCompleto, { timeout: 6000 });
+        cy.wait(100);
+        cy.xpath(
+          "//mat-label[contains(text(),'Producto Cuenta')]/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//mat-select"
         )
           .filter(":visible:not([disabled])")
           .first()
           .scrollIntoView()
           .should("be.visible")
           .click({ force: true });
-        cy.get(".loading", { timeout: 60000 }).should("not.exist");
-      } else if (tipodeCuentaReferenciaCliente === "Tarjetas") {
-        cy.log("Entrando a fluno tiene referencia bancaria tipo tarjeta");
-      } else if (tipodeCuentaReferenciaCliente === "Préstamos") {
-        cy.log("Entrando a fluno tiene referencia bancaria tipo Préstamos");
+        cy.wait(500);
+        cy.xpath(
+          `//mat-option//span[contains(@class, 'mdc-list-item__primary-text') and contains(normalize-space(text()), '${tipodePrestamoReferenciaBancariaCliente}')]`
+        ).click({ force: true });
+        cy.wait(500);
+        cy.xpath("//input[contains(@placeholder,'Monto de deuda préstamo')]")
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .type(montoDeudaPrestamoReferenciaBancariaCliente, { force: true });
+        cy.wait(500);
+        cy.xpath(
+          "//mat-label[normalize-space()='Apertura Aproximada']/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//input[@aria-haspopup='dialog']"
+        )
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .type(fechaAperturaAproximadaPrestamoReferenciaBancariaCliente, {
+            timeout: 6000,
+          });
+        cy.wait(500);
+        cy.xpath(
+          "//mat-label[normalize-space()='Institución']/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//input[@role='combobox']"
+        )
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .type(institucionPrestamoReferenciaLaboralCliente, { timeout: 6000 });
+        cy.wait(500);
+        cy.get(".mat-mdc-option").eq(0).click();
       } else {
         cy.log("no aplica, por lo que no llena este paso");
       }
+      cy.xpath(
+        "//button[contains(@class, 'mat-mdc-outlined-button') and .//span[normalize-space()='Agregar']]"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    } else {
+      cy.log("No se entra en el flujo por que no tiene Referencias Bancarias");
     }
+
+    if (
+      tieneReferenciasComerciales === "Si" ||
+      tieneReferenciasComerciales === "si"
+    ) {
+      cy.xpath(
+        "//mat-panel-title[contains(normalize-space(), 'Referencias Comerciales')]/ancestor::mat-expansion-panel-header"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+
+      cy.xpath(
+        "//mat-label[normalize-space()='Ingrese un nombre']/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//input"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombreReferenciaComercialCliente, { timeout: 6000 });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      // cy.get(".mat-mdc-option").eq(0).click();
+      // cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.xpath(
+        "//mat-label[normalize-space()='Dirección']/ancestor::div[contains(@class, 'mat-mdc-form-field-flex') or contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(direccionReferencialComercialCliente)
+        .tab();
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
+      cy.xpath(
+        "//mat-label[normalize-space()='Tipo de Correo']/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//mat-select"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.xpath(
+        `//mat-option//span[contains(@class, 'mdc-list-item__primary-text') and normalize-space()=normalize-space('${tipoCorreoReferenciaComercialCliente}')]`
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
+      cy.xpath(
+        "//mat-label[normalize-space()='Correo']/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//input"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(correoReferenciaLaboralCliente + this.correo);
+      cy.wait(500);
+      cy.xpath(
+        "//button[contains(@class, 'mat-mdc-outlined-button') and .//span[normalize-space()='Agregar']]"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.xpath(
+        "//mat-label[normalize-space()='Tipo de Teléfono']/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//mat-select"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.xpath(
+        `//mat-option//span[contains(@class, 'mdc-list-item__primary-text') and normalize-space()=normalize-space('${tipoTelefonoReferenciaComercialCliente}')]`
+      ).click({ force: true });
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space()='Teléfono']/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//input"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .clear()
+        .type(numeroTelefonoReferenciaComercialCliente, { timeout: 6000 });
+      cy.xpath(
+        "//button[contains(@class, 'mat-mdc-outlined-button') and .//span[normalize-space()='Agregar']]"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
+      cy.wait(500);
+      cy.xpath(
+        "//button[contains(@class, 'mat-mdc-outlined-button') and .//span[normalize-space()='Agregar']]"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    } else {
+      cy.log("No tiene referencias comerciales");
+    }
+
+    if (
+      tieneReferenciasFamiliares === "si" ||
+      tieneReferenciasFamiliares === "Si"
+    ) {
+      cy.log("Entrando al flujo de Referencias Familiares");
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
+      cy.xpath(
+        "//mat-expansion-panel-header[.//mat-panel-title[normalize-space()='Referencias Familiares']]"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.wait(2000);
+
+      cy.xpath(
+        "//mat-expansion-panel-header[.//mat-panel-title[normalize-space()='Referencias Familiares']]"
+      ).scrollIntoView();
+      cy.wait(2000);
+      cy.xpath(
+        "//mat-label[normalize-space(.)='Parentesco']/ancestor::label/following::input[1]"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.wait(500);
+      cy.xpath(
+        `//mat-option[normalize-space(.//span[contains(@class, 'mdc-list-item__primary-text')]) = normalize-space("${parentescoReferenciaFamiliarCliente}")]`
+      ).click({ force: true });
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space(text())='Primer Apellido']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(apellidoReferenciaFamiliarCliente);
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space(text())='Primer Nombre']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombreReferenciaFamiliarCliente);
+
+      cy.xpath(
+        "//mat-label[normalize-space(text())='Tipo de Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//mat-select"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.xpath(
+        `//mat-option[normalize-space(.)='${tipoTelefonoReferenciaFamiliarCliente}']`
+      ).click();
+      cy.wait(500);
+      cy.xpath(
+        "//mat-label[normalize-space(text())='Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .clear()
+        .type(telefonoReferenciaFamiliarCliente);
+      cy.wait(1000);
+      cy.xpath("//button[.//span[text()='Agregar']]")
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.wait(1000);
+      cy.xpath("//button[.//span[text()='Agregar']]")
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    } else {
+      cy.log("No tiene referencias Familiares");
+    }
+
+    if (
+      tieneReferenciasPersonales === "si" ||
+      tieneReferenciasPersonales === "Si"
+    ) {
+      cy.xpath(
+        "//mat-expansion-panel-header[normalize-space(.//mat-panel-title) = 'Referencias Personales']"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
+      cy.xpath(
+        "//mat-label[normalize-space(text())='Primer Apellido']/ancestor::div[contains(@class, 'mat-mdc-form-field-flex')]//input"
+      )
+
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(apellidoreferenciaPersonalCliente, { timeout: 6000 });
+      cy.xpath(
+        "//mat-label[normalize-space(text())='Primer Nombre']/ancestor::div[contains(@class, 'mat-mdc-form-field-flex')]//input"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(nombreReferenciaPersonalCliente, { timeout: 6000 });
+      cy.xpath(
+        "//mat-label[normalize-space(text())='Tipo de Teléfono']/ancestor::div[contains(@class, 'mat-mdc-form-field-flex')]//mat-select"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.wait(500);
+      cy.xpath(
+        `//mat-option[normalize-space(.//span[contains(@class, 'mdc-list-item__primary-text')]) = "${tipoTelefonoReferenciaPersonalCliente}"]`
+      ).click({ force: true, timeout: 6000 });
+      cy.wait(500);
+      cy.xpath(
+        "//div[contains(@class,'mat-mdc-text-field-wrapper')]//mat-label[normalize-space(text())='Teléfono']/ancestor::div[contains(@class,'mat-mdc-form-field-flex')]//input[@matinput]"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .clear()
+        .type(telefonoReferenciaPersonalCliente);
+
+      cy.xpath(
+        "//button[contains(@class, 'mat-mdc-outlined-button') and .//span[normalize-space()='Agregar']]"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+      cy.xpath(
+        "//button[contains(@class, 'mat-mdc-outlined-button') and .//span[normalize-space()='Agregar']]"
+      )
+        .filter(":visible:not([disabled])")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true, timeout: 6000 });
+      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    } else {
+      cy.log("No tiene referencias personales adicioanales");
+    }
+    cy.xpath(
+      "//button[.//span[contains(@class, 'mdc-button__label') and normalize-space(text())='Siguiente']]"
+    )
+      .filter(":visible:not([disabled])")
+      .first()
+      .scrollIntoView()
+      .should("be.visible")
+      .click({ force: true, timeout: 6000 });
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
+  }
+
+  digitalizacionDocumentos() {
+    cy.log("Flujo para ingresar documentos");
+    //para ingresar con DNI
+    cy.xpath(
+      "//tr[td[contains(normalize-space(.), 'DNI')]]//button[.//mat-icon[normalize-space(text())='add']]"
+    )
+      .filter(":visible:not([disabled])")
+      .first()
+      .scrollIntoView()
+      .should("be.visible")
+      .click({ force: true, timeout: 6000 });
+    cy.wait(500);
+    cy.xpath(
+      "//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))]"
+    )
+      .filter(":visible")
+      .first()
+      .find("input[type='file']")
+      .attachFile("DNI_HONDURAS_PRUEBA.jpg", { force: true });
+
+    cy.wait(1000);
+    cy.xpath('//p[normalize-space(text())="Notas:"]')
+      .filter(":visible:not([disabled])")
+      .first()
+      .scrollIntoView();
+    cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+      .filter(":visible:not([disabled])")
+      .first()
+      .scrollIntoView()
+      .should("be.visible")
+      .click({ force: true, timeout: 6000 });
+
+    // //Para ingresar el RTN (sera opcional)
+    cy.wait(2000);
+
+    cy.xpath(
+      "//tr[td[contains(normalize-space(.), 'RTN')]]//button[.//mat-icon[normalize-space(text())='add']]"
+    ).then(($el) => {
+      if ($el.length && Cypress.dom.isVisible($el[0])) {
+        cy.log("Documento RTN si aplica");
+
+        cy.wrap($el).click({ force: true });
+        cy.wait(500);
+        cy.xpath(
+          "//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))]"
+        )
+          .filter(":visible")
+          .first()
+          .find("input[type='file']")
+          .attachFile("rtn_prueba_1.jpg", { force: true });
+
+        cy.wait(1000);
+        cy.xpath('//p[normalize-space(text())="Notas:"]')
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView();
+        cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .click({ force: true, timeout: 6000 });
+      } else {
+        cy.log("Documento no está cargado, por lo que no entra a este paso");
+      }
+    });
+
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
+    cy.xpath('//button[.//span[normalize-space(text())="Siguiente"]]')
+      .filter(":visible:not([disabled])")
+      .first()
+      .scrollIntoView()
+      .should("be.visible")
+      .click({ force: true, timeout: 6000 });
+    cy.seleccionarAutorizacionLocal("Tiene documento Faltante");
+    cy.wait(500);
+    cy.xpath("//button[.//span[normalize-space(text())='Finalizar']]")
+      .filter(":visible:not([disabled])")
+      .first()
+      .scrollIntoView()
+      .should("be.visible")
+      .click({ force: true, timeout: 6000 });
+
+    cy.xpath("//button[normalize-space(text())='Continuar']")
+      .filter(":visible:not([disabled])")
+      .first()
+      .scrollIntoView()
+      .should("be.visible")
+      .click({ force: true, timeout: 6000 });
   }
 
   //************************************************************************/

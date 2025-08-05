@@ -1,5 +1,6 @@
 require("cypress-xpath");
 import "cypress-plugin-tab";
+import 'cypress-file-upload';
 
 Cypress.Commands.add("Login", (URL, Usuario, Password) => {
   // Visita la URL de inicio
