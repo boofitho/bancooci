@@ -31,6 +31,14 @@ Cypress.Commands.add("oculto", () => {
   cy.get(".loading", { timeout: 60000 }).should("not.exist");
 });
 
+Cypress.Commands.add('leerHojaExcel', (nombreHoja) => {
+  return cy.task('readExcelToJson', {
+    filePath: 'cypress/fixtures/datos.xlsx',
+    hoja: nombreHoja
+  });
+});
+
+
 Cypress.Commands.add('xpathClk', (xpath) => {
   cy.xpath(xpath, { timeout: 60000 }).then($el => {
     if ($el.length > 0) {
@@ -45,15 +53,7 @@ Cypress.Commands.add('xpathClk', (xpath) => {
       } else {
       cy.log(`⚠️ No se encontró el xpath: ${xpath}`);
     }
-  })
-
-  // cy.xpath(xpath, { timeout: 60000 })
-  // .scrollIntoView({})
-  // .should('be.visible')
-  // .should('not.be.disabled')
-  // .click({force: true});
-  // cy.oculto()
-});
+  })});
 
 Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
   cy.xpath(xpath, { timeout: 60000 }).then($el => {
@@ -109,6 +109,27 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
   // cy.oculto()
 });
 
+
+Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
+  // Paso 1: Ingresa a buscar cliente
+  cy.xpathClk("  //span[contains(text(), 'Operación')]")
+  cy.wait(2000)
+  cy.xpathClk("  //span[contains(text(), 'Búsqueda clientes')]")
+  // Paso 2: Clic en el input asociado a "Tipo de documento"
+  cy.xpathClk("//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input")
+  // Paso 3: Esperar a que se abra el panel y seleccionar la opción que coincide con la variable
+  cy.contains('.mat-mdc-option span',tipoDocumento, { timeout: 60000 }).click({ force: true })
+  // Paso 4: Click en identificacion y llenamos 
+  cy.xpathBtxt(InfoTipoDocumento, "(//mat-label[normalize-space()='Identificación'])[1]")
+  // Paso 5: Click en "Buscar"
+  cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")
+  cy.wait(500)
+  // Paso 6: Click en "Agregar"
+  cy.xpathClk("//span[normalize-space(text()) = 'Agregar']")
+  // Paso 7: Click en "Cliente"
+  cy.wait(500)
+  cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
+});
 Cypress.Commands.add('conClk', (cont) => {
 cy.contains(cont, { timeout: 60000 })
   .scrollIntoView({})
@@ -288,31 +309,6 @@ Cypress.Commands.add("ingresoJson", (valorJson) => {
   });
 });
 
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add("IngresoFecha", (Fecha, xpAbrirFecha) => {
   // Paso 1: Parsear la fecha

@@ -24,18 +24,42 @@ class MetodosGenerales{
       }   
 
 
-      ArchivoNubeD(URL_Datos){
+      // DescargaArchivo(URL_Datos){
+      //   const sheetUrl2 = URL_Datos;
+
+      //   cy.request({
+      //     url: sheetUrl2,
+      //     encoding: 'binary',
+      //     method: 'GET',
+      //     headers: {
+      //       'accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      //     }
+      //   }).then((response) => {
+      //     // Convertir el binario a Buffer antes de escribirlo
+      //     const fileBuffer = Buffer.from(response.body, 'binary');
+
+      //     cy.writeFile('cypress/fixtures/datos.xlsx', fileBuffer, { encoding: 'binary' });
+      //   });
+      // }
+
+      DescargaArchivoComplementos(URL_Datos, nombreArchivo){
         const sheetUrl2 = URL_Datos;
 
-        // Hacer la petición para descargar el archivo como binario
         cy.request({
           url: sheetUrl2,
-          encoding: 'binary'
+          encoding: 'binary',
+          method: 'GET',
+          headers: {
+            'accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          }
         }).then((response) => {
-          // Guardar el archivo en la carpeta fixtures
-          cy.writeFile('cypress/fixtures/datosTX.xlsx', response.body, 'binary');
+          // Convertir el binario a Buffer antes de escribirlo
+          const fileBuffer = Buffer.from(response.body, 'binary');
+
+          cy.writeFile("cypress/fixtures/"+nombreArchivo+".xlsx", fileBuffer, { encoding: 'binary' });
         });
       }
+
 
       ArchivoNubeE(URL_ERRORES){
         const sheetUrl = URL_ERRORES;
