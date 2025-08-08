@@ -2,17 +2,20 @@ require("cypress-xpath");
 class personaJuridica {
 
 //### PASO #1
-  IngresoDatosPersonaJuridica(){ 
-    
-    cy.xpathClk('//label[contains(normalize-space(), "Jurídica")]')
-  }
   //Identificacion Juridica 
-  Identificacion(data){ 
+  Identificacion(){ 
+
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/identificacion.xlsx", hoja: 1}).then((data) => {
+
+    cy.xpathClk('//label[contains(normalize-space(), "Jurídica")]')
     cy.xpathBtxt(data.RTN, "//mat-label[contains(normalize-space(), 'REGISTRO TRIBUTARIO NACIONAL')]") // puede avanzar sin necesidad de los otros campos
     cy.xpathBtxt(data.NRT, "//mat-label[contains(normalize-space(), 'NUEVO REGISTRO TRIBUTARIO')]") // validar por que si se ingresa solicita fecha obligado
     cy.IngresoFecha(data.FechaExp, "//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button") //se peude ingresar sin necesidad de NRT
     cy.xpathClk("(//button[contains(., 'Siguiente')])[1]")
-  }//FIN Identificacion Juridica
+  
+    })
+  }
+  //FIN Identificacion Juridica
 
   //### FIN PASO #1
 

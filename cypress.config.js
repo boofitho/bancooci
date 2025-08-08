@@ -2,6 +2,8 @@
 const { defineConfig } = require('cypress');
 const fs = require('fs');
 const path = require('path');
+const ExcelJS = require('exceljs');
+const excelToJson = require('convert-excel-to-json');
 
 
 module.exports = defineConfig({
@@ -26,16 +28,36 @@ module.exports = defineConfig({
         }
         return launchOptions;
       });
+
+
+
+
+      on('task', {
+        listarHojasExcel({ filePath }) {
+          const xlsx = require("xlsx");
+          const workbook = xlsx.readFile(filePath);
+          return workbook.SheetNames;
+        }
+      });
+
+
       //leer archivo
       on('task', {
-        readExcelToJson({ filePath }) {
-            const xlsx = require("xlsx");
-            const workbook = xlsx.readFile(filePath);
-            const sheetName = workbook.SheetNames[0];
-            const jsonData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
-            return jsonData;
-        },
+        readExcelToJson({ filePath, hoja }) {
+          const xlsx = require("xlsx");
+          const workbook = xlsx.readFile(filePath);
+
+          const worksheet = workbook.Sheets[hoja]; // hoja = nombre exacto
+
+          if (!worksheet) {
+            throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
+          }
+
+          const jsonData = xlsx.utils.sheet_to_json(worksheet);
+          return jsonData;
+        }
       });
+
       //FIN leer archivo
 
       //Eliminar archivos 
