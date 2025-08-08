@@ -12,15 +12,15 @@ let usuario = "OPERADORQA";
 let contrasena = "byte0625";
 
 const data = {
-  correo: "000196633@gmail.com",
+  correo: "000196635@gmail.com",
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200533107", // seguir con este     0301 2005 33078
+  InfoTipoDocumento: "0301200533109", // seguir con este     0301 2005 33078
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0301-2005-322886", // 
+  RTN: "HN0301-2005-322890", // 
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -47,7 +47,7 @@ const data = {
   persona: " Natural",
   fechaExpericacionCedulaCliente: "06/11/2026",
   textoGenero: " Masculino",
-  PrimerApellido: "akr",
+  PrimerApellido: "alr",
   PrimerNombre: "Cristobal",
  fechaNacimientoCliente: "05/02/2012",
   EstadoCivil: " Soltero(a) ", //  " Soltero(a) "  " Casado(a) "
@@ -131,14 +131,14 @@ fechaIngresoReferenciaLaboralConyugue: "06/04/1999",
   ubicacionResidencia: "comayagua",
   tipoCorreoContactoCliente: " Correo de Trabajo ",
   tipoTelefonoContactoCliente: " Celular ",
-  telefonoContactoCliente: "50421090294", //importante
+  telefonoContactoCliente: "50421090296", //importante
 
   //Dependencia economica
   tieneDependenciaEconomica: "no",
   parentescoDependenciaEconomica: " Papá ",
-  cedulaDependenciaEconomica: "0302195500313",
+  cedulaDependenciaEconomica: "0302195500315",
 fechaExpiracionCedulaDependenciaEconomica: "17/03/2030",
-  apellidoDependenciaEconomica: "mxf",
+  apellidoDependenciaEconomica: "mzf",
   nombredependenciaEconomica: "Luis",
   //Dependientes
   tieneDependiente: "no",
@@ -397,9 +397,7 @@ describe("BancoOcci", () => {
 
           cotizador.datosDelNegocio(
             data.nombreEmpresaCliente,
-            data.anioPrevious,
-            data.mesPrevious,
-            data.diaPrevious,
+            data.FechaInscripcionNegocioCliente,
             data.giroNegocioCliente,
             data.ingresoMensuales,
             data.categoriaDeNegocioCliente,
