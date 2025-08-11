@@ -8,6 +8,7 @@ const PJ = new personaJuridica();
 const URL_Var = Cypress.env('URL_VAR');       //link URL´s para descargar los documentos 
 
 let ArrayVar = []
+let objetoVar = {};
 
 let objetoCliente = {};
 let objetoID = {};
@@ -59,14 +60,13 @@ describe("BancoOcci", () => {
       Generales.ArchivoNubeV(URL_Var)
     
       //Lee archivo de variables y guarda en un array los resultados 
-      cy.task("readExcelToJson", { 
-        filePath: "cypress/fixtures/variables.xlsx", 
-        hoja: "Variables" 
-      }).then((Var) => {
-        Var.forEach((filaVar) => {
-          ArrayVar.push(filaVar);
-        });
-      });
+    cy.task("readExcelToJson", { 
+      filePath: "cypress/fixtures/variables.xlsx", 
+      hoja: "Variables" 
+    }).then((datosVar) => {
+      objetoVar = datosVar; // Lo guardas directamente como objeto
+      cy.log(JSON.stringify(objetoVar)); // Ver contenido
+    });
    
       const folderPath = 'cypress/screenshots';  // Aquí coloca la ruta de la carpeta de capturas u otros archivos que quieras borrar
       cy.task('deleteAllFiles', folderPath);     //con este comando borramos el folderpath de screenshots
@@ -75,7 +75,7 @@ describe("BancoOcci", () => {
 
 it('Descarga de archivos datos y lectura de hojas del mismo', () => {
     //descarga archivo "datos"
-    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos")  
+    Generales.DescargaArchivoComplementos(objetoVar[0].URL_DATOS, "datos")  
     cy.wait(5000) // descargando archivo
    
     //lista las hojas disponibles en el archivo datos
@@ -116,7 +116,7 @@ it('Descarga de archivos datos y lectura de hojas del mismo', () => {
       objetoID = datosID; // Ya es un objeto desde la tarea
       cy.log(JSON.stringify(objetoID));
     });
-    
+
   //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
     cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPerjur"}).then((DataGenPJ) => {
       DataGenPJ.forEach((filaVar) => {
@@ -370,7 +370,7 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
 */
 it('Login', () => {
   
-  cy.Login(ArrayVar[0].URL_Sitio, ArrayVar[0].Usuario, ArrayVar[0].Password);
+  cy.Login(objetoVar[0].URL_Sitio, objetoVar[0].Usuario, objetoVar[0].Password);
 })
 
 it("Agregar cliente", () => {
