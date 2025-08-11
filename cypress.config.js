@@ -42,42 +42,42 @@ module.exports = defineConfig({
 
 
       //leer archivo
-      // on('task', {
-      //   readExcelToJson({ filePath, hoja }) {
-      //     const xlsx = require("xlsx");
-      //     const workbook = xlsx.readFile(filePath);
-
-      //     const worksheet = workbook.Sheets[hoja]; // hoja = nombre exacto
-
-      //     if (!worksheet) {
-      //       throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
-      //     }
-
-      //     const jsonData = xlsx.utils.sheet_to_json(worksheet);
-      //     return jsonData;
-      //   }
-      // });
       on('task', {
         readExcelToJson({ filePath, hoja }) {
           const xlsx = require("xlsx");
           const workbook = xlsx.readFile(filePath);
 
-          const worksheet = workbook.Sheets[hoja];
+          const worksheet = workbook.Sheets[hoja]; // hoja = nombre exacto
+
           if (!worksheet) {
             throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
           }
 
           const jsonData = xlsx.utils.sheet_to_json(worksheet);
-
-          // Si quieres devolverlo como objeto con clave => valor
-          const dataObj = {};
-          jsonData.forEach((fila, index) => {
-            dataObj[index] = fila; // clave numérica
-          });
-
-          return dataObj;
+          return jsonData;
         }
       });
+      // on('task', {
+      //   readExcelToJson({ filePath, hoja }) {
+      //     const xlsx = require("xlsx");
+      //     const workbook = xlsx.readFile(filePath);
+
+      //     const worksheet = workbook.Sheets[hoja];
+      //     if (!worksheet) {
+      //       throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
+      //     }
+
+      //     const jsonData = xlsx.utils.sheet_to_json(worksheet);
+
+      //     // Si quieres devolverlo como objeto con clave => valor
+      //     const dataObj = {};
+      //     jsonData.forEach((fila, index) => {
+      //       dataObj[index] = fila; // clave numérica
+      //     });
+
+      //     return dataObj;
+      //   }
+      // });
 
 
 
