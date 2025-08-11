@@ -2,18 +2,18 @@ require("cypress-xpath");
 import "cypress-plugin-tab";
 import 'cypress-file-upload';
 
-Cypress.Commands.add("Login", (URL, Usuario, Password) => {
+Cypress.Commands.add("Login", (data) => {
   // Visita la URL de inicio
-  cy.visit(URL);
-  //espera de 5 segundos para que redireccione si es necesario
-  cy.wait(5000);
+  cy.visit(data.URL_Sitio);
+  //espera de 5 segundos para que redireccione si es necesario  
+  cy.wait(5000) 
   // Verifica si el hostname es el de Keycloak o plataforma
-  cy.location("hostname").then((hostname) => {
+  cy.location('hostname').then((hostname) => {
     if (hostname.includes("keycloak-core.bytesw.cloud")) {
       // Si estamos en la página de Keycloak, hacemos login usando cy.origin
       cy.origin(
         "https://keycloak-core.bytesw.cloud",
-        { args: { user: Usuario, password: Password } },
+        { args: { user: data.Usuario, password: data.Password } },
         ({ user, password }) => {
           cy.get("input#username").type(user, { log: false }); // Oculta en logs por seguridad
           cy.get("input#password").type(password, { log: false });
@@ -110,7 +110,7 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
 });
 
 
-Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
+Cypress.Commands.add('busquedaCliente', (data) => {
   // Paso 1: Ingresa a buscar cliente
   cy.xpathClk("  //span[contains(text(), 'Operación')]")
   cy.wait(2000)
@@ -118,9 +118,9 @@ Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
   // Paso 2: Clic en el input asociado a "Tipo de documento"
   cy.xpathClk("//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input")
   // Paso 3: Esperar a que se abra el panel y seleccionar la opción que coincide con la variable
-  cy.contains('.mat-mdc-option span',tipoDocumento, { timeout: 60000 }).click({ force: true })
+  cy.contains('.mat-mdc-option span',data.tipoDocumento, { timeout: 60000 }).click({ force: true })
   // Paso 4: Click en identificacion y llenamos 
-  cy.xpathBtxt(InfoTipoDocumento, "(//mat-label[normalize-space()='Identificación'])[1]")
+  cy.xpathBtxt(data.InfoTipoDocumento, "(//mat-label[normalize-space()='Identificación'])[1]")
   // Paso 5: Click en "Buscar"
   cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")
   cy.wait(500)

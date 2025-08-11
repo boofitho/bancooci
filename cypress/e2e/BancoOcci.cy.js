@@ -583,7 +583,7 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
 */
 it('Login', () => {
   
-  cy.Login(ArrayVar[0].URL_Sitio, ArrayVar[0].Usuario, ArrayVar[0].Password);
+  cy.Login(ArrayVar[0]);
 })
 
 it("Agregar cliente", () => {
