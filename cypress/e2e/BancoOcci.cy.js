@@ -610,7 +610,7 @@ it('Login', () => {
 it("Agregar cliente", () => {
 
         cy.busquedaCliente(ArrayCliente[no].tipoDocumento, ArrayCliente[no].InfoTipoDocumento);
-
+cy.log(objetoID[no].TipodePersona)
     cy.log("AQUIIIIIII PAPUSHO antes del if");
     
 
@@ -619,12 +619,12 @@ it("Agregar cliente", () => {
         if (debeCrear) {
           cotizador.IdentificacionGeneralPersonaNatural(
 
-            this.ArrayCliente[no].tipoDocumento,
-             this.ArrayCliente[no].FechaExpiracion,
-             this.ArrayID[no].RTN,
-            // data.InfoTipoDocumento,
-            // data.fechaExpericacionCedulaCliente,
-            // data.RTN,
+            // this.ArrayCliente[no].tipoDocumento,
+            //  this.ArrayCliente[no].FechaExpiracion,
+            //  this.ArrayID[no].RTN,
+            data.InfoTipoDocumento,
+            data.fechaExpericacionCedulaCliente,
+            data.RTN,
             data.correo
           );
           cotizador.DatosGeneralesPersonaNatural(
