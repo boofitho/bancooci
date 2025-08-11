@@ -609,12 +609,13 @@ it('Login', () => {
 
 it("Agregar cliente", () => {
 
-        cy.busquedaCliente(ArrayCliente[no].tipoDocumento, ArrayCliente[no].InfoTipoDocumento);
+        cy.busquedaCliente(objetoCliente[no].tipoDocumento, objetoCliente[no].InfoTipoDocumento);
 cy.log(objetoID[no].TipodePersona)
     cy.log("AQUIIIIIII PAPUSHO antes del if");
     
 
-    if (ArrayID[no].TipodePersona === "Natural") {
+    if (objetoID[no].TipodePersona === "Natural") {
+
       cotizador.validarSiSeDebeCrearCliente().then((debeCrear) => {
         if (debeCrear) {
           cotizador.IdentificacionGeneralPersonaNatural(
@@ -622,9 +623,9 @@ cy.log(objetoID[no].TipodePersona)
             // this.ArrayCliente[no].tipoDocumento,
             //  this.ArrayCliente[no].FechaExpiracion,
             //  this.ArrayID[no].RTN,
-            data.InfoTipoDocumento,
-            data.fechaExpericacionCedulaCliente,
-            data.RTN,
+            objetoID[no].InfoTipoDocumento,
+            objetoID[no].FechaExpiracion,
+             objetoID[no].RTN,
             data.correo
           );
           cotizador.DatosGeneralesPersonaNatural(
@@ -858,6 +859,6 @@ cy.log(objetoID[no].TipodePersona)
       cy.log("*******************************************************");
 
     }
-    no++
+    
   })//TERMINA IT AGREGAR CLIENTE
 }); // TERMINA EL IT "Exploración automática de pantalla desconocida"
