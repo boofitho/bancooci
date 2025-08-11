@@ -612,29 +612,13 @@ it("Agregar cliente", () => {
             ArrayDataGenP[no].UbicacionSegundaNacionalidad)
              //
 
-// cy.log(   ArrayDataGenP[3].Genero,
-//             ArrayDataGenP[3].PrimerApellido, 
-//             ArrayDataGenP[3].PrimerNombre,
-//             ArrayDataGenP[3].FechaNacimientoCliente,
-//             ArrayDataGenP[3].EstadoCivil,
-//             ArrayDataGenP[3].GradoAcademico,
-//             ArrayDataGenP[3].Profesion,
-//             ArrayDataGenP[3].AniosEducacion,
-//             ArrayDataGenP[3].CapacidadadesEspeciales,
-//             ArrayDataGenP[3].Ocupacion,
-//             ArrayDataGenP[3].TieneDobleNacionalidad,
-//             ArrayDataGenP[3].SegundaNacionalidad,
-//             ArrayDataGenP[3].NumeroSocial,
-//             ArrayDataGenP[3].UbicacionSegundaNacionalidad)
+
     if (ArrayID[no].TipodePersona === "Natural") {
 
       cotizador.validarSiSeDebeCrearCliente().then((debeCrear) => {
         if (debeCrear) {
           cotizador.IdentificacionGeneralPersonaNatural(
 
-            // this.ArrayCliente[no].tipoDocumento,
-            //  this.ArrayCliente[no].FechaExpiracion,
-            //  this.ArrayID[no].RTN,
             ArrayID[no].InfoTipoDocumento,
             ArrayID[no].FechaExpiracion,
              ArrayID[no].RTN,
@@ -671,8 +655,7 @@ it("Agregar cliente", () => {
             // data.NumeroSocial,
             // data.UbicacionSegundaNacionalidad
           );
-          cotizador.clickpaso2();
-          cy.wait(500);
+     
 
           cotizador.PersonaPep(
             data.esPEP,

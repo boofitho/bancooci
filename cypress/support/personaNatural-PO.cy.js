@@ -291,17 +291,14 @@ class PersonaNatural {
     } else {
       cy.log("No tiene doble nacionalidad");
     }
-  } // Fin de paso 2. Datos generales persona natural
-
-  clickpaso2() {
-    cy.wait(3000);
-    cy.xpath('//*[@id="cdk-stepper-0-content-1"]/div/div/button/span[4]', {
-      timeout: 6000,
-    })
-
+ cy.xpath(
+      "//span[@class='mdc-button__label'][normalize-space()='Siguiente']"
+    )
+      .filter(":visible:not([disabled])")
+      .first()
+      .scrollIntoView()
       .should("be.visible")
-      .should("not.be.disabled")
-      .click({ force: true }, { timeout: 6000 });
+      .click({ force: true });
     cy.wait(3000);
     cy.get(".loading", { timeout: 60000 }).should("not.exist");
     cy.wait(2000);
@@ -313,7 +310,8 @@ class PersonaNatural {
     cy.seleccionarAutorizacionLocal("Nombre Duplicado");
     cy.wait(2000);
     cy.get(".loading", { timeout: 60000 }).should("not.exist");
-  }
+  } // Fin de paso 2. Datos generales persona natural
+
 
 
   //Inicio paso 3 PEP
