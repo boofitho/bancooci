@@ -148,7 +148,7 @@ Cypress.Commands.add("conBtxt", (varibale, cont) => {
   cy.oculto();
 });
 
-Cypress.Commands.add("busquedaCliente", (data) => {
+Cypress.Commands.add("busquedaCliente", (tipoDocumento, InfoTipoDocumento) => {
   // Paso 1: Ir al módulo
   cy.xpathClk("//span[contains(text(), 'Operación')]");
   cy.wait(2000);
@@ -158,13 +158,13 @@ Cypress.Commands.add("busquedaCliente", (data) => {
   cy.xpathClk(
     "//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input"
   );
-  cy.contains(".mat-mdc-option span", data.tipoDocumento, {
+  cy.contains(".mat-mdc-option span", tipoDocumento, {
     timeout: 60000,
   }).click({ force: true });
 
   // Paso 3: Llenar número y buscar
   cy.xpathBtxt(
-    data.InfoTipoDocumento,
+    InfoTipoDocumento,
     "(//mat-label[normalize-space()='Identificación'])[1]"
   );
   cy.xpathClk("//span[normalize-space(text()) = 'Buscar']");

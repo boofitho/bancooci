@@ -31,15 +31,15 @@ let usuario = "OPERADORQA";
 let contrasena = "byte0625";
 
 const data = {
-  correo: "000196635@gmail.com",
+  correo: "000196636@gmail.com",
   //Buscar Cliente
   tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200533109", // seguir con este     0301 2005 33078
+  InfoTipoDocumento: "0301200533110", // seguir con este     0301 2005 33078
 
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0301-2005-322890", // 
+  // RTN: "HN0301-2005-322892", // 
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -66,9 +66,9 @@ const data = {
   persona: " Natural",
   fechaExpericacionCedulaCliente: "06/11/2026",
   textoGenero: " Masculino",
-  PrimerApellido: "alr",
+  PrimerApellido: "amr",
   PrimerNombre: "Cristobal",
- fechaNacimientoCliente: "05/02/2012",
+ fechaNacimientoCliente: "05/02/2005",
   EstadoCivil: " Soltero(a) ", //  " Soltero(a) "  " Casado(a) "
   gradoAcademico: " UNIVERSITARIO ",
   profesion: " AGENTE DE VIAJES ",
@@ -150,7 +150,7 @@ fechaIngresoReferenciaLaboralConyugue: "06/04/1999",
   ubicacionResidencia: "comayagua",
   tipoCorreoContactoCliente: " Correo de Trabajo ",
   tipoTelefonoContactoCliente: " Celular ",
-  telefonoContactoCliente: "50421090296", //importante
+  telefonoContactoCliente: "50421090297", //importante
 
   //Dependencia economica
   tieneDependenciaEconomica: "no",
@@ -210,7 +210,7 @@ FechaInscripcionNegocioCliente: "12/03/1999",
   ubicacionReferencialLaboralCliente: "Choluteca",
   tipoCorreoReferencialLaboralCliente: " Correo Personal ",
   tipoTelefonoReferenciaLaboralCliente: " Laboral ",
-  telefonoReferencialLaboralCliente: "50490072610",
+  telefonoReferencialLaboralCliente: "50490072611",
 
   //Referencias Clientes
   referenciasBancarias: "no",
@@ -258,7 +258,7 @@ FechaInscripcionNegocioCliente: "12/03/1999",
 
   //Digitalizar Documentos
 };
-let no = 0
+let no = 2
 describe("BancoOcci", () => {
 
   Cypress.on("uncaught:exception", (err, Runnable) => {
@@ -405,6 +405,7 @@ describe("BancoOcci", () => {
     // }); 
 
     //Fin lectura del archivo datos 
+    
         
   })// TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
 
@@ -442,18 +443,22 @@ it('Login', () => {
 
 it("Agregar cliente", () => {
 
-    cy.busquedaCliente(ArrayCliente[no].tipoDocumento, ArrayCliente[no].InfoTipoDocumento);
+        cy.busquedaCliente(ArrayCliente[no].tipoDocumento, ArrayCliente[no].InfoTipoDocumento);
 
     cy.log("AQUIIIIIII PAPUSHO antes del if");
-    if (data.TipodePersona.toLowerCase() === "natural") {
+    
+
+    if (ArrayID[no].TipodePersona === "Natural") {
       cotizador.validarSiSeDebeCrearCliente().then((debeCrear) => {
         if (debeCrear) {
-          Generales.TipodePersona(data.persona);
-          cy.wait(2000);
           cotizador.IdentificacionGeneralPersonaNatural(
-            data.InfoTipoDocumento,
-            data.fechaExpericacionCedulaCliente,
-            data.RTN,
+
+            this.ArrayCliente[no].tipoDocumento,
+             this.ArrayCliente[no].FechaExpiracion,
+             this.ArrayID[no].RTN,
+            // data.InfoTipoDocumento,
+            // data.fechaExpericacionCedulaCliente,
+            // data.RTN,
             data.correo
           );
           cotizador.DatosGeneralesPersonaNatural(

@@ -89,6 +89,7 @@ class PersonaNatural {
     cy.wait(2000);
   }
   IngresoPersonaNatural(usuarioAgregar) {
+
     //Metodo para agregar tipo de persona
     //Ingreso de persona natural
     cy.contains("span", "Agregar ", { timeout: 60000 })
@@ -107,6 +108,7 @@ class PersonaNatural {
   ) {
     this.correo = correo;
     //Se ingresan datos en la pantalla tipo de persona natural 1. Identificación general
+    cy.xpath('//label[contains(normalize-space(), "Natural")]').click({force:true})
     cy.contains("mat-label", "CEDULA DE IDENTIDAD", { timeout: 60000 })
       .should("be.visible")
       .should("not.be.disabled")
