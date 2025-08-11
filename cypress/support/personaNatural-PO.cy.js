@@ -263,7 +263,7 @@ class PersonaNatural {
           });
 
           // Flujo adicional si es estadounidense
-          if (segundaNacionalidad.trim().toLowerCase() === "estadounidense") {
+          if (segundaNacionalidad === "estadounidense") {
             cy.contains("mat-label", "Social Security Number", {
               timeout: 6000,
             })
@@ -314,6 +314,7 @@ class PersonaNatural {
     cy.wait(2000);
     cy.get(".loading", { timeout: 60000 }).should("not.exist");
   }
+
 
   //Inicio paso 3 PEP
 
@@ -3413,7 +3414,7 @@ class PersonaNatural {
     codigoZipFatcaCliente
   ) {
     if (
-      this.nacionalidad.trim().toLowerCase() === "estadounidense" &&
+      this.segundaNacionalidad === "estadounidense" &&
       this.tieneDobleNacionalidad === true
     ) {
       cy.log("Es estadounidense, por lo que debemos de llenar el flujo");
