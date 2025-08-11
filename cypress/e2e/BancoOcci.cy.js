@@ -41,7 +41,7 @@ let ArrayConCorreo =[]
 let ArrayConTelefono =[]
 let ArrayRefBanca =[]
 
-
+//GAAAAAY!
 
 
 let no = 0
