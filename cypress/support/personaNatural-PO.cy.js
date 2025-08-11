@@ -149,22 +149,22 @@ class PersonaNatural {
     textoGenero,
     PrimerApellido,
     PrimerNombre,
-    fechaNacimientoCliente,
+    FechaNacimientoCliente,
     EstadoCivil,
     gradoAcademico,
     profesion,
     NoAniosEducacion,
-    capacidadadesEspeciales,
+    capacidadesEspeciales,
     ocupacion,
-    nacionalidad,
     tieneDobleNacionalidad,
+    segundaNacionalidad,
     NumeroSocial,
     UbicacionSegundaNacionalidad
   ) {
     this.PrimerNombre = PrimerNombre;
     this.EstadoCivil = EstadoCivil;
-    this.fechaNacimientoCliente = fechaNacimientoCliente.split("/")[2];
-    this.nacionalidad = nacionalidad;
+    this.FechaNacimientoCliente = FechaNacimientoCliente.split("/")[2];
+    this.segundaNacionalidad = segundaNacionalidad;
     this.tieneDobleNacionalidad = tieneDobleNacionalidad;
     // Inicio de paso 2. Datos generales persona natural
     cy.xpath(`//label[contains(normalize-space(), '${textoGenero}')]`, {timeout:6000})
@@ -200,13 +200,13 @@ class PersonaNatural {
       .first()
       .scrollIntoView()
       .should("be.visible")
-      .type(fechaNacimientoCliente, { force: true });
+      .type(FechaNacimientoCliente, { force: true });
     cy.contains("mat-label", "Estado Civil", { timeout: 6000 })
       .should("be.visible")
       .should("not.be.disabled")
       .click({ force: true })
       .then(() => {
-        cy.contains("span", EstadoCivil, { timeout: 6000 }).click({
+        cy.xpath(`//span[contains(normalize-space(), '${EstadoCivil}')]`, { timeout: 6000 }).click({
           force: true,
         });
       });
@@ -216,7 +216,7 @@ class PersonaNatural {
       .should("not.be.disabled")
       .click({ force: true })
       .then(() => {
-        cy.contains("span", gradoAcademico, { timeout: 6000 }).click({
+        cy.xpath(`//div[@role='listbox']//span[contains(normalize-space(), '${gradoAcademico}')]`, { timeout: 6000 }).click({
           force: true,
         });
       });
@@ -226,7 +226,7 @@ class PersonaNatural {
       .should("not.be.disabled")
       .click({ force: true })
       .then(() => {
-        cy.contains("span", profesion).click({ force: true });
+       cy.xpath(`//div[@role='listbox']//span[contains(normalize-space(), '${profesion}')]`).click({ force: true });
       });
 
     cy.contains("mat-label", "No. De Años Educación")
@@ -239,7 +239,7 @@ class PersonaNatural {
       .should("not.be.disabled")
       .click({ force: true })
       .then(() => {
-        cy.contains("span", capacidadadesEspeciales, { timeout: 6000 }).click({
+        cy.xpath(`//span[contains(normalize-space(.), '${capacidadesEspeciales}')]`, { timeout: 6000 }).click({
           force: true,
         });
       });
@@ -249,23 +249,21 @@ class PersonaNatural {
       .should("not.be.disabled")
       .click({ force: true })
       .then(() => {
-        cy.contains("span", ocupacion, { timeout: 6000 }).click({
-          force: true,
-        });
+       cy.xpath(`//span[contains(normalize-space(.), '${ocupacion}')]`).click({force:true});
       });
-    if (tieneDobleNacionalidad.trim().toLowerCase() === "si") {
+    if (tieneDobleNacionalidad === true) {
       // Flujo general para doble nacionalidad
       cy.contains("mat-label", "2da. Nacionalidad", { timeout: 6000 })
         .should("be.visible")
         .should("not.be.disabled")
         .click({ force: true })
         .then(() => {
-          cy.contains("span", nacionalidad, { timeout: 6000 }).click({
+          cy.contains("span", segundaNacionalidad, { timeout: 6000 }).click({
             force: true,
           });
 
           // Flujo adicional si es estadounidense
-          if (nacionalidad.trim().toLowerCase() === "estadounidense") {
+          if (segundaNacionalidad.trim().toLowerCase() === "estadounidense") {
             cy.contains("mat-label", "Social Security Number", {
               timeout: 6000,
             })
@@ -2049,7 +2047,7 @@ class PersonaNatural {
         .should("be.visible")
         .click({ force: true });
       cy.get(".loading", { timeout: 60000 }).should("not.exist");
-    } else if (+this.fechaNacimientoCliente >= 2007) {
+    } else if (+this.FechaNacimientoCliente >= 2007) {
       cy.log("Debe de ingresar ya que es menor de edad");
       cy.xpath(
         "//mat-label[normalize-space()='Parentesco']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//mat-select"
@@ -2454,7 +2452,7 @@ class PersonaNatural {
         .should("be.visible")
         .click({ force: true });
     } else if (
-      +this.fechaNacimientoCliente >= 2007 &&
+      +this.FechaNacimientoCliente >= 2007 &&
       tieneDependiente !== "si"
     ) {
       cy.log("Es menor de edad, no deberia de tener dependientes economicos");
@@ -2762,7 +2760,7 @@ class PersonaNatural {
         .click({ force: true });
       cy.wait(1000);
       cy.seleccionarAutorizacionLocal("No afecto ISR");
-    } else if (+this.fechaNacimientoCliente >= 2007) {
+    } else if (+this.FechaNacimientoCliente >= 2007) {
       cy.log("Flujo menor de edad");
       //if para afecto ISR
       if (afectoISRCliente === "si" || afectoISRCliente === "no") {
@@ -3091,7 +3089,7 @@ class PersonaNatural {
         .click({ force: true, timeout: 6000 });
       cy.get(".loading", { timeout: 60000 }).should("not.exist");
     } else if (
-      +this.fechaNacimientoCliente >= 2007 &&
+      +this.FechaNacimientoCliente >= 2007 &&
       (this.situacionlaboralCliente === " Comerciante/Asalariado " ||
         this.situacionlaboralCliente === " Comerciante ")
     ) {
@@ -3416,7 +3414,7 @@ class PersonaNatural {
   ) {
     if (
       this.nacionalidad.trim().toLowerCase() === "estadounidense" &&
-      this.tieneDobleNacionalidad === "si"
+      this.tieneDobleNacionalidad === true
     ) {
       cy.log("Es estadounidense, por lo que debemos de llenar el flujo");
       // Función para marcar "Sí" si la variable es "Si", de lo contrario marca "No"
