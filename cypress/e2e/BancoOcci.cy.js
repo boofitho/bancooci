@@ -41,7 +41,7 @@ let ArrayProveedor =[]
 let ArrayConCorreo =[]
 let ArrayConTelefono =[]
 
-
+//GAAAAAY!
 
 //variables para bancoocci
 let url = "https://plataforma-qa.bytesw.cloud/";
