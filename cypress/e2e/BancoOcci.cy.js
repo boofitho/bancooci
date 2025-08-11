@@ -12,7 +12,7 @@ let ArrayVar = []
 
 let ArrayCliente = []
 let ArrayID = []
-let ArrayDataGenPJ = []
+let ArrayDataGenP = []
 let ArrayCaptAccionistas = []
 let ArrayCapJuntaDir = []
 let ArrayRepreLegalDG = []
@@ -330,9 +330,9 @@ it('Descarga de archivos datos y lectura de hojas del mismo', () => {
     });
           
   //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPerjur"}).then((DataGenPJ) => {
-      DataGenPJ.forEach((filaVar) => {
-        ArrayDataGenPJ.push(filaVar);
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPer"}).then((DataGenP) => {
+      DataGenP.forEach((filaVar) => {
+        ArrayDataGenP.push(filaVar);
       });
     });
 
