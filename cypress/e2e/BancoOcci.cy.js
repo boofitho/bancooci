@@ -9,6 +9,10 @@ const PJ = new personaJuridica();
 const URL_Var = Cypress.env('URL_VAR');       //link URL´s para descargar los documentos 
 
 let ArrayVar = []
+
+let objetoCliente = {};
+let objetoID = {};
+
 let ArrayCliente = []
 let ArrayID = []
 let ArrayDataGenPJ = []
@@ -24,6 +28,23 @@ let ArrayFATCA = []
 let ArrayReferencias = []
 let ArrayDigitalDocs = []
 let ArrayClienteFinalizado = []
+
+//arrays archivos complemetnarios 
+let ArrayRefAccionistas = []
+let ArrayIDcapAcc = []
+let ArrayInfCompl =[]
+let ArrayDtsGnPJyN =[]
+let ArrayRLCapAcc =[]
+let ArrayJuntaDir =[]
+let ArrayRLcorreo =[]
+let ArrayRLtelefono =[]
+let ArrayInfFinanciera =[]
+let ArrayInfDondeOpera =[]
+let ArrayProveedor =[]
+let ArrayConCorreo =[]
+let ArrayConTelefono =[]
+
+
 
 //variables para bancoocci
 let url = "https://plataforma-qa.bytesw.cloud/";
@@ -285,10 +306,10 @@ describe("BancoOcci", () => {
 
  }); // TERMINA BEFORE
 
-  it('Descarga de archivos datos y lectura de hojas del mismo', () => {
+it('Descarga de archivos datos y lectura de hojas del mismo', () => {
     //descarga archivo "datos"
     Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos")  
-   cy.wait(5000) // descargando archivo
+    cy.wait(5000) // descargando archivo
    
     //lista las hojas disponibles en el archivo datos
     cy.task('listarHojasExcel', { filePath: 'cypress/fixtures/datos.xlsx' }).then((nombres) => {
@@ -298,19 +319,37 @@ describe("BancoOcci", () => {
     /*Inicio lectura del archivo "datos" por hojas*/
     
     //lectura del archivo "datos" hoja 0
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "0 Cliente"}).then((datosCliente) => {
-      datosCliente.forEach((fila) => {
-        ArrayCliente.push(fila); // O cualquier lógica que necesites
-      });
+  
+    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "0 Cliente"}).then((datosCliente) => {
+    //   datosCliente.forEach((fila) => {
+    //     ArrayCliente.push(fila); // O cualquier lógica que necesites
+    //   });
+    // });
+    cy.task("readExcelToJson", { 
+      filePath: "cypress/fixtures/datos.xlsx", 
+      hoja: "0 Cliente"
+    }).then((datosCliente) => {
+      objetoCliente = datosCliente;
+      cy.log(JSON.stringify(objetoCliente)); // Para ver el contenido
     });
- 
+
+
+
     //lectura del archivo "datos" hoja 1 "Identificacion"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "1 Identificacion"}).then((ID) => {
-      ID.forEach((filaVar) => {
-        ArrayID.push(filaVar);
-      });
-    });
+    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "1 Identificacion"}).then((ID) => {
+    //   ID.forEach((filaVar) => {
+    //     ArrayID.push(filaVar);
+    //   });
+    // });
           
+    cy.task("readExcelToJson", { 
+      filePath: "cypress/fixtures/datos.xlsx", 
+      hoja: "1 Identificacion"
+    }).then((datosID) => {
+      objetoID = datosID; // Ya es un objeto desde la tarea
+      cy.log(JSON.stringify(objetoID));
+    });
+    
   //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
     cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPerjur"}).then((DataGenPJ) => {
       DataGenPJ.forEach((filaVar) => {
@@ -414,28 +453,155 @@ it('Descarga de archivos complemetnarios y lectura de hojas de los mismo', () =>
     
     //descarga archivo "Captura de accionistas"
     Generales.DescargaArchivoComplementos(ArrayCaptAccionistas[0].URL_RefAccionistas, "CaptAccionistas")            
+    //inicio lectura hojas archivo "Captura de accionistas"
+    //lectura del archivo "Captura de accionistas" hoja 0 "Referencias Accionistas"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Referencias Accionistas"}).then((RefAccionistas) => {
+      RefAccionistas.forEach((filaVar) => {
+        ArrayRefAccionistas.push(filaVar); 
+      });
+    });
+    //lectura del archivo "Captura de accionistas" hoja 1 "Identificacion"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Identificacion"}).then((IDcapAcc) => {
+      IDcapAcc.forEach((filaVar) => {
+        ArrayIDcapAcc.push(filaVar); 
+      });
+    });
+    //lectura del archivo "Captura de accionistas" hoja 2 "Información Complementaria"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Informacion Complementaria"}).then((InfCompl) => {
+      InfCompl.forEach((filaVar) => {
+        ArrayInfCompl.push(filaVar); 
+      });
+    });
+    //lectura del archivo "Captura de accionistas" hoja 3 "DG PJ y N"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "DG PJ y N"}).then((DtsGnPJyN) => {
+      DtsGnPJyN.forEach((filaVar) => {
+        ArrayDtsGnPJyN.push(filaVar); 
+      });
+    });
+    //lectura del archivo "Captura de accionistas" hoja 4 "Representante Legal"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Representante Legal"}).then((RLCapAcc) => {
+      RLCapAcc.forEach((filaVar) => {
+        ArrayRLCapAcc.push(filaVar); 
+      });
+    });
+    //Fin lectura hojas archivo "Captura de accionistas"
+
     //descarga archivo "Captura de junta directiva"
     Generales.DescargaArchivoComplementos(ArrayCapJuntaDir[0].URL_JuntaDirectiva, "CapJuntaDir")            
+    //inicio lectura hojas archivo "Captura de junta directiva"
+    //lectura del archivo "Captura de junta directiva" hoja 0 "Junta Directiva "
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CapJuntaDir.xlsx", hoja: "Referencias Accionistas"}).then((JuntaDir) => {
+      JuntaDir.forEach((filaVar) => {
+        ArrayJuntaDir.push(filaVar); 
+      });
+    });
+    //Fin lectura hojas archivo "Captura de junta directiva"
+
     //descarga archivo "Representante Legal - Contacto"
     Generales.DescargaArchivoComplementos(ArrayRepreLegalCont[0].URL_Contacto, "RepreLegalCont")            
+    //inicio lectura hojas archivo "Representante Legal - Contacto"
+    //lectura del archivo "Representante Legal - Contacto" hoja 0 "correo"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/RepreLegalCont.xlsx", hoja: "correo"}).then((RLcorreo) => {
+      RLcorreo.forEach((filaVar) => {
+        ArrayRLcorreo.push(filaVar); 
+      });
+    });
+    //lectura del archivo "Representante Legal - Contacto" hoja 1 "telefono"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/RepreLegalCont.xlsx", hoja: "telefono"}).then((RLtelefono) => {
+      RLtelefono.forEach((filaVar) => {
+        ArrayRLtelefono.push(filaVar); 
+      });
+    });
+    //Fin lectura hojas archivo "Representante Legal - Contacto"
+
     //descarga archivo "Perfil Economico - Informacion Financiera"
-    Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].InfFinanciera, "PerfilEcoInfFinanciera")            
+    Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].InfFinanciera, "PerfilEcoInfFinanciera")       
+    //inicio lectura hojas archivo "Perfil Economico - Informacion Financiera"
+    //lectura del archivo "Perfil Economico - Informacion Financiera" hoja 0 "Inf Financiera"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoInfFinanciera.xlsx", hoja: "Inf Financiera"}).then((InfFinanciera) => {
+      InfFinanciera.forEach((filaVar) => {
+        ArrayInfFinanciera.push(filaVar); 
+      });
+    });
+    //Fin lectura hojas archivo "Perfil Economico - Informacion Financiera"
+
     //descarga archivo "Perfil Economico - Informacion donde Opera"
     Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].InfDondeOpera, "PerfilEcoInfDondeOpera")            
+    //inicio lectura hojas archivo "Perfil Economico - Informacion donde Opera"
+    //lectura del archivo "Perfil Economico - Informacion donde Opera" hoja 0 "Inf DondeOpera"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoInfDondeOpera.xlsx", hoja: "Inf DondeOpera"}).then((InfDondeOpera) => {
+      InfDondeOpera.forEach((filaVar) => {
+        ArrayInfDondeOpera.push(filaVar); 
+      });
+    });
+    //Fin lectura hojas archivo "Perfil Economico - Informacion donde Opera"
+   
     //descarga archivo "Perfil Economico - Proveedor"
     Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].Proveedor, "PerfilEcoProveedor")            
-    //descarga archivo "Perfil Economico - Proveedor"
-    Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].Proveedor, "PerfilEcoProveedor")            
-    //descarga archivo "Perfil Economico - Proveedor"
-    Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].Proveedor, "PerfilEcoProveedor")            
+    //inicio lectura hojas archivo "Perfil Economico - Proveedor"
+    //lectura del archivo "Perfil Economico - Proveedor" hoja 0 "Inf DondeOpera"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoProveedor.xlsx", hoja: "Inf DondeOpera"}).then((Proveedor) => {
+      Proveedor.forEach((filaVar) => {
+        ArrayProveedor.push(filaVar); 
+      });
+    });
+    //Fin lectura hojas archivo "Perfil Economico - Proveedor"
+         
     //descarga archivo "Contacto"
     Generales.DescargaArchivoComplementos(ArrayContacto[0].URL_Contacto, "Contacto")            
+    //inicio lectura hojas archivo "Contacto"
+    //lectura del archivo "Contacto" hoja 0 "correo"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/Contacto.xlsx", hoja: "correo"}).then((ConCorreo) => {
+      ConCorreo.forEach((filaVar) => {
+        ArrayConCorreo.push(filaVar); 
+      });
+    });
+    //lectura del archivo "Contacto" hoja 1 "telefono"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/Contacto.xlsx", hoja: "telefono"}).then((ConTelefono) => {
+      ConTelefono.forEach((filaVar) => {
+        ArrayConTelefono.push(filaVar); 
+      });
+    });
+    //Fin lectura hojas archivo "Contacto"
 
 
 
 
 
 })
+
+
+
+
+/*
+cy.xpath("//button[contains(., 'Siguiente')]")
+  .filter(':visible')   // 👈 filtra solo los visibles
+  .first()              // si hay más de uno visible, toma el primero
+  .click();
+ver tema de siguiente por que veo que salen varios y varian 
+
+
+
+
+
+ver tema de espera a que termine la descarga del archivo para continuar en el metodo para descarga 
+y no usar wait´s si en dado caso da problemas la descarga y lectura al instante de lo contrario no pasa nada 
+o ver si se puede hacer un tipo metodo oculto con la existencia o una espera explicita  
+
+
+
+
+
+
+ver tema de la segunda nacionalidad, si unicamente entra en 2da nacionalidad al security y eso o si entra 
+aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda 
+
+
+
+
+
+
+*/
 it('Login', () => {
   
   cy.Login(ArrayVar[0].URL_Sitio, ArrayVar[0].Usuario, ArrayVar[0].Password);

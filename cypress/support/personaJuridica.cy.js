@@ -167,7 +167,8 @@ class personaJuridica {
   AggRefJuridica(data){
     //Paso: 1 Identificacion 
     cy.xpathBtxt(data.RTNRef, "(//mat-label[contains(text(), 'REGISTRO TRIBUTARIO')]/ancestor::mat-form-field//input)[2]")
-    //fecha???
+    cy.xpathBtxt(data.NRTRef, "    (//mat-label[contains(normalize-space(), 'NUEVO REGISTRO TRIBUTARIO')])[2]")
+    cy.IngresoFecha(data.fechaExpRef, "//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button") //se peude ingresar sin necesidad de NRT
     //Paso: 2 Información Complementaria 
     cy.xpathBtxt(data.TipoRef, "(//mat-label[contains(text(), 'Tipo')]/ancestor::mat-form-field//input)[2]")
     cy.xpathBtxt(data.PorcentajeRef, "//mat-label[normalize-space()='% de Participación']/ancestor::mat-form-field//input")
@@ -345,7 +346,7 @@ class personaJuridica {
     }
     //### FIN PASO #5
 
-    //### PASO #5
+    //### PASO #6
     PerfilEconomico(data){
       this.InfGenFin(data)
       this.InfOpera(data)
@@ -353,13 +354,14 @@ class personaJuridica {
       this.PrincProvee(data)
 
       //validar este siguiente no estoy seguro si es necesario
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[3]")
+      cy.xpathClk("(//button[.//span[contains(normalize-space(.), 'Finalizar')]])[1]")
 
     }
     InfGenFin(data){
       
       if (data.AfectoISR){cy.xpathClk("(//*[normalize-space() = 'Afecto a ISR']/preceding::input[@type='checkbox'])[1]")}else{cy.log("Afecto a ISR false"+ data.AfectoISR)}  //mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select
       cy.xpathBtxt(data.ActEconomica, "(//mat-label[normalize-space(.)='Actividad Económica']/ancestor::mat-form-field//input)[1]")
+      cy.xpathBtxtClear(data.fechaActEc, "(//mat-label[normalize-space(.)='Fecha actividad económica']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.SecEconomica, "(//mat-label[normalize-space(.)='Sector Económico']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.SecEconomica, "(//mat-label[normalize-space(.)='Clase de Cliente']/ancestor::mat-form-field//input)[1]")
    
@@ -403,34 +405,33 @@ class personaJuridica {
       cy.xpathClk("(//button[contains(., 'Agregar')])[2]")
       // fin lectura de archivo 
     }
-    //### FIN PASO #5
-
-    //### PASO #6
-    Direcciones(data){
-      cy.xpathBtxtClear(data.Pais, "(//mat-label[normalize-space(.)='País']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxt(data.tipoDireccion, "(//mat-label[normalize-space(.)='Tipo de dirección']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxt(data.aniosResidir, "(//mat-label[normalize-space(.)='Años de residir']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxt(data.IngreseUbicacion,"(//mat-label[normalize-space(.)='Ingrese una ubicación']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxtClear(data.agenCercana, "(//mat-label[normalize-space(.)='Agencia más cercana']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxtClear(data.InfoDireccion, "(//mat-label[normalize-space(.)='Información Dirección']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxt(data.Especificaciones, "(//mat-label[normalize-space(.)='Especificaciones']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxtClear(data.DirRefBusq, "(//mat-label[normalize-space(.)='Dirección referencia busqueda']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxt(data.Latitud, "(//mat-label[normalize-space(.)='Latitud']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxt(data.Longitud, "(//mat-label[normalize-space(.)='Longitud']/ancestor::mat-form-field//input)[1]")
-      
-      cy.xpathClk("(//button[contains(., 'Agregar')])[2]")
-
-    }
     //### FIN PASO #6
 
     //### PASO #7
+    Direcciones(data){
+      cy.xpathBtxtClear(data.Pais, "(//mat-label[normalize-space(.)='País']/ancestor::mat-form-field//input)[3]")
+      cy.xpathBtxt(data.IngreseUbicacion,"(//mat-label[normalize-space(.)='Ingrese una ubicación']/ancestor::mat-form-field//input)[2]")
+      cy.xpathBtxtClear(data.agenCercana, "(//mat-label[normalize-space(.)='Agencia más cercana']/ancestor::mat-form-field//input)[2]")
+      cy.xpathBtxtClear(data.InfoDireccion, "(//mat-label[normalize-space(.)='Información Dirección']/ancestor::mat-form-field//input)[2]")
+      cy.xpathBtxt(data.Especificaciones, "(//mat-label[normalize-space(.)='Especificaciones']/ancestor::mat-form-field//input)[2]")
+      cy.xpathBtxtClear(data.DirRefBusq, "(//mat-label[normalize-space(.)='Dirección referencia busqueda']/ancestor::mat-form-field//input)[2]")
+      cy.xpathBtxt(data.Latitud, "(//mat-label[normalize-space(.)='Latitud']/ancestor::mat-form-field//input)[2]")
+      cy.xpathBtxt(data.Longitud, "(//mat-label[normalize-space(.)='Longitud']/ancestor::mat-form-field//input)[2]")
+      
+      cy.xpathClk("(//button[contains(., 'Siguiente')])[12]")
+
+    }
+    //### FIN PASO #7
+
+    //### PASO #8
     Contacto(data){
+      cy.xpathBtxtClear(data.NameContacto, "(//mat-label[normalize-space(.)='Nombre de contacto']/ancestor::mat-form-field//input)[1]")
       //tiene que correr el archivo y agregar segun la cantidad que encuentre
       this.correo(data)
       //tiene que correr el archivo y agregar segun la cantidad que encuentre
       this.celular(data)
       //tiene que correr el archivo y agregar segun la cantidad que encuentre y luego dar agregar 
-      cy.xpathClk("(//button[contains(., 'Guardar')])[1]")
+      cy.xpathClk("(//button[contains(., 'Siguiente')])[13]")
     }
     correo(data){
       //ingreso de correo
@@ -449,9 +450,9 @@ class personaJuridica {
                    
       cy.xpathClk("(//button[contains(., 'Agregar')])[2]")
     }
-    //### FIN PASO #7
+    //### FIN PASO #8
 
-    //### PASO #8
+    //### PASO #9
     FATCA(data){
     if (data.a){
       cy.xpathClk("//span[normalize-space(text()) = 'Entidad No Financiera Hondureña Sin Dueños Sustanciales de EE.UU.']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")
@@ -1010,25 +1011,31 @@ class personaJuridica {
     cy.xpathBtxt(data.Observaciones, "//div[@class='angular-editor-textarea' and @contenteditable='true']")
 
   }
-    //### FIN PASO #8
-
-    //### PASO #9
-    referencia(data){
-      
-    }
     //### FIN PASO #9
 
     //### PASO #10
-    DigitDoc(data){
-      
+    referencia(data){
+      //click para desplegar menu
+      cy.xpathClk("//mat-panel-title[normalize-space(.)='Referencias Bancarias']")
+      //
+
+
     }
     //### FIN PASO #10
 
-    //### PASO #10
-    Finalizado(data){
+    //### PASO #11
+    DigitDoc(data){
       
     }
-    //### FIN PASO #10
+    //### FIN PASO #11
+
+    //### PASO #12
+    Finalizado(){
+
+            cy.xpathClk("(//button[contains(., 'Finalizar')])[3]")
+
+    }
+    //### FIN PASO #12
 }
 
 
