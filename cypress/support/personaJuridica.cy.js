@@ -3,17 +3,12 @@ class personaJuridica {
 
 //### PASO #1
   //Identificacion Juridica 
-  Identificacion(){ 
-
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/identificacion.xlsx", hoja: 1}).then((data) => {
-
+  Identificacion(data){ 
     cy.xpathClk('//label[contains(normalize-space(), "Jurídica")]')
     cy.xpathBtxt(data.RTN, "//mat-label[contains(normalize-space(), 'REGISTRO TRIBUTARIO NACIONAL')]") // puede avanzar sin necesidad de los otros campos
     cy.xpathBtxt(data.NRT, "//mat-label[contains(normalize-space(), 'NUEVO REGISTRO TRIBUTARIO')]") // validar por que si se ingresa solicita fecha obligado
     cy.IngresoFecha(data.FechaExp, "//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button") //se peude ingresar sin necesidad de NRT
     cy.xpathClk("(//button[contains(., 'Siguiente')])[1]")
-  
-    })
   }
   //FIN Identificacion Juridica
 
@@ -23,29 +18,12 @@ class personaJuridica {
 
   //Datos Generales Persona Juridica 
   DatosGeneralesPersonaJuridica(data){
-    this.TipoPersonaJuridica(
-      data.TPJ,
-      data.RazonSoc,
-      data.NombreCom,
-      data.Siglas,
-      data.PaisOr,
-      data.CatNegocio
-    )
-    this.DatosConstitucionEmpresa(
-      data.TipSoc,
-      data.FechaReg,
-      data.EnFormacion,
-      data.FechaIniOp
-    )
-    this.RegistroMercantil(
-      data.Numero,
-      data.tomo,
-      data.Pagina,
-      data.PatenteCom,
-      data.EscriPermiso
-    )
+    this.TipoPersonaJuridica(data)
+    this.DatosConstitucionEmpresa(data)
+    this.RegistroMercantil(data)
     cy.xpathClk("(//button[contains(., 'Siguiente')])[2]")
   }//FIN Datos Generales Persona Juridica
+  
   TipoPersonaJuridica(data){
     cy.xpathBtxt(data.TPJ, "(//mat-radio-button[contains(., '"+data.TPJ+"')])") //calidar este por que no ingresamos nada
     cy.xpathBtxt(data.RazonSoc, "//mat-label[normalize-space(text())='Razón Social']/ancestor::mat-form-field//input")

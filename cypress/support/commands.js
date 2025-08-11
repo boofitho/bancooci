@@ -112,7 +112,7 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
 });
 
 
-Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
+Cypress.Commands.add('busquedaCliente', (data) => {
   // Paso 1: Ingresa a buscar cliente
   cy.xpathClk("  //span[contains(text(), 'Operación')]")
   cy.wait(2000)
@@ -120,9 +120,9 @@ Cypress.Commands.add('busquedaCliente', (tipoDocumento, InfoTipoDocumento) => {
   // Paso 2: Clic en el input asociado a "Tipo de documento"
   cy.xpathClk("//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input")
   // Paso 3: Esperar a que se abra el panel y seleccionar la opción que coincide con la variable
-  cy.contains('.mat-mdc-option span',tipoDocumento, { timeout: 60000 }).click({ force: true })
+  cy.contains('.mat-mdc-option span',data.tipoDocumento, { timeout: 60000 }).click({ force: true })
   // Paso 4: Click en identificacion y llenamos 
-  cy.xpathBtxt(InfoTipoDocumento, "(//mat-label[normalize-space()='Identificación'])[1]")
+  cy.xpathBtxt(data.InfoTipoDocumento, "(//mat-label[normalize-space()='Identificación'])[1]")
   // Paso 5: Click en "Buscar"
   cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")
   cy.wait(500)
