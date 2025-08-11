@@ -39,6 +39,7 @@ let ArrayInfDondeOpera =[]
 let ArrayProveedor =[]
 let ArrayConCorreo =[]
 let ArrayConTelefono =[]
+let ArrayRefBanca =[]
 
 
 
@@ -73,7 +74,6 @@ describe("BancoOcci", () => {
 it('Descarga de archivos datos y lectura de hojas del mismo', () => {
     //descarga archivo "datos"
     Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos")  
-    cy.wait(5000) // descargando archivo
    
     //lista las hojas disponibles en el archivo datos
     cy.task('listarHojasExcel', { filePath: 'cypress/fixtures/datos.xlsx' }).then((nombres) => {
@@ -199,8 +199,8 @@ it('Descarga de archivos complemetnarios y lectura de hojas de los mismo', () =>
     //descarga archivo "Captura de accionistas"
     Generales.DescargaArchivoComplementos(ArrayCaptAccionistas[0].URL_RefAccionistas, "CaptAccionistas")            
     //inicio lectura hojas archivo "Captura de accionistas"
-    //lectura del archivo "Captura de accionistas" hoja 0 "Referencias Accionistas"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Referencias Accionistas"}).then((RefAccionistas) => {
+    //lectura del archivo "Captura de accionistas" hoja 0 "RefAccionista"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "RefAccionista"}).then((RefAccionistas) => {
       RefAccionistas.forEach((filaVar) => {
         ArrayRefAccionistas.push(filaVar); 
       });
@@ -235,7 +235,7 @@ it('Descarga de archivos complemetnarios y lectura de hojas de los mismo', () =>
     Generales.DescargaArchivoComplementos(ArrayCapJuntaDir[0].URL_JuntaDirectiva, "CapJuntaDir")            
     //inicio lectura hojas archivo "Captura de junta directiva"
     //lectura del archivo "Captura de junta directiva" hoja 0 "Junta Directiva "
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CapJuntaDir.xlsx", hoja: "Referencias Accionistas"}).then((JuntaDir) => {
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/CapJuntaDir.xlsx", hoja: "Junta Directiva"}).then((JuntaDir) => {
       JuntaDir.forEach((filaVar) => {
         ArrayJuntaDir.push(filaVar); 
       });
@@ -284,8 +284,8 @@ it('Descarga de archivos complemetnarios y lectura de hojas de los mismo', () =>
     //descarga archivo "Perfil Economico - Proveedor"
     Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].Proveedor, "PerfilEcoProveedor")            
     //inicio lectura hojas archivo "Perfil Economico - Proveedor"
-    //lectura del archivo "Perfil Economico - Proveedor" hoja 0 "Inf DondeOpera"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoProveedor.xlsx", hoja: "Inf DondeOpera"}).then((Proveedor) => {
+    //lectura del archivo "Perfil Economico - Proveedor" hoja 0 "proveedores"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoProveedor.xlsx", hoja: "proveedores"}).then((Proveedor) => {
       Proveedor.forEach((filaVar) => {
         ArrayProveedor.push(filaVar); 
       });
@@ -309,11 +309,23 @@ it('Descarga de archivos complemetnarios y lectura de hojas de los mismo', () =>
     });
     //Fin lectura hojas archivo "Contacto"
 
+    //descarga archivo "referencia"
+    Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefBancarias, "refBancaria")            
+    //inicio lectura hojas archivo "Contacto"
+    //lectura del archivo "Contacto" hoja 0 "correo"
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/refBancaria.xlsx", hoja: "Ref Bancarias"}).then((RefBanca) => {
+      RefBanca.forEach((filaVar) => {
+        ArrayRefBanca.push(filaVar); 
+      });
+    });
+    //Fin lectura hojas archivo "Contacto"
+
 
 
 
 
 })
+
 
 
 
@@ -347,9 +359,15 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
 
 
 */
+
+
+
+
+
 it('Login', () => {
   
-  cy.Login(ArrayVar[0].URL_Sitio, ArrayVar[0].Usuario, ArrayVar[0].Password);
+//  cy.Login(ArrayVar[0].URL_Sitio, ArrayVar[0].Usuario, ArrayVar[0].Password);
+    cy.Login(ArrayVar[0]);
 })
 
 it("Agregar cliente", () => {
@@ -357,7 +375,7 @@ it("Agregar cliente", () => {
     cy.busquedaCliente(ArrayCliente[no].tipoDocumento, ArrayCliente[no].InfoTipoDocumento);
 
     cy.log("AQUIIIIIII PAPUSHO antes del if");
-    if (data.TipodePersona.toLowerCase() == "natural") {
+    if (ArrayID[no].TipodePersona.toLowerCase() == "natural") {
       Generales.TipodePersona(data);
       cy.wait(2000);
       cotizador.IdentificacionGeneralPersonaNatural(data);
@@ -369,14 +387,14 @@ it("Agregar cliente", () => {
       cotizador.ParentescosPEP(data);
       cotizador.esCasado(data);
       cotizador.escasadoPEP(data);
-    } else if (data.TipodePersona.toLowerCase() == "jurídica") {
+    } else if (ArrayID[no].TipodePersona.toLowerCase() == "jurídica") {
       cy.log("JURIDICO PAPS");
       
 
-      PJ.Identificacion(data);
+      PJ.Identificacion(ArrayID[no]);
 
 
-      PJ.DatosGeneralesPersonaJuridica(data);
+      PJ.DatosGeneralesPersonaJuridica(ArrayDataGenP[no]);
 
 
 

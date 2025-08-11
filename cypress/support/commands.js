@@ -1,9 +1,9 @@
 require("cypress-xpath");
 import "cypress-plugin-tab";
 
-Cypress.Commands.add("Login", (URL, Usuario, Password) => {
+Cypress.Commands.add("Login", (data) => {
   // Visita la URL de inicio
-  cy.visit(URL);
+  cy.visit(data.URL_Sitio);
   //espera de 5 segundos para que redireccione si es necesario  
   cy.wait(5000) 
   // Verifica si el hostname es el de Keycloak o plataforma
@@ -12,7 +12,7 @@ Cypress.Commands.add("Login", (URL, Usuario, Password) => {
       // Si estamos en la página de Keycloak, hacemos login usando cy.origin
       cy.origin(
         "https://keycloak-core.bytesw.cloud",
-        { args: { user: Usuario, password: Password } },
+        { args: { user: data.Usuario, password: data.Password } },
         ({ user, password }) => {
           cy.get("input#username").type(user, { log: false }); // Oculta en logs por seguridad
           cy.get("input#password").type(password, { log: false });
