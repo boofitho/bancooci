@@ -587,13 +587,14 @@ it('Login', () => {
 })
 
 it("Agregar cliente", () => {
+cy.log(no)
+cy.log(ArrayCliente[no].tipoDocumento, ArrayCliente[no].InfoTipoDocumento)
+        cy.busquedaCliente(ArrayCliente[no].tipoDocumento, ArrayCliente[no].InfoTipoDocumento);
 
-        cy.busquedaCliente(objetoCliente[no].tipoDocumento, objetoCliente[no].InfoTipoDocumento);
-cy.log(objetoID[no].TipodePersona)
     cy.log("AQUIIIIIII PAPUSHO antes del if");
     
 
-    if (objetoID[no].TipodePersona === "Natural") {
+    if (ArrayID[no].TipodePersona === "Natural") {
 
       cotizador.validarSiSeDebeCrearCliente().then((debeCrear) => {
         if (debeCrear) {
@@ -602,9 +603,9 @@ cy.log(objetoID[no].TipodePersona)
             // this.ArrayCliente[no].tipoDocumento,
             //  this.ArrayCliente[no].FechaExpiracion,
             //  this.ArrayID[no].RTN,
-            objetoID[no].InfoTipoDocumento,
-            objetoID[no].FechaExpiracion,
-             objetoID[no].RTN,
+            ArrayID[no].InfoTipoDocumento,
+            ArrayID[no].FechaExpiracion,
+             ArrayID[no].RTN,
             data.correo
           );
           cotizador.DatosGeneralesPersonaNatural(
