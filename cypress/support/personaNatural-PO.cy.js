@@ -167,7 +167,7 @@ class PersonaNatural {
     this.nacionalidad = nacionalidad;
     this.tieneDobleNacionalidad = tieneDobleNacionalidad;
     // Inicio de paso 2. Datos generales persona natural
-    cy.contains("label", textoGenero, { timeout: 60000 })
+    cy.xpath(`//label[contains(normalize-space(), '${textoGenero}')]`, {timeout:6000})
       .scrollIntoView() // Hace scroll hasta que el elemento sea visible
       .should("be.visible")
       .should("not.be.disabled")

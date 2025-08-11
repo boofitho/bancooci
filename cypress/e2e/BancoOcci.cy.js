@@ -12,7 +12,8 @@ let ArrayVar = []
 
 let ArrayCliente = []
 let ArrayID = []
-let ArrayDataGenP = []
+let ArrayDataGenPJ = []
+let ArrayDataGenPN = []
 let ArrayCaptAccionistas = []
 let ArrayCapJuntaDir = []
 let ArrayRepreLegalDG = []
@@ -83,7 +84,7 @@ const data = {
   //Validacion de fecha de expiracion de documento
   persona: " Natural",
   fechaExpericacionCedulaCliente: "06/11/2026",
-  textoGenero: " Masculino",
+  textoGenero: "Masculino",
   PrimerApellido: "amr",
   PrimerNombre: "Cristobal",
  fechaNacimientoCliente: "05/02/2005",
@@ -328,14 +329,25 @@ it('Descarga de archivos datos y lectura de hojas del mismo', () => {
         ArrayID.push(filaVar);
       });
     });
+    
           
   //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPer"}).then((DataGenP) => {
-      DataGenP.forEach((filaVar) => {
-        ArrayDataGenP.push(filaVar);
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPerjur"}).then((DataGenPJ) => {
+      DataGenPJ.forEach((filaVar) => {
+        ArrayDataGenPJ.push(filaVar);
       });
     });
 
+    //Lectura del archivo "Datos hoja 2.1" "Datos Generales Persona Natural"
+  cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPerNat"}).then((DataGenPN) => {
+      DataGenPN.forEach((filaVar) => {
+        ArrayDataGenPN.push(filaVar);
+      });
+    });
+
+
+
+    
     //lectura del archivo "datos" hoja 3 "Captura de accionistas"
     cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "3 Captura de accionistas"}).then((CaptAccionistas) => {
       CaptAccionistas.forEach((filaVar) => {
@@ -609,20 +621,23 @@ cy.log(ArrayCliente[no].tipoDocumento, ArrayCliente[no].InfoTipoDocumento)
             data.correo
           );
           cotizador.DatosGeneralesPersonaNatural(
-            data.textoGenero,
-            data.PrimerApellido,
-            data.PrimerNombre,
-            data.fechaNacimientoCliente,
-            data.EstadoCivil,
-            data.gradoAcademico,
-            data.profesion,
-            data.NoAniosEducacion,
-            data.capacidadadesEspeciales,
-            data.ocupacion,
-            data.nacionalidad,
-            data.tieneDobleNacionalidad,
-            data.NumeroSocial,
-            data.UbicacionSegundaNacionalidad
+
+
+
+            // data.textoGenero,
+            // data.PrimerApellido,
+            // data.PrimerNombre,
+            // data.fechaNacimientoCliente,
+            // data.EstadoCivil,
+            // data.gradoAcademico,
+            // data.profesion,
+            // data.NoAniosEducacion,
+            // data.capacidadadesEspeciales,
+            // data.ocupacion,
+            // data.nacionalidad,
+            // data.tieneDobleNacionalidad,
+            // data.NumeroSocial,
+            // data.UbicacionSegundaNacionalidad
           );
           cotizador.clickpaso2();
           cy.wait(500);
