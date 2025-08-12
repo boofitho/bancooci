@@ -67,6 +67,7 @@ Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
     if ($el.length > 0) {
       cy.wrap($el)
         .should('not.be.disabled')
+        .scrollIntoView()
         .type(String(variable) + '{enter}')
         .click({ force: true });
 
@@ -92,6 +93,7 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
     if ($el.length > 0) {
       cy.wrap($el)
         .should('not.be.disabled')
+        .scrollIntoView()
         .clear()
         .type(String(variable) + '{enter}')
         .click({ force: true });
@@ -126,101 +128,6 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   // Paso 7: Click en "Cliente"
   cy.wait(500)
   cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
-});
-Cypress.Commands.add('conClk', (cont) => {
-cy.contains(cont, { timeout: 60000 })
-  .scrollIntoView({})
-  .should('be.visible')
-  .should('not.be.disabled')
-  .click({force: true});
-  cy.oculto()
-});
-
-Cypress.Commands.add("conBtxt", (varibale, cont) => {
-  cy.contains(cont, { timeout: 60000 })
-    .should("be.visible")
-    .should("not.be.disabled")
-    .type(String(varibale))
-    .click({ force: true });
-  cy.oculto();
-});
-
-Cypress.Commands.add("busquedaCliente", (tipoDocumento, InfoTipoDocumento) => {
-  // Paso 1: Ir al módulo
-  cy.xpathClk("//span[contains(text(), 'Operación')]");
-  cy.wait(2000);
-  cy.xpathClk("//span[contains(text(), 'Búsqueda clientes')]");
-
-  // Paso 2: Selección de tipo documento
-  cy.xpathClk(
-    "//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input"
-  );
-  cy.contains(".mat-mdc-option span", tipoDocumento, {
-    timeout: 60000,
-  }).click({ force: true });
-
-  // Paso 3: Llenar número y buscar
-  cy.xpathBtxt(
-    InfoTipoDocumento,
-    "(//mat-label[normalize-space()='Identificación'])[1]"
-  );
-  cy.xpathClk("//span[normalize-space(text()) = 'Buscar']");
-  cy.get(".loading", { timeout: 600000 }).should("not.exist");
-  // Paso 4: Evaluar si aparece el mensaje de "No hay resultados..."
-  cy.get("body").then(($body) => {
-    if (
-      $body
-        .text()
-        .includes("No hay resultados para los criterios proporcionados.")
-    ) {
-      // Cliente NO encontrado → Crear
-      cy.log("No se encontró el cliente. Creando...");
-      cy.xpathClk("//span[normalize-space(text()) = 'Agregar']");
-      cy.wait(500);
-      cy.xpathClk("//span[normalize-space(text()) = 'Cliente']");
-    } else {
-      // Cliente SÍ existe → Clic al mat-icon (persona)
-      cy.log("Cliente encontrado. Seleccionando...");
-      cy.xpath("//mat-icon[@aria-label='person']")
-        .first()
-        .click({ force: true });
-      cy.get(".loading", { timeout: 600000 }).should("not.exist");
-    }
-  });
-
-})
-
-
-Cypress.Commands.add('xpathTest', (variable, xpath) => {
-  cy.xpath(xpath, { timeout: 60000 }).then($el => {
-    if ($el.length > 0) {
-      cy.wrap($el)
-        .scrollIntoView()
-        .should('be.visible')
-        .should('not.be.disabled')
-        .clear()
-        .type(String(variable) + '{enter}')
-        .click({ force: true });
-
-      cy.oculto();
-    } else {
-      cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
-    }
-  }).catch(() => {
-    cy.log(`❌ Error al buscar el xpath: ${xpath} de la variable ${variable}`);
-  });
-});
-
-
-Cypress.Commands.add('xpathBtxtClear', (varibale, xpath) => {
-cy.xpath(xpath, { timeout: 60000 })
-  .scrollIntoView({})
-  .should('be.visible')
-  .should('not.be.disabled')
-  .clear()
-  .type(String(varibale) + '{enter}')
-  .click({force: true})
-  cy.oculto()
 });
 
 Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {

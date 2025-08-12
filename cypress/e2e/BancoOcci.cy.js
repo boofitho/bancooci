@@ -40,6 +40,7 @@ let ArrayInfDondeOpera =[]
 let ArrayProveedor =[]
 let ArrayConCorreo =[]
 let ArrayConTelefono =[]
+let ArrayRefBanca =[]
 
 let no = 0
 describe("BancoOcci", () => {
@@ -370,49 +371,59 @@ it("Agregar cliente", () => {
     } else if (ArrayID[no].TipodePersona.toLowerCase() == "jurídica") {
       cy.log("JURIDICO PAPS");
       
-
+      //PASO #1
       PJ.Identificacion(ArrayID[no]);
 
+      //PASO #2
       PJ.DatosGeneralesPersonaJuridica(ArrayDataGenP[no]);
 
+      //PASO #3
+      
       //descarga archivo "Captura de accionistas"
-      Generales.DescargaArchivoComplementos(ArrayCaptAccionistas[no].URL_RefAccionistas, "CaptAccionistas")            
-      //inicio lectura hojas archivo "Captura de accionistas"
-      //lectura del archivo "Captura de accionistas" hoja 0 "RefAccionista"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "RefAccionista"}).then((RefAccionistas) => {
-        RefAccionistas.forEach((filaVar) => {
-          ArrayRefAccionistas.push(filaVar); 
-        });
-      });
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Identificacion"}).then((IDcapAcc) => {
-        IDcapAcc.forEach((filaVar) => {
-          ArrayIDcapAcc.push(filaVar); 
-        });
-      });
-      //lectura del archivo "Captura de accionistas" hoja 2 "Información Complementaria"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Informacion Complementaria"}).then((InfCompl) => {
-        InfCompl.forEach((filaVar) => {
-          ArrayInfCompl.push(filaVar); 
-        });
-      });
-      //lectura del archivo "Captura de accionistas" hoja 3 "DG PJ y N"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "DG PJ y N"}).then((DtsGnPJyN) => {
-        DtsGnPJyN.forEach((filaVar) => {
-          ArrayDtsGnPJyN.push(filaVar); 
-        });
-      });
-      //lectura del archivo "Captura de accionistas" hoja 4 "Representante Legal"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Representante Legal"}).then((RLCapAcc) => {
-        RLCapAcc.forEach((filaVar) => {
-          ArrayRLCapAcc.push(filaVar); 
-        });
-      });
-      //Fin lectura hojas archivo "Captura de accionistas"
+      Generales.DescargaArchivoComplementos(ArrayCaptAccionistas[no].URL_RefAccionistas, "CaptAccionistas");
+      // Lee TODAS las hojas en una sola operación y realizacion del paso 3
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx" }).then((excelData) => {
+        // Asigna los datos a los arrays correspondientes
+        const ArrayRefAccionistas = excelData["RefAccionista"] || [];
+        const ArrayIDcapAcc = excelData["Identificacion"] || [];
+        const ArrayInfCompl = excelData["Informacion Complementaria"] || [];
+        const ArrayDtsGnPJyN = excelData["DG PJ y N"] || [];
+        const ArrayRLCapAcc = excelData["Representante Legal"] || [];
 
-      for (let i = 0; i < array.length; i++) {
-        PJ.CapturaDeAccionistas(ArrayRefAccionistas[i], ArrayIDcapAcc[i], 
-          ArrayInfCompl[i],ArrayDtsGnPJyN[i],ArrayRLCapAcc[i]);
+        cy.log(`Número de registros: ${ArrayRefAccionistas.length}`);
+        cy.oculto()
+        cy.wait(1000)
+        // Procesa los datos
+        for (let i = 0; i < ArrayRefAccionistas.length; i++) {
+        cy.log(ArrayRefAccionistas[i].AggRef)
+        cy.log(ArrayRefAccionistas[0].AggRef)
+        cy.log(ArrayRefAccionistas[1].AggRef)
+        if(ArrayRefAccionistas[i].AggRef === "Jurídica"){
+          
+          cy.log('JURIDICO')
+          cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
+          PJ.AggRefJuridica(ArrayIDcapAcc[i], 
+            ArrayInfCompl[i], ArrayDtsGnPJyN[i], 
+            ArrayRLCapAcc[i])
+          cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
+          cy.xpathClk("//mat-icon[text()='add']")
+
+
+        }else if(ArrayRefAccionistas[i].AggRef === "Natural"){
+
+          cy.log('NATURAL')
+          PJ.AggRefNatural(ArrayIDcapAcc[i], 
+            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
+          cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
+ 
+        }else{
+              
+          cy.log('Ya no hay datos paso "Captura de accionistas" presionando boton siguiente')
+          cy.xpathClk("(//button[contains(., 'Siguiente')])[3]");
+
+        }
       }
+    });
 
 
 

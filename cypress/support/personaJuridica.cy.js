@@ -52,48 +52,44 @@ class personaJuridica {
 
   //### PASO #3
   CapturaDeAccionistas(dataRA,dataID,dataIC,dataDGP,dataRL){
-      if(dataRA.AggRef=="Juridica"){
       //Paso: 0 ingresamos 
       cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
-      cy.xpathClk("(//button[contains(., 'JURIDICO')])[1]")
+
       //formulario persona Juridica
       this.AggRefJuridica(dataID,dataIC,dataDGP,dataRL)
       //indicara "El último elemento de cada rama debe ser una persona natural" damos click en aceptar
       cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
       //Ingresamos al submenu
       cy.xpathClk("//mat-icon[text()='add']")
-      //mientras la ultima no sea juridica no continuara el flujo
-      do {if(dataRA.AggRef=="Juridica"){
-        cy.xpathClk("(//button[contains(., 'JURIDICO')])[1]")
-      this.AggRefJuridica(dataID,dataIC,dataDGP,dataRL)
+      // do {if(dataRA.AggRef=="Juridica"){
+      // //   cy.xpathClk("(//button[contains(., 'JURIDICO')])[1]")
+      // // this.AggRefJuridica(dataID,dataIC,dataDGP,dataRL)
       
-      }else if(dataRA.AggRef =="Natural"){
-        cy.xpathClk("(//button[contains(., 'NATURAL')])[1]")
-        this.AggRefNatural(dataID,dataIC,dataDGP)   
-        }else{
-          cy.log("validar tipo de persona en referencia juridica de la rama")
-        }
-        totalRefJuridico++
-      }while(data.refJuridico  !== totalRefJuridico);
-      }else if(data.referencia =="Natural"){
+      // // }else if(dataRA.AggRef =="Natural"){
+      // //   cy.xpathClk("(//button[contains(., 'NATURAL')])[1]")
+      // //   this.AggRefNatural(dataID,dataIC,dataDGP)   
+      // //   }else{
+      // //     cy.log("validar tipo de persona en referencia juridica de la rama")
+      // //   }
+      // //   totalRefJuridico++
+      // // }while(data.refJuridico  !== totalRefJuridico);
       //Paso: 0 ingresamos 
         cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
-        cy.xpathClk("(//button[contains(., 'NATURAL')])[1]")
       //formulario Persona Natural
         this.AggRefNatural(dataID,dataIC,dataDGP)   
-      }else{
-        cy.log("se terminaron")
-      }
       
       //validar el tema que sea natural el utimo sino que salga del flujo he indique el inconveniente tomando captura del mensaje indicado y pasar al siguiente dato en el archivo 
   
       //Boton siguiente Paso #3
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[3]");
   }
   AggRefJuridica(dataID,dataIC,dataDGP,dataRL){
+    //Paso: 0 ingresamos 
+    cy.xpathClk("(//button[contains(., 'JURIDICO')])[1]")
     //Paso: 1 Identificacion 
-    cy.xpathBtxt(dataID.RTNRef, "(//mat-label[contains(text(), 'REGISTRO TRIBUTARIO')]/ancestor::mat-form-field//input)[2]")
-    cy.xpathBtxt(dataID.NRTRef, "    (//mat-label[contains(normalize-space(), 'NUEVO REGISTRO TRIBUTARIO')])[2]")
+    cy.wait(2500)
+    cy.xpathClk("(//mat-label[contains(text(), 'REGISTRO TRIBUTARIO')]/ancestor::mat-form-field//input)[3]")
+    cy.xpathBtxt(dataID.RTNRef, "(//mat-label[contains(text(), 'REGISTRO TRIBUTARIO')]/ancestor::mat-form-field//input)[3]")
+    cy.xpathBtxt(dataID.NRTRef, "(//mat-label[contains(normalize-space(), 'NUEVO REGISTRO TRIBUTARIO')])[2]")
     cy.IngresoFecha(dataID.fechaExpRef, "//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button") //se peude ingresar sin necesidad de NRT
     //Paso: 2 Información Complementaria 
     cy.xpathBtxt(dataIC.TipoRef, "(//mat-label[contains(text(), 'Tipo')]/ancestor::mat-form-field//input)[2]")
@@ -112,12 +108,14 @@ class personaJuridica {
     cy.xpathBtxt(dataRL.PrimerNombreRef, "(//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataRL.SegundoNombreRef, "(//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataRL.OtroNombreREF, "(//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input)[1]")  
-    cy.xpathBtxt(dataRL.GeneroRef, "(//mat-radio-button[contains(., '"+data.GeneroRef+"')])[1]") // validar este mismo tema TPJ
+    cy.xpathBtxt(dataRL.GeneroRef, "(//mat-radio-button[contains(., '"+dataRL.GeneroRef+"')])[1]") // validar este mismo tema TPJ
     //Paso: 5 Agregar 
     cy.xpathClk("(//button[contains(., 'Agregar')])[2]") 
     //se debede agregar un natural luego de un juridico  
   }
   AggRefNatural(dataID,dataIC,dataDGP){
+    //Paso: 0 ingresamos 
+    cy.xpathClk("(//button[contains(., 'NATURAL')])[1]")
     //Paso: 1 Identificacion 
     cy.xpathBtxt(dataID.CedulaRef, "(//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataID.PasaporteRef, "(//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input)[1]")
