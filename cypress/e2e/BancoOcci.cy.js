@@ -203,30 +203,30 @@ describe("BancoOcci", () => {
       //   });
       // });
       //lectura del archivo "Captura de accionistas" hoja 1 "Identificacion"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Identificacion"}).then((IDcapAcc) => {
-        IDcapAcc.forEach((filaVar) => {
-          ArrayIDcapAcc.push(filaVar); 
-        });
-      });
-      //lectura del archivo "Captura de accionistas" hoja 2 "Información Complementaria"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Informacion Complementaria"}).then((InfCompl) => {
-        InfCompl.forEach((filaVar) => {
-          ArrayInfCompl.push(filaVar); 
-        });
-      });
-      //lectura del archivo "Captura de accionistas" hoja 3 "DG PJ y N"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "DG PJ y N"}).then((DtsGnPJyN) => {
-        DtsGnPJyN.forEach((filaVar) => {
-          ArrayDtsGnPJyN.push(filaVar); 
-        });
-      });
-      //lectura del archivo "Captura de accionistas" hoja 4 "Representante Legal"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Representante Legal"}).then((RLCapAcc) => {
-        RLCapAcc.forEach((filaVar) => {
-          ArrayRLCapAcc.push(filaVar); 
-        });
-      });
-      //Fin lectura hojas archivo "Captura de accionistas"
+      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Identificacion"}).then((IDcapAcc) => {
+      //   IDcapAcc.forEach((filaVar) => {
+      //     ArrayIDcapAcc.push(filaVar); 
+      //   });
+      // });
+      // //lectura del archivo "Captura de accionistas" hoja 2 "Información Complementaria"
+      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Informacion Complementaria"}).then((InfCompl) => {
+      //   InfCompl.forEach((filaVar) => {
+      //     ArrayInfCompl.push(filaVar); 
+      //   });
+      // });
+      // //lectura del archivo "Captura de accionistas" hoja 3 "DG PJ y N"
+      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "DG PJ y N"}).then((DtsGnPJyN) => {
+      //   DtsGnPJyN.forEach((filaVar) => {
+      //     ArrayDtsGnPJyN.push(filaVar); 
+      //   });
+      // });
+      // //lectura del archivo "Captura de accionistas" hoja 4 "Representante Legal"
+      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Representante Legal"}).then((RLCapAcc) => {
+      //   RLCapAcc.forEach((filaVar) => {
+      //     ArrayRLCapAcc.push(filaVar); 
+      //   });
+      // });
+      // //Fin lectura hojas archivo "Captura de accionistas"
 
       //descarga archivo "Captura de junta directiva"
       Generales.DescargaArchivoComplementos(ArrayCapJuntaDir[0].URL_JuntaDirectiva, "CapJuntaDir")            
@@ -384,8 +384,35 @@ it("Agregar cliente", () => {
           ArrayRefAccionistas.push(filaVar); 
         });
       });
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Identificacion"}).then((IDcapAcc) => {
+        IDcapAcc.forEach((filaVar) => {
+          ArrayIDcapAcc.push(filaVar); 
+        });
+      });
+      //lectura del archivo "Captura de accionistas" hoja 2 "Información Complementaria"
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Informacion Complementaria"}).then((InfCompl) => {
+        InfCompl.forEach((filaVar) => {
+          ArrayInfCompl.push(filaVar); 
+        });
+      });
+      //lectura del archivo "Captura de accionistas" hoja 3 "DG PJ y N"
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "DG PJ y N"}).then((DtsGnPJyN) => {
+        DtsGnPJyN.forEach((filaVar) => {
+          ArrayDtsGnPJyN.push(filaVar); 
+        });
+      });
+      //lectura del archivo "Captura de accionistas" hoja 4 "Representante Legal"
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Representante Legal"}).then((RLCapAcc) => {
+        RLCapAcc.forEach((filaVar) => {
+          ArrayRLCapAcc.push(filaVar); 
+        });
+      });
+      //Fin lectura hojas archivo "Captura de accionistas"
 
-      PJ.CapturaDeAccionistas(ArrayRefAccionistas[no]);
+      for (let i = 0; i < array.length; i++) {
+        PJ.CapturaDeAccionistas(ArrayRefAccionistas[i], ArrayIDcapAcc[i], 
+          ArrayInfCompl[i],ArrayDtsGnPJyN[i],ArrayRLCapAcc[i]);
+      }
 
 
 
