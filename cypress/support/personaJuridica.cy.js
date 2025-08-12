@@ -11,11 +11,9 @@ class personaJuridica {
     cy.xpathClk("(//button[contains(., 'Siguiente')])[1]")
   }
   //FIN Identificacion Juridica
-
   //### FIN PASO #1
 
   //### PASO #2
-
   //Datos Generales Persona Juridica 
   DatosGeneralesPersonaJuridica(data){
     this.TipoPersonaJuridica(data)
