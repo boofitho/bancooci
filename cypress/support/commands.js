@@ -40,11 +40,13 @@ Cypress.Commands.add('leerHojaExcel', (nombreHoja) => {
 
 
 Cypress.Commands.add('xpathClk', (xpath) => {
+  cy.oculto();
+  cy.scrollToCenter(xpath)
+
   cy.xpath(xpath, { timeout: 60000 }).then($el => {
     if ($el.length > 0) {
       cy.wrap($el)
-        .scrollIntoView()
-        .should('be.visible')
+        // .scrollIntoView({ block: "nearest" })
         .should('not.be.disabled')
         .click({ force: true });
         //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
@@ -56,6 +58,8 @@ Cypress.Commands.add('xpathClk', (xpath) => {
   })});
 
 Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
+  cy.oculto();
+  cy.scrollToCenter(xpath)
 
   // Verificamos si la variable es null, undefined o vacía
   if (!variable || String(variable).trim() === '') {
@@ -66,10 +70,11 @@ Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
   cy.xpath(xpath, { timeout: 60000 }).then($el => {
     if ($el.length > 0) {
       cy.wrap($el)
+        .click({ force: true })
         .should('not.be.disabled')
-        .scrollIntoView()
         .type(String(variable) + '{enter}')
-        .click({ force: true });
+        // .click({ force: true });
+     
 
       // Ejecutamos el comando oculto
       cy.oculto();
@@ -78,10 +83,12 @@ Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
       cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
     }
   });
-
+        cy.oculto();
 });
 
 Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
+  cy.oculto();
+  cy.scrollToCenter(xpath)
 
   // Validar si la variable está vacía, nula o indefinida
   if (!variable || String(variable).trim() === '') {
@@ -93,7 +100,7 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
     if ($el.length > 0) {
       cy.wrap($el)
         .should('not.be.disabled')
-        .scrollIntoView()
+        // .scrollIntoView({ block: "nearest" })
         .clear()
         .type(String(variable) + '{enter}')
         .click({ force: true });
@@ -105,6 +112,8 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
       cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
     }
   });
+        cy.oculto();
+
 });
 
 
@@ -232,17 +241,56 @@ Cypress.Commands.add("IngresoFecha", (Fecha, xpAbrirFecha) => {
   const mesAbreviado = mesesAbreviados[parseInt(mes, 10) - 1];
 
   // Paso 2: Abrir el selector de fecha
-  cy.xpath(xpAbrirFecha).should("be.visible").click();
+  cy.xpath(xpAbrirFecha)
+  //.scrollIntoView({ block: "center" })
+  .should('not.be.disabled')
+  .click({ force: true })
 
   // Paso 3: Cambiar al modo de selección de año
-  cy.get(".mat-calendar-period-button").click();
+  cy.get(".mat-calendar-period-button").click({ force: true });
 
   // Paso 4: Seleccionar año
-  cy.contains(".mat-calendar-body-cell-content", anio).click();
+  cy.contains(".mat-calendar-body-cell-content", anio).click({ force: true });
 
   // Paso 5: Seleccionar mes
-  cy.contains(".mat-calendar-body-cell-content", mesAbreviado).click();
+  cy.contains(".mat-calendar-body-cell-content", mesAbreviado).click({ force: true });
 
   // Paso 6: Seleccionar día
-  cy.contains(".mat-calendar-body-cell-content", String(parseInt(dia, 10))).click();
+  cy.contains(".mat-calendar-body-cell-content", String(parseInt(dia, 10))).click({ force: true });
+});
+
+
+Cypress.Commands.add("clickSiguiente", (stepName) => {
+  cy.xpath(`//h4[contains(text(),'${stepName}')]
+    /ancestor::div[contains(@class,'mat-step-header')]
+    /following::div[contains(@class,'mat-vertical-stepper-content')][1]
+    //button[.//span[contains(text(),'Siguiente')]]`, { timeout: 10000 }
+  ).should('be.visible').click();
+});
+
+
+
+Cypress.Commands.add('Centrar', (index) => {
+  const xpath = "//div[contains(@class,'mat-step ng-star-inserted')]";
+  
+  cy.xpath(`(${xpath})[${index}]`, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView({ block: "center", inline: "center" }) // 👈 centra en pantalla
+        } else {
+      cy.log(`⚠️ No se encontró el paso número ${index}`);
+    }
+  });
+});
+
+
+
+Cypress.Commands.add('scrollToCenter', (xpath) => {
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    cy.window().then(win => {
+      const rect = $el[0].getBoundingClientRect();
+      const y = rect.top + win.scrollY - (win.innerHeight / 2) + (rect.height / 2);
+      win.scrollTo({ top: y });
+    });
+  });
 });

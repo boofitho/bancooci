@@ -10,6 +10,7 @@ module.exports = defineConfig({
   viewportWidth: 1500,
   viewportHeight: 900,
   e2e: {
+        scrollBehavior: false, // 👈 Cypress NO hará scroll automático
       env: {
         //variable quemada
           URL_VAR: "https://docs.google.com/spreadsheets/d/1Ntg_ZTAUnRiKHy4ozomyN15Jv99ZB3yCF4u7l3aHsrg/export?format=xlsx",

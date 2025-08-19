@@ -373,12 +373,16 @@ it("Agregar cliente", () => {
       
       //PASO #1
       PJ.Identificacion(ArrayID[no]);
+      // FIN PASO #1
 
       //PASO #2
       PJ.DatosGeneralesPersonaJuridica(ArrayDataGenP[no]);
+      // FIN PASO #2
 
       //PASO #3
-      
+      cy.log(ArrayCaptAccionistas[no].TieneRef)
+      if (ArrayCaptAccionistas[no].TieneRef){
+        cy.log(ArrayCaptAccionistas[no].TieneRef + "Verdadero ArrayCaptAccionistas[no].TieneRef")
       //descarga archivo "Captura de accionistas"
       Generales.DescargaArchivoComplementos(ArrayCaptAccionistas[no].URL_RefAccionistas, "CaptAccionistas");
       // Lee TODAS las hojas en una sola operación y realizacion del paso 3
@@ -392,42 +396,145 @@ it("Agregar cliente", () => {
 
         cy.log(`Número de registros: ${ArrayRefAccionistas.length}`);
         cy.oculto()
-        cy.wait(1000)
         // Procesa los datos
         for (let i = 0; i < ArrayRefAccionistas.length; i++) {
-        cy.log(ArrayRefAccionistas[i].AggRef)
-        cy.log(ArrayRefAccionistas[0].AggRef)
-        cy.log(ArrayRefAccionistas[1].AggRef)
-        if(ArrayRefAccionistas[i].AggRef === "Jurídica"){
-          
-          cy.log('JURIDICO')
-          cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
-          PJ.AggRefJuridica(ArrayIDcapAcc[i], 
-            ArrayInfCompl[i], ArrayDtsGnPJyN[i], 
-            ArrayRLCapAcc[i])
-          cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
-          cy.xpathClk("//mat-icon[text()='add']")
+  
+        cy.get('body', { timeout: 5000 }).then(($body) => {
+          if ($body.text().includes('El último elemento de cada rama debe ser una persona natural')) {
+            cy.log('Si aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
+            cy.xpathClk("(//button[contains(@class, 'swal2-confirm') and contains(., 'Aceptar')])[1]")
+//            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")
+            cy.log('NATURAL "El último elemento de cada rama debe ser una persona natural"')
+            cy.xpathClk("//mat-icon[text()='add']")
+            // Aquí tu flujo cuando aparece el mensaje
+            PJ.AggRefNatural(ArrayIDcapAcc[i], 
+              ArrayInfCompl[i], ArrayDtsGnPJyN[i])
+          } else {
+            cy.log('No aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
+            // Aquí el flujo alternativo
+            if(ArrayRefAccionistas[i].AggRef === "Jurídica"){
+            
+            cy.log('JURIDICO')
+            cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
+            PJ.AggRefJuridica(ArrayIDcapAcc[i], 
+              ArrayInfCompl[i], ArrayDtsGnPJyN[i], 
+              ArrayRLCapAcc[i])
+            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
 
+            }else if(ArrayRefAccionistas[i].AggRef === "Natural"){
+              cy.xpath("//mat-icon[text()='add']", { timeout: 5000 }).then($el => {
+                if ($el.length > 0 && $el.is(':visible')) {
+                  // ✅ El elemento existe y está visible
+                  cy.wrap($el).click();
+                          cy.log('NATURAL')
+                          PJ.AggRefNatural(ArrayIDcapAcc[i], 
+                            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
 
-        }else if(ArrayRefAccionistas[i].AggRef === "Natural"){
-
-          cy.log('NATURAL')
-          PJ.AggRefNatural(ArrayIDcapAcc[i], 
-            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
-          cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
- 
-        }else{
-              
-          cy.log('Ya no hay datos paso "Captura de accionistas" presionando boton siguiente')
-          cy.xpathClk("(//button[contains(., 'Siguiente')])[3]");
-
+                } else {
+                  // ❌ El elemento no existe o está oculto
+                  cy.log("El icono 'add' no está visible");
+                          cy.log('NATURAL')
+                          PJ.AggRefNatural(ArrayIDcapAcc[i], 
+                            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
+                }
+            }); 
+              }else{ 
+                cy.log('No hay datos "Captura de accionistas" presionando boton siguiente')
+              }
+            }
+          });
         }
+
+      });
+
       }
-    });
+      cy.log(ArrayCaptAccionistas[no].TieneRef + "FALSO????? ArrayCaptAccionistas[no].TieneRef")
 
+      //presionamos siguiente luego de terminar la lectura o vlaidar si no hay referencias   
+        cy.xpathClk("//span[contains(., 'Referencias Accionistas')]/ancestor::div[contains(@class, 'mat-vertical-content-container')]//button[span[contains(., 'Siguiente')]]");
+      // FIN PASO #3
 
+      //PASO #4
+      if (ArrayCapJuntaDir[no].TieneJD){
+      //descarga archivo "Captura de accionistas"
+      Generales.DescargaArchivoComplementos(ArrayCaptAccionistas[no].URL_RefAccionistas, "CaptAccionistas");
+      // Lee TODAS las hojas en una sola operación y realizacion del paso 3
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx" }).then((excelData) => {
+        // Asigna los datos a los arrays correspondientes
+        const ArrayRefAccionistas = excelData["RefAccionista"] || [];
+        const ArrayIDcapAcc = excelData["Identificacion"] || [];
+        const ArrayInfCompl = excelData["Informacion Complementaria"] || [];
+        const ArrayDtsGnPJyN = excelData["DG PJ y N"] || [];
+        const ArrayRLCapAcc = excelData["Representante Legal"] || [];
 
-    } else {
+        cy.log(`Número de registros: ${ArrayRefAccionistas.length}`);
+        cy.oculto()
+        // Procesa los datos
+        for (let i = 0; i < ArrayRefAccionistas.length; i++) {
+          
+        cy.get('body', { timeout: 5000 }).then(($body) => {
+          if ($body.text().includes('El último elemento de cada rama debe ser una persona natural')) {
+            cy.log('Si aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
+            cy.xpathClk("(//button[contains(@class, 'swal2-confirm') and contains(., 'Aceptar')])[1]")
+//            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")
+            cy.log('NATURAL "El último elemento de cada rama debe ser una persona natural"')
+            cy.xpathClk("//mat-icon[text()='add']")
+            // Aquí tu flujo cuando aparece el mensaje
+            PJ.AggRefNatural(ArrayIDcapAcc[i], 
+              ArrayInfCompl[i], ArrayDtsGnPJyN[i])
+          } else {
+            cy.log('No aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
+            // Aquí el flujo alternativo
+            if(ArrayRefAccionistas[i].AggRef === "Jurídica"){
+            
+            cy.log('JURIDICO')
+            cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
+            PJ.AggRefJuridica(ArrayIDcapAcc[i], 
+              ArrayInfCompl[i], ArrayDtsGnPJyN[i], 
+              ArrayRLCapAcc[i])
+            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
+
+            }else if(ArrayRefAccionistas[i].AggRef === "Natural"){
+              cy.xpath("//mat-icon[text()='add']", { timeout: 5000 }).then($el => {
+                if ($el.length > 0 && $el.is(':visible')) {
+                  // ✅ El elemento existe y está visible
+                  cy.wrap($el).click();
+                          cy.log('NATURAL')
+                          PJ.AggRefNatural(ArrayIDcapAcc[i], 
+                            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
+
+                } else {
+                  // ❌ El elemento no existe o está oculto
+                  cy.log("El icono 'add' no está visible");
+                          cy.log('NATURAL')
+                          PJ.AggRefNatural(ArrayIDcapAcc[i], 
+                            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
+                }
+            }); 
+              }else{ 
+                cy.log('No hay datos "Captura de accionistas" presionando boton siguiente')
+              }
+            }
+          });
+        }
+
+      });
+
+      }
+      //presionamos siguiente luego de terminar la lectura o vlaidar si no hay referencias   
+        cy.xpathClk("//span[contains(., 'Referencias Accionistas')]/ancestor::div[contains(@class, 'mat-vertical-content-container')]//button[span[contains(., 'Siguiente')]]");
+      // FIN PASO #4
+      //PASO #5
+      // FIN PASO #5
+      //PASO #6
+      // FIN PASO #6      
+      //PASO #7
+      // FIN PASO #7
+      //PASO #8
+      // FIN PASO #8
+      //PASO #9
+      // FIN PASO #9
+      } else {
 
       cy.log("*******************************************************");
       cy.log("Debe de ingresar un tipo de cliente: Natural o Juridico");
