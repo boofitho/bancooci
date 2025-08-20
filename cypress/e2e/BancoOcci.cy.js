@@ -193,52 +193,7 @@ describe("BancoOcci", () => {
 
   before('Descarga de archivos complemetnarios y lectura de hojas de los mismo', () => {
       //descarga de archivos secundarios de los datos
-      
-      // //descarga archivo "Captura de accionistas"
-      // Generales.DescargaArchivoComplementos(ArrayCaptAccionistas[0].URL_RefAccionistas, "CaptAccionistas")            
-      // //inicio lectura hojas archivo "Captura de accionistas"
-      // //lectura del archivo "Captura de accionistas" hoja 0 "RefAccionista"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "RefAccionista"}).then((RefAccionistas) => {
-      //   RefAccionistas.forEach((filaVar) => {
-      //     ArrayRefAccionistas.push(filaVar); 
-      //   });
-      // });
-      //lectura del archivo "Captura de accionistas" hoja 1 "Identificacion"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Identificacion"}).then((IDcapAcc) => {
-      //   IDcapAcc.forEach((filaVar) => {
-      //     ArrayIDcapAcc.push(filaVar); 
-      //   });
-      // });
-      // //lectura del archivo "Captura de accionistas" hoja 2 "Información Complementaria"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Informacion Complementaria"}).then((InfCompl) => {
-      //   InfCompl.forEach((filaVar) => {
-      //     ArrayInfCompl.push(filaVar); 
-      //   });
-      // });
-      // //lectura del archivo "Captura de accionistas" hoja 3 "DG PJ y N"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "DG PJ y N"}).then((DtsGnPJyN) => {
-      //   DtsGnPJyN.forEach((filaVar) => {
-      //     ArrayDtsGnPJyN.push(filaVar); 
-      //   });
-      // });
-      // //lectura del archivo "Captura de accionistas" hoja 4 "Representante Legal"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx", hoja: "Representante Legal"}).then((RLCapAcc) => {
-      //   RLCapAcc.forEach((filaVar) => {
-      //     ArrayRLCapAcc.push(filaVar); 
-      //   });
-      // });
-      // //Fin lectura hojas archivo "Captura de accionistas"
 
-      //descarga archivo "Captura de junta directiva"
-      Generales.DescargaArchivoComplementos(ArrayCapJuntaDir[0].URL_JuntaDirectiva, "CapJuntaDir")            
-      //inicio lectura hojas archivo "Captura de junta directiva"
-      //lectura del archivo "Captura de junta directiva" hoja 0 "Junta Directiva "
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CapJuntaDir.xlsx", hoja: "Junta Directiva"}).then((JuntaDir) => {
-        JuntaDir.forEach((filaVar) => {
-          ArrayJuntaDir.push(filaVar); 
-        });
-      });
-      //Fin lectura hojas archivo "Captura de junta directiva"
 
       //descarga archivo "Representante Legal - Contacto"
       Generales.DescargaArchivoComplementos(ArrayRepreLegalCont[0].URL_Contacto, "RepreLegalCont")            
@@ -448,83 +403,53 @@ it("Agregar cliente", () => {
       });
 
       }
-      cy.log(ArrayCaptAccionistas[no].TieneRef + "FALSO????? ArrayCaptAccionistas[no].TieneRef")
-
       //presionamos siguiente luego de terminar la lectura o vlaidar si no hay referencias   
-        cy.xpathClk("//span[contains(., 'Referencias Accionistas')]/ancestor::div[contains(@class, 'mat-vertical-content-container')]//button[span[contains(., 'Siguiente')]]");
+      cy.xpathClk("//span[contains(., 'Referencias Accionistas')]/ancestor::div[contains(@class, 'mat-vertical-content-container')]//button[span[contains(., 'Siguiente')]]");
       // FIN PASO #3
 
       //PASO #4
       if (ArrayCapJuntaDir[no].TieneJD){
-      //descarga archivo "Captura de accionistas"
-      Generales.DescargaArchivoComplementos(ArrayCaptAccionistas[no].URL_RefAccionistas, "CaptAccionistas");
-      // Lee TODAS las hojas en una sola operación y realizacion del paso 3
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx" }).then((excelData) => {
+
+      //descarga archivo "Captura de junta directiva"
+      //inicio lectura hojas archivo "Captura de junta directiva"
+      //lectura del archivo "Captura de junta directiva" hoja 0 "Junta Directiva "
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CapJuntaDir.xlsx"}).then((JuntaDir) => {
         // Asigna los datos a los arrays correspondientes
-        const ArrayRefAccionistas = excelData["RefAccionista"] || [];
-        const ArrayIDcapAcc = excelData["Identificacion"] || [];
-        const ArrayInfCompl = excelData["Informacion Complementaria"] || [];
-        const ArrayDtsGnPJyN = excelData["DG PJ y N"] || [];
-        const ArrayRLCapAcc = excelData["Representante Legal"] || [];
-
-        cy.log(`Número de registros: ${ArrayRefAccionistas.length}`);
-        cy.oculto()
-        // Procesa los datos
-        for (let i = 0; i < ArrayRefAccionistas.length; i++) {
-          
-        cy.get('body', { timeout: 5000 }).then(($body) => {
-          if ($body.text().includes('El último elemento de cada rama debe ser una persona natural')) {
-            cy.log('Si aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
-            cy.xpathClk("(//button[contains(@class, 'swal2-confirm') and contains(., 'Aceptar')])[1]")
-//            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")
-            cy.log('NATURAL "El último elemento de cada rama debe ser una persona natural"')
-            cy.xpathClk("//mat-icon[text()='add']")
-            // Aquí tu flujo cuando aparece el mensaje
-            PJ.AggRefNatural(ArrayIDcapAcc[i], 
-              ArrayInfCompl[i], ArrayDtsGnPJyN[i])
-          } else {
-            cy.log('No aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
-            // Aquí el flujo alternativo
-            if(ArrayRefAccionistas[i].AggRef === "Jurídica"){
-            
-            cy.log('JURIDICO')
-            cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
-            PJ.AggRefJuridica(ArrayIDcapAcc[i], 
-              ArrayInfCompl[i], ArrayDtsGnPJyN[i], 
-              ArrayRLCapAcc[i])
-            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
-
-            }else if(ArrayRefAccionistas[i].AggRef === "Natural"){
-              cy.xpath("//mat-icon[text()='add']", { timeout: 5000 }).then($el => {
-                if ($el.length > 0 && $el.is(':visible')) {
-                  // ✅ El elemento existe y está visible
-                  cy.wrap($el).click();
-                          cy.log('NATURAL')
-                          PJ.AggRefNatural(ArrayIDcapAcc[i], 
-                            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
-
-                } else {
-                  // ❌ El elemento no existe o está oculto
-                  cy.log("El icono 'add' no está visible");
-                          cy.log('NATURAL')
-                          PJ.AggRefNatural(ArrayIDcapAcc[i], 
-                            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
-                }
-            }); 
-              }else{ 
-                cy.log('No hay datos "Captura de accionistas" presionando boton siguiente')
-              }
-            }
-          });
+        const ArrayJuntaDir = JuntaDir["Junta Directiva"] || [];
+        for (let i = 0; i < ArrayJuntaDir.length; i++) {
+          PJ.CapturaJuntaDirectiva(ArrayJuntaDir[i])
         }
-
       });
-
       }
-      //presionamos siguiente luego de terminar la lectura o vlaidar si no hay referencias   
-        cy.xpathClk("//span[contains(., 'Referencias Accionistas')]/ancestor::div[contains(@class, 'mat-vertical-content-container')]//button[span[contains(., 'Siguiente')]]");
+      //Boton siguiente Paso #4
+      cy.xpathClk("(//button[contains(., 'Siguiente')])[4]");
       // FIN PASO #4
+      
       //PASO #5
+      for (let i = 0; i < ArrayRepreLegalDG.length; i++) {
+      PJ.RepresentanteLegal(ArrayRepreLegalDG[no], ArrayRepreLegalDir[no])
+      //descarga archivo "Representante Legal - Contacto"
+      Generales.DescargaArchivoComplementos(ArrayRepreLegalCont[no].URL_Contacto, "RepreLegalCont")            
+      //lectura hojas archivo "Representante Legal - Contacto"
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/RepreLegalCont.xlsx" }).then((excelData) => {
+      // Asigna los datos a los arrays correspondientes
+        const ArrayRLcorreo = excelData["correo"] || [];
+        const ArrayRLtelefono = excelData["telefono"] || [];
+      //FIN lectura hojas archivo "Representante Legal - Contacto"
+      
+        for (let i = 0; i < ArrayRLcorreo.length; i++) {
+          PJ.correoRL(ArrayRLcorreo[i])
+        }
+        for (let i = 0; i < ArrayRLtelefono.length; i++) {
+          PJ.celularRL(ArrayRLtelefono[i])
+        }
+      })
+      cy.xpathClk("(//button[contains(., 'Agregar')])[5]")
+        }      
+      cy.xpathClk("(//button[contains(., 'Siguiente')])[7]");
+
+      
+
       // FIN PASO #5
       //PASO #6
       // FIN PASO #6      

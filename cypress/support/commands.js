@@ -41,12 +41,10 @@ Cypress.Commands.add('leerHojaExcel', (nombreHoja) => {
 
 Cypress.Commands.add('xpathClk', (xpath) => {
   cy.oculto();
-  cy.scrollToCenter(xpath)
 
   cy.xpath(xpath, { timeout: 60000 }).then($el => {
     if ($el.length > 0) {
       cy.wrap($el)
-        // .scrollIntoView({ block: "nearest" })
         .should('not.be.disabled')
         .click({ force: true });
         //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
@@ -59,7 +57,6 @@ Cypress.Commands.add('xpathClk', (xpath) => {
 
 Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
   cy.oculto();
-  cy.scrollToCenter(xpath)
 
   // Verificamos si la variable es null, undefined o vacía
   if (!variable || String(variable).trim() === '') {
@@ -73,7 +70,6 @@ Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
         .click({ force: true })
         .should('not.be.disabled')
         .type(String(variable) + '{enter}')
-        // .click({ force: true });
      
 
       // Ejecutamos el comando oculto
@@ -88,7 +84,6 @@ Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
 
 Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
   cy.oculto();
-  cy.scrollToCenter(xpath)
 
   // Validar si la variable está vacía, nula o indefinida
   if (!variable || String(variable).trim() === '') {
@@ -100,7 +95,6 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
     if ($el.length > 0) {
       cy.wrap($el)
         .should('not.be.disabled')
-        // .scrollIntoView({ block: "nearest" })
         .clear()
         .type(String(variable) + '{enter}')
         .click({ force: true });
@@ -257,6 +251,8 @@ Cypress.Commands.add("IngresoFecha", (Fecha, xpAbrirFecha) => {
 
   // Paso 6: Seleccionar día
   cy.contains(".mat-calendar-body-cell-content", String(parseInt(dia, 10))).click({ force: true });
+  cy.oculto()
+
 });
 
 
@@ -271,6 +267,7 @@ Cypress.Commands.add("clickSiguiente", (stepName) => {
 
 
 Cypress.Commands.add('Centrar', (index) => {
+  cy.oculto()
   const xpath = "//div[contains(@class,'mat-step ng-star-inserted')]";
   
   cy.xpath(`(${xpath})[${index}]`, { timeout: 60000 }).then($el => {
@@ -285,12 +282,18 @@ Cypress.Commands.add('Centrar', (index) => {
 
 
 
-Cypress.Commands.add('scrollToCenter', (xpath) => {
-  cy.xpath(xpath, { timeout: 60000 }).then($el => {
-    cy.window().then(win => {
-      const rect = $el[0].getBoundingClientRect();
-      const y = rect.top + win.scrollY - (win.innerHeight / 2) + (rect.height / 2);
-      win.scrollTo({ top: y });
-    });
+Cypress.Commands.add('CentrarXpathTest', (index) => {
+  cy.oculto()
+  cy.log("CentrarXpathTest")
+  const xpath = "//mat-form-field//input[@id='mat-input-60']";
+  
+  cy.xpath(`(${xpath})[${index}]`, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView({ block: "center", inline: "center" }) // 👈 centra en pantalla
+        } else {
+      cy.log(`⚠️ No se encontró el paso número ${index}`);
+    }
   });
 });
+
