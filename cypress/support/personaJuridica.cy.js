@@ -23,7 +23,6 @@ class personaJuridica {
     this.RegistroMercantil(data)
     cy.xpathClk("(//button[contains(., 'Siguiente')])[2]")
   }//FIN Datos Generales Persona Juridica
-  
   TipoPersonaJuridica(data){
     cy.xpathBtxt(data.TPJ, "(//mat-radio-button[contains(., '"+data.TPJ+"')])") //calidar este por que no ingresamos nada
     cy.xpathBtxt(data.RazonSoc, "//mat-label[normalize-space(text())='Razón Social']/ancestor::mat-form-field//input")
@@ -87,7 +86,7 @@ class personaJuridica {
     //Paso: 5 Agregar 
     cy.xpathClk("(//button[contains(., 'Agregar')])[2]") 
     //se debede agregar un natural luego de un juridico  
-    }
+  }
   AggRefNatural(dataID,dataIC,dataDGP){
     cy.Centrar(3)
     //Paso: 0 ingresamos 
@@ -151,14 +150,14 @@ class personaJuridica {
     cy.IngresoFecha(data.FechaInicioJD, "//mat-label[normalize-space()='Fecha Inicio']/ancestor::mat-form-field//button")
     cy.IngresoFecha(data.FechaFinalizaJD, "//mat-label[normalize-space()='Fecha Finaliza']/ancestor::mat-form-field//button")
     cy.xpathBtxtClear(data.PaisOrigenJD, "(//mat-label[normalize-space(.)='País de Origen']/ancestor::mat-form-field//input)[2]")
+    cy.xpathBtxt(data.CedulaJD, "(//mat-label[contains(normalize-space(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
+    cy.IngresoFecha(data.FechaJD, "(//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button)[2]")
     cy.xpathBtxt(data.PrimerApellidoJD, "(//mat-label[contains(normalize-space(), 'Primer Apellido')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(data.SegundoApellidoJD, "(//mat-label[contains(normalize-space(), 'Segundo Apellido')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(data.PrimerNombreJD, "(//mat-label[contains(normalize-space(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(data.SegundoNombreJD, "(//mat-label[contains(normalize-space(), 'Segundo Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(data.OtroNombreJD, "(//mat-label[contains(normalize-space(), 'Otros Nombres')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(data.CargoJD, "(//mat-label[contains(normalize-space(), 'Cargo')]/ancestor::mat-form-field//input)[1]")  
-    cy.xpathBtxt(data.CedulaJD, "(//mat-label[contains(normalize-space(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
-    cy.IngresoFecha(data.FechaJD, "(//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button)[2]")
     //boton agregar 
     cy.xpathClk("(//button[contains(., 'Agregar')])[2]")
   }
@@ -169,8 +168,8 @@ class personaJuridica {
       cy.Centrar(5)
       this.DatosGeneralesRL(dataDGRL)
       this.DireccionRL(dataDRL)
-    }
-    DatosGeneralesRL(data){
+  }
+  DatosGeneralesRL(data){
       cy.Centrar(5)        
       cy.xpathClk("//input[@type='radio' and @value='"+data.GeneroRL+"']") //calidar este por que no ingresamos nada
       cy.xpathBtxt(data.CedulaRL, "(//mat-label[contains(normalize-space(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[2]")
@@ -191,8 +190,8 @@ class personaJuridica {
 
       cy.xpathClk("(//button[contains(., 'Siguiente paso representante')])[1]")
       
-    }
-    DireccionRL(data){
+  }
+  DireccionRL(data){
       cy.Centrar(5)        
       cy.xpathBtxtClear(data.paisRL, "(//mat-label[normalize-space(.)='País']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.aniosRL, "(//mat-label[normalize-space(.)='Años de residir']/ancestor::mat-form-field//input)[1]")
@@ -211,17 +210,16 @@ class personaJuridica {
       cy.xpathBtxt(data.longitudRL, "(//mat-label[normalize-space(.)='Longitud']/ancestor::mat-form-field//input)[1]")
       
       cy.xpathClk("(//button[contains(., 'Siguiente paso representante')])[2]")
-    }
-
-    correoRL(data){
+  }
+  correoRL(data){
       //ingreso de correo
       cy.xpathClk("(//mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select)[1]")  //mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select
       cy.xpathClk("//mat-option[normalize-space()='"+data.tipoCorreo+"']") // validar el comando si da problema y posuible solucion a TPJ
       cy.xpathBtxt(data.correo, "(//mat-label[normalize-space(.)='Correo']/ancestor::mat-form-field//input)[1]")
       cy.xpathClk("(//button[contains(., 'Agregar')])[3]")
       //fin ingrerso correo
-    }
-    celularRL(data){
+  }
+  celularRL(data){
       cy.xpathClk("(//mat-label[normalize-space() = 'Tipo de Teléfono']/ancestor::mat-form-field//mat-select)[1]")  //mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select
       cy.xpathClk("//mat-option[normalize-space()='"+data.tipoTelefono+"']") // validar el comando si da problema y posuible solucion a TPJ
       cy.xpathBtxtClear(data.telefono, "(//mat-label[normalize-space(.)='Teléfono']/ancestor::mat-form-field//input)[1]")
@@ -229,74 +227,69 @@ class personaJuridica {
       cy.xpathClk("(//mat-option)[last()]")
                    
       cy.xpathClk("(//button[contains(., 'Agregar')])[4]")
-    }
-    //### FIN PASO #5
+  }
+  //### FIN PASO #5
 
-    //### PASO #6
-    PerfilEconomico(data){
-      this.InfGenFin(data)
-      this.InfOpera(data)
-      this.Relaciones(data)
-      this.PrincProvee(data)
-
-      //validar este siguiente no estoy seguro si es necesario
-      cy.xpathClk("(//button[.//span[contains(normalize-space(.), 'Finalizar')]])[1]")
-
-    }
+  //### PASO #6
     InfGenFin(data){
-      
+      cy.Centrar(6)        
       if (data.AfectoISR){cy.xpathClk("(//*[normalize-space() = 'Afecto a ISR']/preceding::input[@type='checkbox'])[1]")}else{cy.log("Afecto a ISR false"+ data.AfectoISR)}  //mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select
       cy.xpathBtxt(data.ActEconomica, "(//mat-label[normalize-space(.)='Actividad Económica']/ancestor::mat-form-field//input)[1]")
-      cy.xpathBtxtClear(data.fechaActEc, "(//mat-label[normalize-space(.)='Fecha actividad económica']/ancestor::mat-form-field//input)[1]")
+//      cy.xpathBtxtClear(data.fechaActEc, "(//mat-label[normalize-space(.)='Fecha actividad económica']/ancestor::mat-form-field//input)[1]") lo quitaron
       cy.xpathBtxt(data.SecEconomica, "(//mat-label[normalize-space(.)='Sector Económico']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.SecEconomica, "(//mat-label[normalize-space(.)='Clase de Cliente']/ancestor::mat-form-field//input)[1]")
-   
-   
-      //leer documento para agregar las monedas que correspondan 
+    }
+    monedaPE(){
+      cy.Centrar(6)        
+
       cy.xpathBtxt(data.Moneda ,"(//mat-label[normalize-space(.)='Moneda']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.montoAprxTotalActivo ,"(//mat-label[normalize-space(.)='Monto Aproximado de Total de Activo']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.nivelVentasAnual ,"(//mat-label[normalize-space(.)='Nivel de Ventas Anuales']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.Observaciones ,"//div[@class='angular-editor-textarea' and @contenteditable='true']")
                    
-      cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
+      cy.xpathClk("(//button[contains(., 'Agregar')])[6]")
       // fin lectura de archivo 
-
-
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[1]")
-
     }
     InfOpera(data){
-  
-      //leer documento para agregar las monedas que correspondan 
-      cy.xpathBtxt(data.Pais ,"(//mat-label[normalize-space(.)='País']/ancestor::mat-form-field//input)[1]")
+      cy.Centrar(6)        
+      
+      cy.xpathBtxt(data.Pais ,"(//mat-label[normalize-space(.)='País']/ancestor::mat-form-field//input)[2]")
       cy.xpathBtxt(data.Region ,"(//mat-label[normalize-space(.)='Región']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.Departamento ,"(//mat-label[normalize-space(.)='Departamento']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.Municipio ,"(//mat-label[normalize-space(.)='Municipio']/ancestor::mat-form-field//input)[1]")
-                   
-      cy.xpathClk("(//button[contains(., 'Agregar')])[2]")
-      // fin lectura de archivo 
-
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[2]")
-
+      //luego de llenar los campos procede a precionar el boton agregar       
+      cy.xpathClk("(//button[contains(., 'Agregar')])[7]")
     }
     Relaciones(data){
+      cy.Centrar(6)        
+
       cy.xpathBtxt(data.relGrupoEcono ,"(//mat-label[normalize-space(.)='Relación con Grupo Económico']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.relGrupFinan ,"(//mat-label[normalize-space(.)='Relación con Grupo Financiero']/ancestor::mat-form-field//input)[1]")
 
       cy.xpathClk("(//button[contains(., 'Siguiente')])[3]")
     }
     PrincProvee(data){
-      //leer documento para agregar las monedas que correspondan 
+      cy.Centrar(6)        
+
       cy.xpathBtxt(data.Proveedor ,"(//mat-label[normalize-space(.)='Proveedor']/ancestor::mat-form-field//input)[1]")
-      cy.xpathClk("(//button[contains(., 'Agregar')])[2]")
-      // fin lectura de archivo 
+      cy.xpathClk("(//button[contains(., 'Agregar')])[8]")
     }
     //### FIN PASO #6
 
     //### PASO #7
     Direcciones(data){
+      cy.Centrar(7)        
+
       cy.xpathBtxtClear(data.Pais, "(//mat-label[normalize-space(.)='País']/ancestor::mat-form-field//input)[3]")
-      cy.xpathBtxt(data.IngreseUbicacion,"(//mat-label[normalize-space(.)='Ingrese una ubicación']/ancestor::mat-form-field//input)[2]")
+      
+      cy.xpath("(//mat-label[normalize-space(.)='Ingrese una ubicación']/ancestor::mat-form-field//input)[2]").type(data.ubicacionRL)
+      cy.oculto()
+      cy.wait(420)
+      cy.oculto()
+      cy.xpath("(//mat-label[normalize-space(.)='Ingrese una ubicación']/ancestor::mat-form-field//input)[2]").type('{enter}');         
+
+      
+//      cy.xpathBtxt(data.IngreseUbicacion,"(//mat-label[normalize-space(.)='Ingrese una ubicación']/ancestor::mat-form-field//input)[2]")
       cy.xpathBtxtClear(data.agenCercana, "(//mat-label[normalize-space(.)='Agencia más cercana']/ancestor::mat-form-field//input)[2]")
       cy.xpathBtxtClear(data.InfoDireccion, "(//mat-label[normalize-space(.)='Información Dirección']/ancestor::mat-form-field//input)[2]")
       cy.xpathBtxt(data.Especificaciones, "(//mat-label[normalize-space(.)='Especificaciones']/ancestor::mat-form-field//input)[2]")
@@ -311,15 +304,12 @@ class personaJuridica {
 
     //### PASO #8
     Contacto(data){
+      cy.Centrar(8)        
       cy.xpathBtxtClear(data.NameContacto, "(//mat-label[normalize-space(.)='Nombre de contacto']/ancestor::mat-form-field//input)[1]")
-      //tiene que correr el archivo y agregar segun la cantidad que encuentre
-      this.correo(data)
-      //tiene que correr el archivo y agregar segun la cantidad que encuentre
-      this.celular(data)
-      //tiene que correr el archivo y agregar segun la cantidad que encuentre y luego dar agregar 
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[13]")
     }
     correo(data){
+      cy.Centrar(8)        
+
       //ingreso de correo
       cy.xpathClk("(//mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select)[1]")  //mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select
       cy.xpathClk("//mat-option[normalize-space()='"+data.tipoCorreo+"']") // validar el comando si da problema y posuible solucion a TPJ
@@ -328,6 +318,8 @@ class personaJuridica {
       //fin ingrerso correo
     }
     celular(data){
+      cy.Centrar(8)        
+
       cy.xpathClk("(//mat-label[normalize-space() = 'Tipo de Teléfono']/ancestor::mat-form-field//mat-select)[1]")  //mat-label[normalize-space() = 'Tipo de Correo']/ancestor::mat-form-field//mat-select
       cy.xpathClk("//mat-option[normalize-space()='"+data.tipoTelefono+"']") // validar el comando si da problema y posuible solucion a TPJ
       cy.xpathBtxtClear(data.telefono, "(//mat-label[normalize-space(.)='Teléfono']/ancestor::mat-form-field//input)[1]")
