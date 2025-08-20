@@ -3968,7 +3968,7 @@ class PersonaNatural {
     tipoTelefonoReferenciaPersonalCliente,
     telefonoReferenciaPersonalCliente
   ) {
-    if (referenciasBancarias === "si" || referenciasBancarias === "Si") {
+    if (referenciasBancarias === "Si" || referenciasBancarias === "Si") {
       cy.xpath(
         "//mat-panel-title[text()=' Referencias Bancarias ']/ancestor::mat-expansion-panel-header"
       )
@@ -4185,7 +4185,7 @@ class PersonaNatural {
 
     if (
       tieneReferenciasComerciales === "Si" ||
-      tieneReferenciasComerciales === "si"
+      tieneReferenciasComerciales === "Si"
     ) {
       cy.xpath(
         "//mat-panel-title[contains(normalize-space(), 'Referencias Comerciales')]/ancestor::mat-expansion-panel-header"
@@ -4405,7 +4405,7 @@ class PersonaNatural {
     }
 
     if (
-      tieneReferenciasPersonales === "si" ||
+      tieneReferenciasPersonales === "Si" ||
       tieneReferenciasPersonales === "Si"
     ) {
       cy.xpath(
