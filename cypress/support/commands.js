@@ -148,7 +148,7 @@ Cypress.Commands.add("conBtxt", (varibale, cont) => {
   cy.oculto();
 });
 
-Cypress.Commands.add("busquedaCliente", (tipoDocumento, InfoTipoDocumento) => {
+Cypress.Commands.add("busquedaCliente", (data) => {
   // Paso 1: Ir al módulo
   cy.xpathClk("//span[contains(text(), 'Operación')]");
   cy.wait(2000);
@@ -158,13 +158,13 @@ Cypress.Commands.add("busquedaCliente", (tipoDocumento, InfoTipoDocumento) => {
   cy.xpathClk(
     "//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input"
   );
-  cy.contains(".mat-mdc-option span", tipoDocumento, {
+  cy.contains(".mat-mdc-option span", data.tipoDocumento, {
     timeout: 60000,
   }).click({ force: true });
 
   // Paso 3: Llenar número y buscar
   cy.xpathBtxt(
-    InfoTipoDocumento,
+    data.InfoTipoDocumento,
     "(//mat-label[normalize-space()='Identificación'])[1]"
   );
   cy.xpathClk("//span[normalize-space(text()) = 'Buscar']");
@@ -245,7 +245,7 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type("OPERADORQA");
+        .type("adminqa");
 
       cy.wait(300);
 
@@ -255,7 +255,7 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type("byte0625");
+        .type("adminqa");
 
       cy.wait(300);
 

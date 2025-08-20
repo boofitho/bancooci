@@ -6,42 +6,48 @@ const cotizador = new PersonaNatural();
 const Generales = new MetodosGenerales();
 const PJ = new personaJuridica();
 
-const URL_Var = Cypress.env('URL_VAR');       //link URL´s para descargar los documentos 
+const URL_Var = Cypress.env("URL_VAR"); //link URL´s para descargar los documentos
 
-let ArrayVar = []
+let ArrayVar = [];
 
-let ArrayCliente = []
-let ArrayID = []
-let ArrayDataGenP = []
-let ArrayCaptAccionistas = []
-let ArrayCapJuntaDir = []
-let ArrayRepreLegalDG = []
-let ArrayRepreLegalDir = [] 
-let ArrayRepreLegalCont = []
-let ArrayPerfilEconomico = []
-let ArrayDireccion = []
-let ArrayContacto = []
-let ArrayFATCA = []
-let ArrayReferencias = []
-let ArrayDigitalDocs = []
-let ArrayClienteFinalizado = []
+let ArrayCliente = [];
+let ArrayID = [];
+let ArrayDataGenP = [];
+let ArrayCargosPerNatural = [];
+let ArrayCaptAccionistas = [];
+let ArrayCapJuntaDir = [];
+let ArrayRepreLegalDG = [];
+let ArrayRepreLegalDir = [];
+let ArrayRepreLegalCont = [];
+let ArrayConyugue = [];
+let ArrayPerfilEconomico = [];
+let ArrayDireccion = [];
+let ArrayContacto = [];
+let ArrayFATCA = [];
+let ArrayReferencias = [];
+let ArrayDependenciaEco = [];
+let ArrayDependientes = [];
+let ArrayDatosNegocio = [];
+let ArrayRefernciaLaboral = [];
+let ArrayDigitalDocs = [];
+let ArrayClienteFinalizado = [];
 
-//arrays archivos complemetnarios 
-let ArrayRefAccionistas = []
-let ArrayIDcapAcc = []
-let ArrayInfCompl =[]
-let ArrayDtsGnPJyN =[]
-let ArrayRLCapAcc =[]
-let ArrayJuntaDir =[]
-let ArrayRLcorreo =[]
-let ArrayRLtelefono =[]
-let ArrayInfFinanciera =[]
-let ArrayInfDondeOpera =[]
-let ArrayProveedor =[]
-let ArrayConCorreo =[]
-let ArrayConTelefono =[]
+//arrays archivos complemetnarios
+let ArrayRefAccionistas = [];
+let ArrayIDcapAcc = [];
+let ArrayInfCompl = [];
+let ArrayDtsGnPJyN = [];
+let ArrayRLCapAcc = [];
+let ArrayJuntaDir = [];
+let ArrayRLcorreo = [];
+let ArrayRLtelefono = [];
+let ArrayInfFinanciera = [];
+let ArrayInfDondeOpera = [];
+let ArrayProveedor = [];
+let ArrayConCorreo = [];
+let ArrayConTelefono = [];
 
-//GAAAAAY!
+
 
 //variables para bancoocci
 let url = "https://plataforma-qa.bytesw.cloud/";
@@ -57,7 +63,7 @@ const data = {
   //Agregar Cliente
   //##### PASO 1 - Para Identificacion
   TipodePersona: "natural",
-  RTN: "HN0301-2005-322892", // 
+  RTN: "HN0301-2005-322892", //
   //##### PASO 2 -  Datos Generales Persona J/N?
   TPJ: "ONG",
   RazonSoc: "Empresa XYZ SAC",
@@ -86,7 +92,7 @@ const data = {
   textoGenero: "Masculino",
   PrimerApellido: "amr",
   PrimerNombre: "Cristobal",
- fechaNacimientoCliente: "05/02/2005",
+  fechaNacimientoCliente: "05/02/2005",
   EstadoCivil: " Soltero(a) ", //  " Soltero(a) "  " Casado(a) "
   gradoAcademico: " UNIVERSITARIO ",
   profesion: " AGENTE DE VIAJES ",
@@ -104,14 +110,14 @@ const data = {
   cargoOcupadoPEP: "Gerente general",
   periodoPEP: " 2019 - 2022 ",
   //Espacio donde se debe de colocar si alguna empresa cuando es PEP
-  EmpresaJuridicaPEP: "Empresa",  //Federaciones/organizaciones no lucrativas (ONG'S) , Organización/dirección de empresas
-  PatrimonioEmpresaPEP: "El renacimientooss0667777777, S.A.",
+  EmpresaJuridicaPEP: "Empresa", //Federaciones/organizaciones no lucrativas (ONG'S) , Organización/dirección de empresas
+  NombreEmpresaPEP: "El renacimientooss0667777777, S.A.",
   PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
   PatrimonioIdentificacionPEP: "HN0301-2005-322853",
   PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
   PatrimonioPorcentPEP: 30,
   fechaInicialEmpresaPEP: "12/03/1995",
-fechaFinalEmpresaPEP:"13/03/2032",
+  fechaFinalEmpresaPEP: "13/03/2032",
   PatrimonioPuestoPEP: "Representante legal",
   //Parentescos 'PEP'
   apellidoMamaPEP: "Lopez",
@@ -132,8 +138,8 @@ fechaFinalEmpresaPEP:"13/03/2032",
   numeroConyugue: "50403072640",
   //Conyugue cuando es PEP
   cedulaConyuguePEP: "0209199200090",
- fechaExpiracionCedulaConyuguePEP: "06/03/2030",
- fechaNacimientoConyuguePEP: "08/07/1995",
+  fechaExpiracionCedulaConyuguePEP: "06/03/2030",
+  fechaNacimientoConyuguePEP: "08/07/1995",
   actividadEconomicaConyuguePEP: " SERVICIOS FINANCIEROS ",
   profesionConyuguePEP: " AGENTE DE SEGUROS ",
   pasaporteConyuguePEP: "000000000000144",
@@ -149,15 +155,15 @@ fechaFinalEmpresaPEP:"13/03/2032",
   sexoReferenciaLaboralConyuguePEP: "MASCULINO",
   primerApellidoReferenciaLaboralPEP: "Cisneros",
   primerNombreReferenciaLaboralPEP: "Alllcn",
-fechaIngresoReferenciaLaboralConyugue: "06/04/1999",
+  fechaIngresoReferenciaLaboralConyugue: "06/04/1999",
   fechaEgresoReferenciaLaboralConyugue: "16/01/2020",
   puestoReferenciaConyuguePEP: "Tecnico",
   direccionReferenciaLaboralConyuguePEP: "Comayagua",
   tipoCorreoContactoConyuguePEP: " Correo Personal ",
   tipoTelefonoContactoConyuguePEP: " Celular ",
   telefonoContactoConyugue: "50415072609",
-  nombreEmpresaConyuePEP: "El agua Vivaa, S.A.",
- fechaInscripcionNegocioConyuguePEP: "19/03/2005",
+  nombreEmpresaConyuguePEP: "El agua Vivaa, S.A.",
+  fechaInscripcionNegocioConyuguePEP: "19/03/2005",
   giroNegocioConyuguePEP: "Ventas",
   ingresosMensualesConyuguePEP: "1000000",
   categoriadeNegocioConyuguePEP: "Distribucion y ventas",
@@ -174,7 +180,7 @@ fechaIngresoReferenciaLaboralConyugue: "06/04/1999",
   tieneDependenciaEconomica: "no",
   parentescoDependenciaEconomica: " Papá ",
   cedulaDependenciaEconomica: "0302195500315",
-fechaExpiracionCedulaDependenciaEconomica: "17/03/2030",
+  fechaExpiracionCedulaDependenciaEconomica: "17/03/2030",
   apellidoDependenciaEconomica: "mzf",
   nombredependenciaEconomica: "Luis",
   //Dependientes
@@ -190,7 +196,7 @@ fechaExpiracionCedulaDependenciaEconomica: "17/03/2030",
 
   //Datos del negocio cuandos es comerciante
   nombreEmpresaCliente: "El llano, S.A.",
-FechaInscripcionNegocioCliente: "12/03/1999",
+  FechaInscripcionNegocioCliente: "12/03/1999",
   giroNegocioCliente: "Ventas",
   ingresoMensuales: "10000",
   categoriaDeNegocioCliente: "Distribuciones",
@@ -276,283 +282,422 @@ FechaInscripcionNegocioCliente: "12/03/1999",
 
   //Digitalizar Documentos
 };
-let no = 2
+let no = 2;
 describe("BancoOcci", () => {
-
   Cypress.on("uncaught:exception", (err, Runnable) => {
     return false;
   });
 
   before("Ingreso e inicio de sesion", () => {
-     cy.log(URL_Var)
-      //Descarga el de archivo variables
-      Generales.ArchivoNubeV(URL_Var)
-    
-      //Lee archivo de variables y guarda en un array los resultados 
-      cy.task("readExcelToJson", { 
-        filePath: "cypress/fixtures/variables.xlsx", 
-        hoja: "Variables" 
-      }).then((Var) => {
-        Var.forEach((filaVar) => {
-          ArrayVar.push(filaVar);
-        });
+    cy.log(URL_Var);
+    //Descarga el de archivo variables
+    Generales.ArchivoNubeV(URL_Var);
+
+    //Lee archivo de variables y guarda en un array los resultados
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/variables.xlsx",
+      hoja: "Variables",
+    }).then((Var) => {
+      Var.forEach((filaVar) => {
+        ArrayVar.push(filaVar);
       });
-   
-      const folderPath = 'cypress/screenshots';  // Aquí coloca la ruta de la carpeta de capturas u otros archivos que quieras borrar
-      cy.task('deleteAllFiles', folderPath);     //con este comando borramos el folderpath de screenshots
+    });
 
- }); // TERMINA BEFORE
+    const folderPath = "cypress/screenshots"; // Aquí coloca la ruta de la carpeta de capturas u otros archivos que quieras borrar
+    cy.task("deleteAllFiles", folderPath); //con este comando borramos el folderpath de screenshots
+  }); // TERMINA BEFORE
 
-it('Descarga de archivos datos y lectura de hojas del mismo', () => {
+  it("Descarga de archivos datos y lectura de hojas del mismo", () => {
     //descarga archivo "datos"
-    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos")  
-    cy.wait(5000) // descargando archivo
-   
+    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos");
+    cy.wait(5000); // descargando archivo
+
     //lista las hojas disponibles en el archivo datos
-    cy.task('listarHojasExcel', { filePath: 'cypress/fixtures/datos.xlsx' }).then((nombres) => {
-      cy.log('Hojas disponibles: ' + nombres.join(', '));
+    cy.task("listarHojasExcel", {
+      filePath: "cypress/fixtures/datos.xlsx",
+    }).then((nombres) => {
+      cy.log("Hojas disponibles: " + nombres.join(", "));
     });
 
     /*Inicio lectura del archivo "datos" por hojas*/
-    
+
     //lectura del archivo "datos" hoja 0
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "0 Cliente"}).then((datosCliente) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "0 Cliente",
+    }).then((datosCliente) => {
       datosCliente.forEach((fila) => {
         ArrayCliente.push(fila); // O cualquier lógica que necesites
       });
     });
- 
+
     //lectura del archivo "datos" hoja 1 "Identificacion"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "1 Identificacion"}).then((ID) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "1 Identificacion",
+    }).then((ID) => {
       ID.forEach((filaVar) => {
         ArrayID.push(filaVar);
       });
     });
-    
-          
-  //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPer"}).then((DataGenP) => {
-      DataGenP.forEach((filaVar) => {
-        ArrayDataGenP.push(filaVar);
-      });
-    });
-    
-    //lectura del archivo "datos" hoja 3 "Captura de accionistas"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "3 Captura de accionistas"}).then((CaptAccionistas) => {
-      CaptAccionistas.forEach((filaVar) => {
-        ArrayCaptAccionistas.push(filaVar);
-      });
-    });
-    
-    //lectura del archivo "datos" hoja 4 "Captura de junta directiva"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "4 Captura de junta directiva"}).then((CapJuntaDir) => {
-      CapJuntaDir.forEach((filaVar) => {
-        ArrayCapJuntaDir.push(filaVar);
-      });
-    });
 
-    //lectura del archivo "datos" hoja 5 "Representante Legal - Datos Generales"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "5 RLDatos Generales"}).then((RepreLegalDG) => {
-      RepreLegalDG.forEach((filaVar) => {
-        ArrayRepreLegalDG.push(filaVar);
-      });
-    });
- 
-    //lectura del archivo "datos" hoja 6 "Representante Legal - Direccion"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "5 RLDireccion"}).then((RepreLegalDir) => {
-      RepreLegalDir.forEach((filaVar) => {
-        ArrayRepreLegalDir.push(filaVar);
-      });
-    });
-    
-    //lectura del archivo "datos" hoja 7 "Representante Legal - Contacto"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "5 RLContacto"}).then((RepreLegalCont) => {
-      RepreLegalCont.forEach((filaVar) => {
-        ArrayRepreLegalCont.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 8 "Perfil Economico"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "6 PerfilEconomico"}).then((PerfilEconomico) => {
-      PerfilEconomico.forEach((filaVar) => {
-        ArrayPerfilEconomico.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 9 "Dirección"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "7 Dirección"}).then((Direccion) => {
-      Direccion.forEach((filaVar) => {
-        ArrayDireccion.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 10 "Contacto"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "8 Contacto"}).then((Contacto) => {
-      Contacto.forEach((filaVar) => {
-        ArrayContacto.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 11 "FATCA"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "9 FATCA"}).then((FATCA) => {
-      FATCA.forEach((filaVar) => {
-        ArrayFATCA.push(filaVar);
-      });
-    });    
-
-    //lectura del archivo "datos" hoja 12 "Referencias"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "10 referencia"}).then((Referencias) => {
-      Referencias.forEach((filaVar) => {
-        ArrayReferencias.push(filaVar);
-      });
-    }); 
-
-
-//    13 DigitDoc, 14 Finalizado
-
-    // //lectura del archivo "datos" hoja 13 "Digitalización de documentos"
-    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 13 }).then((DigitalDocs) => {
-    //     DigitalDocs.forEach((filaVar) => {
-    //     ArrayDigitalDocs.push(filaVar)
-    //   })
-    // }); 
-    // //lectura del archivo "datos" hoja 14 "Cliente Finalizado"
-    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 14 }).then((ClienteFinalizado) => {
-    //     ClienteFinalizado.forEach((filaVar) => {
-    //     ArrayClienteFinalizado.push(filaVar)
-    //   })
-    // }); 
-
-    //Fin lectura del archivo datos 
-    
-        
-  })// TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
-
-it('Descarga de archivos datos y lectura de hojas del mismo', () => {
-    //descarga archivo "datos"
-    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos")  
-    cy.wait(5000) // descargando archivo
-   
-    //lista las hojas disponibles en el archivo datos
-    cy.task('listarHojasExcel', { filePath: 'cypress/fixtures/datos.xlsx' }).then((nombres) => {
-      cy.log('Hojas disponibles: ' + nombres.join(', '));
-    });
-
-    /*Inicio lectura del archivo "datos" por hojas*/
-    
-    //lectura del archivo "datos" hoja 0
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "0 Cliente"}).then((datosCliente) => {
-      datosCliente.forEach((fila) => {
-        ArrayCliente.push(fila); // O cualquier lógica que necesites
-      });
-    });
- 
-    //lectura del archivo "datos" hoja 1 "Identificacion"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "1 Identificacion"}).then((ID) => {
-      ID.forEach((filaVar) => {
-        ArrayID.push(filaVar);
-      });
-    });
-          
-  //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPer"}).then((DataGenP) => {
+    //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "2 DatosGenPer",
+    }).then((DataGenP) => {
       DataGenP.forEach((filaVar) => {
         ArrayDataGenP.push(filaVar);
       });
     });
 
     //lectura del archivo "datos" hoja 3 "Captura de accionistas"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "3 Captura de accionistas"}).then((CaptAccionistas) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "3 Captura de accionistas",
+    }).then((CaptAccionistas) => {
       CaptAccionistas.forEach((filaVar) => {
         ArrayCaptAccionistas.push(filaVar);
       });
     });
-    
+
     //lectura del archivo "datos" hoja 4 "Captura de junta directiva"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "4 Captura de junta directiva"}).then((CapJuntaDir) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "4 Captura de junta directiva",
+    }).then((CapJuntaDir) => {
       CapJuntaDir.forEach((filaVar) => {
         ArrayCapJuntaDir.push(filaVar);
       });
     });
 
     //lectura del archivo "datos" hoja 5 "Representante Legal - Datos Generales"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "5 RLDatos Generales"}).then((RepreLegalDG) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "5 RLDatos Generales",
+    }).then((RepreLegalDG) => {
       RepreLegalDG.forEach((filaVar) => {
         ArrayRepreLegalDG.push(filaVar);
       });
     });
- 
+
     //lectura del archivo "datos" hoja 6 "Representante Legal - Direccion"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "5 RLDireccion"}).then((RepreLegalDir) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "5 RLDireccion",
+    }).then((RepreLegalDir) => {
       RepreLegalDir.forEach((filaVar) => {
         ArrayRepreLegalDir.push(filaVar);
       });
     });
-    
+
     //lectura del archivo "datos" hoja 7 "Representante Legal - Contacto"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "5 RLContacto"}).then((RepreLegalCont) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "5 RLContacto",
+    }).then((RepreLegalCont) => {
       RepreLegalCont.forEach((filaVar) => {
         ArrayRepreLegalCont.push(filaVar);
       });
     });
 
-    //lectura del archivo "datos" hoja 8 "Perfil Economico"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "6 PerfilEconomico"}).then((PerfilEconomico) => {
+    //lectura del archivo "datos"  "Perfil Economico"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "6 PerfilEconomico",
+    }).then((PerfilEconomico) => {
       PerfilEconomico.forEach((filaVar) => {
         ArrayPerfilEconomico.push(filaVar);
       });
     });
 
+        //lectura del archivo "datos" Datos del negocio"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "Datos Negocio",
+    }).then((DatosNegocio) => {
+      DatosNegocio.forEach((filaVar) => {
+        ArrayDatosNegocio.push(filaVar);
+      });
+    });
+
     //lectura del archivo "datos" hoja 9 "Dirección"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "7 Dirección"}).then((Direccion) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "7 Dirección",
+    }).then((Direccion) => {
       Direccion.forEach((filaVar) => {
         ArrayDireccion.push(filaVar);
       });
     });
 
     //lectura del archivo "datos" hoja 10 "Contacto"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "8 Contacto"}).then((Contacto) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "8 Contacto",
+    }).then((Contacto) => {
       Contacto.forEach((filaVar) => {
         ArrayContacto.push(filaVar);
       });
     });
 
     //lectura del archivo "datos" hoja 11 "FATCA"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "9 FATCA"}).then((FATCA) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "9 FATCA",
+    }).then((FATCA) => {
       FATCA.forEach((filaVar) => {
         ArrayFATCA.push(filaVar);
       });
-    });    
+    });
 
+   //lectura del archivo "datos" de Referencia Laboral 
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "Referencia Laboral",
+    }).then((RefernciaLaboral) => {
+      RefernciaLaboral.forEach((filaVar) => {
+        ArrayRefernciaLaboral.push(filaVar);
+      });
+    });
+
+    
     //lectura del archivo "datos" hoja 12 "Referencias"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "10 referencia"}).then((Referencias) => {
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "10 referencia",
+    }).then((Referencias) => {
       Referencias.forEach((filaVar) => {
         ArrayReferencias.push(filaVar);
       });
-    }); 
+    });
 
-
-//    13 DigitDoc, 14 Finalizado
+    //    13 DigitDoc, 14 Finalizado
 
     // //lectura del archivo "datos" hoja 13 "Digitalización de documentos"
     // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 13 }).then((DigitalDocs) => {
     //     DigitalDocs.forEach((filaVar) => {
     //     ArrayDigitalDocs.push(filaVar)
     //   })
-    // }); 
+    // });
     // //lectura del archivo "datos" hoja 14 "Cliente Finalizado"
     // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 14 }).then((ClienteFinalizado) => {
     //     ClienteFinalizado.forEach((filaVar) => {
     //     ArrayClienteFinalizado.push(filaVar)
     //   })
-    // }); 
+    // });
 
-    //Fin lectura del archivo datos 
-        
-  })// TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
+    //Fin lectura del archivo datos
+  }); // TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
+
+  it("Descarga de archivos datos y lectura de hojas del mismo", () => {
+    //descarga archivo "datos"
+    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos");
+    cy.wait(5000); // descargando archivo
+
+    //lista las hojas disponibles en el archivo datos
+    cy.task("listarHojasExcel", {
+      filePath: "cypress/fixtures/datos.xlsx",
+    }).then((nombres) => {
+      cy.log("Hojas disponibles: " + nombres.join(", "));
+    });
+
+    /*Inicio lectura del archivo "datos" por hojas*/
+
+    //lectura del archivo "datos" hoja 0
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "0 Cliente",
+    }).then((datosCliente) => {
+      datosCliente.forEach((fila) => {
+        ArrayCliente.push(fila); // O cualquier lógica que necesites
+      });
+    });
+
+    //lectura del archivo "datos" hoja 1 "Identificacion"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "1 Identificacion",
+    }).then((ID) => {
+      ID.forEach((filaVar) => {
+        ArrayID.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 2 "Datos Generales Persona General"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "2 DatosGenPer",
+    }).then((DataGenP) => {
+      DataGenP.forEach((filaVar) => {
+        ArrayDataGenP.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 3 "Cargos (PEP) Persona Natural"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "3 Cargos PerNat",
+    }).then((cargosPerNatural) => {
+      cargosPerNatural.forEach((filaVar) => {
+        ArrayCargosPerNatural.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 3 "Captura de accionistas"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "3 Captura de accionistas",
+    }).then((CaptAccionistas) => {
+      CaptAccionistas.forEach((filaVar) => {
+        ArrayCaptAccionistas.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 4 "Captura de junta directiva"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "4 Captura de junta directiva",
+    }).then((CapJuntaDir) => {
+      CapJuntaDir.forEach((filaVar) => {
+        ArrayCapJuntaDir.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 5 "Representante Legal - Datos Generales"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "5 RLDatos Generales",
+    }).then((RepreLegalDG) => {
+      RepreLegalDG.forEach((filaVar) => {
+        ArrayRepreLegalDG.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 6 "Representante Legal - Direccion"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "5 RLDireccion",
+    }).then((RepreLegalDir) => {
+      RepreLegalDir.forEach((filaVar) => {
+        ArrayRepreLegalDir.push(filaVar);
+      });
+    });
+
+      //lectura del archivo "datos" hoja 6 "Conyugue (cuando es casado y cuando es PEP casado)"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "6 conyugue",
+    }).then((Conyugue) => {
+      Conyugue.forEach((filaVar) => {
+        ArrayConyugue.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 7 "Representante Legal - Contacto"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "5 RLContacto",
+    }).then((RepreLegalCont) => {
+      RepreLegalCont.forEach((filaVar) => {
+        ArrayRepreLegalCont.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 8 "Perfil Economico"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "6 PerfilEconomico",
+    }).then((PerfilEconomico) => {
+      PerfilEconomico.forEach((filaVar) => {
+        ArrayPerfilEconomico.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 9 "Dirección"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "7 Dirección",
+    }).then((Direccion) => {
+      Direccion.forEach((filaVar) => {
+        ArrayDireccion.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 10 "Dependencia Economica"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "Dependencia Eco",
+    }).then((DependenciaEco) => {
+      DependenciaEco.forEach((filaVar) => {
+        ArrayDependenciaEco.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 11 "Dependientes"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "Dependientes",
+    }).then((Dependientes) => {
+      Dependientes.forEach((filaVar) => {
+        ArrayDependientes.push(filaVar);
+      });
+    });
 
 
-/*
+
+
+//lectura del archivo "datos" hoja 13 "Contacto"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "8 Contacto",
+    }).then((Contacto) => {
+      Contacto.forEach((filaVar) => {
+        ArrayContacto.push(filaVar);
+      });
+    });
+
+
+
+    //lectura del archivo "datos" hoja 11 "FATCA"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "9 FATCA",
+    }).then((FATCA) => {
+      FATCA.forEach((filaVar) => {
+        ArrayFATCA.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 12 "Referencias"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "10 referencia",
+    }).then((Referencias) => {
+      Referencias.forEach((filaVar) => {
+        ArrayReferencias.push(filaVar);
+      });
+    });
+
+    //    13 DigitDoc, 14 Finalizado
+
+    // //lectura del archivo "datos" hoja 13 "Digitalización de documentos"
+    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 13 }).then((DigitalDocs) => {
+    //     DigitalDocs.forEach((filaVar) => {
+    //     ArrayDigitalDocs.push(filaVar)
+    //   })
+    // });
+    // //lectura del archivo "datos" hoja 14 "Cliente Finalizado"
+    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 14 }).then((ClienteFinalizado) => {
+    //     ClienteFinalizado.forEach((filaVar) => {
+    //     ArrayClienteFinalizado.push(filaVar)
+    //   })
+    // });
+
+    //Fin lectura del archivo datos
+  }); // TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
+
+  /*
 cy.xpath("//button[contains(., 'Siguiente')]")
   .filter(':visible')   // 👈 filtra solo los visibles
   .first()              // si hay más de uno visible, toma el primero
@@ -581,52 +726,28 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
 
 
 */
-it('Login', () => {
-  
-  cy.Login(ArrayVar[0]);
-})
+  it("Login", () => {
+    cy.Login(ArrayVar[0]);
+  });
 
-it("Agregar cliente", () => {
-
-        cy.busquedaCliente(ArrayCliente[no].tipoDocumento, ArrayCliente[no].InfoTipoDocumento);
+  it("Agregar cliente", () => {
+    cy.busquedaCliente(ArrayCliente[no]);
 
     cy.log("AQUIIIIIII PAPUSHO antes del if");
- cy.log(no)
- cy.log( ArrayID[no].InfoTipoDocumento,
-            ArrayID[no].FechaExpiracion,
-             ArrayID[no].RTN)
-
-             cy.log(   ArrayDataGenP[no].Genero,
-            ArrayDataGenP[no].PrimerApellido, 
-            ArrayDataGenP[no].PrimerNombre,
-            ArrayDataGenP[no].FechaNacimientoCliente,
-            ArrayDataGenP[no].EstadoCivil,
-            ArrayDataGenP[no].GradoAcademico,
-            ArrayDataGenP[no].Profesion,
-            ArrayDataGenP[no].AniosEducacion,
-            ArrayDataGenP[no].CapacidadadesEspeciales,
-            ArrayDataGenP[no].Ocupacion,
-            ArrayDataGenP[no].TieneDobleNacionalidad,
-            ArrayDataGenP[no].SegundaNacionalidad,
-            ArrayDataGenP[no].NumeroSocial,
-            ArrayDataGenP[no].UbicacionSegundaNacionalidad)
-             //
-
+    cy.log(ArrayID[no]);
 
     if (ArrayID[no].TipodePersona === "Natural") {
-
       cotizador.validarSiSeDebeCrearCliente().then((debeCrear) => {
         if (debeCrear) {
           cotizador.IdentificacionGeneralPersonaNatural(
-
             ArrayID[no].InfoTipoDocumento,
-            ArrayID[no].FechaExpiracion,
-             ArrayID[no].RTN,
+            ArrayID[no].FechaExp,
+            ArrayID[no].RTN,
             data.correo
           );
           cotizador.DatosGeneralesPersonaNatural(
             ArrayDataGenP[no].Genero,
-            ArrayDataGenP[no].PrimerApellido, 
+            ArrayDataGenP[no].PrimerApellido,
             ArrayDataGenP[no].PrimerNombre,
             ArrayDataGenP[no].FechaNacimientoCliente,
             ArrayDataGenP[no].EstadoCivil,
@@ -655,158 +776,320 @@ it("Agregar cliente", () => {
             // data.NumeroSocial,
             // data.UbicacionSegundaNacionalidad
           );
-     
 
           cotizador.PersonaPep(
-            data.esPEP,
-            data.institucionPEP,
-            data.cargoOcupadoPEP,
-            data.periodoPEP,
-            data.EmpresaJuridicaPEP,
-            data.PatrimonioEmpresaPEP,
-            data.PatrimonioTipodeDocumentoPEP,
-            data.PatrimonioIdentificacionPEP,
-            data.PatrimonioActividadEconomicaPEP,
-            data.PatrimonioPorcentPEP,
-            data.fechaInicialEmpresaPEP,
-            data.fechaFinalEmpresaPEP,
-            data.PatrimonioPuestoPEP
+            
+            ArrayCargosPerNatural[no].esPEP,
+            ArrayCargosPerNatural[no].institucionPEP,
+            ArrayCargosPerNatural[no].cargoOcupadoPEP,
+            ArrayCargosPerNatural[no].periodoPEP,
+            ArrayCargosPerNatural[no].EmpresaJuridicaPEP,
+            ArrayCargosPerNatural[no].NombreEmpresaPEP,
+            ArrayCargosPerNatural[no].PatrimonioTipodeDocumentoPEP,
+            ArrayCargosPerNatural[no].PatrimonioIdentificacionPEP,
+            ArrayCargosPerNatural[no].PatrimonioActividadEconomicaPEP,
+            ArrayCargosPerNatural[no].PatrimonioPorcentPEP,
+            ArrayCargosPerNatural[no].fechaInicialEmpresaPEP,
+            ArrayCargosPerNatural[no].fechaFinalEmpresaPEP,
+            ArrayCargosPerNatural[no].PatrimonioPuestoPEP
+
+            // data.esPEP,
+            // data.institucionPEP,
+            // data.cargoOcupadoPEP,
+            // data.periodoPEP,
+            // data.EmpresaJuridicaPEP,
+            // data.NombreEmpresaPEP,
+            // data.PatrimonioTipodeDocumentoPEP,
+            // data.PatrimonioIdentificacionPEP,
+            // data.PatrimonioActividadEconomicaPEP,
+            // data.PatrimonioPorcentPEP,
+            // data.fechaInicialEmpresaPEP,
+            // data.fechaFinalEmpresaPEP,
+            // data.PatrimonioPuestoPEP
           );
 
           cotizador.ParentescosPEP(
-            data.apellidoMamaPEP,
-            data.primerNombreMamaPEP,
-            data.direccionMamaPEP,
-            data.tiposuegrxPEP,
-            data.apellidosuegrxPEP,
-            data.primerNombreSuegrxPEP
+            
+             ArrayCargosPerNatural[no].apellidoMamaPEP,
+             ArrayCargosPerNatural[no].primerNombreMamaPEP,
+             ArrayCargosPerNatural[no].direccionMamaPEP,
+             ArrayCargosPerNatural[no].tiposuegrxPEP,
+             ArrayCargosPerNatural[no].apellidosuegrxPEP,
+             ArrayCargosPerNatural[no].primerNombreSuegrxPEP,
+            
+            
+            
+            // data.apellidoMamaPEP,
+            // data.primerNombreMamaPEP,
+            // data.direccionMamaPEP,
+            // data.tiposuegrxPEP,
+            // data.apellidosuegrxPEP,
+            // data.primerNombreSuegrxPEP
           );
 
           cotizador.esCasado(
-            data.tipoConyugue,
-            data.apellidoConyugue,
-            data.nombreConyugue,
-            data.tipoCelularConyugue,
-            data.numeroConyugue
+
+            ArrayConyugue[no].tipoConyugue,
+            ArrayConyugue[no].apellidoConyugue,
+            ArrayConyugue[no].nombreConyugue,
+            ArrayConyugue[no].tipoCelularConyugue,
+            ArrayConyugue[no].numeroConyugue,
+            // data.tipoConyugue,
+            // data.apellidoConyugue,
+            // data.nombreConyugue,
+            // data.tipoCelularConyugue,
+            // data.numeroConyugue
           );
 
           cotizador.escasadoPEP(
-            data.tipoConyugue,
-            data.apellidoConyugue,
-            data.nombreConyugue,
-            data.cedulaConyuguePEP,
-            data.fechaExpiracionCedulaConyuguePEP,
-            data.fechaNacimientoConyuguePEP,
-            data.actividadEconomicaConyuguePEP,
-            data.profesionConyuguePEP,
-            data.pasaporteConyuguePEP,
-            data.nacionalidadPasaporteConyuguePEP,
-            data.tieneSegundaNacionalidadConyuguePEP,
-            data.UbicacionSegundaNacionalidadConyuguePEP,
-            data.aniosResidirConuygue,
-            data.ubicacionconyugue,
-            data.tipoCorreoConyuguePEP,
-            data.tipoTelefonoConyuguePEP,
-            data.telefonoConyuguePEP,
-            data.referenciaLaboralConyuguePEP,
-            data.sexoReferenciaLaboralConyuguePEP,
-            data.primerApellidoReferenciaLaboralPEP,
-            data.primerNombreReferenciaLaboralPEP,
-            data.fechaIngresoReferenciaLaboralConyugue,
-            data.fechaEgresoReferenciaLaboralConyugue,
-            data.puestoReferenciaConyuguePEP,
-            data.direccionReferenciaLaboralConyuguePEP,
-            data.tipoCorreoContactoConyuguePEP,
-            data.tipoTelefonoContactoConyuguePEP,
-            data.telefonoContactoConyugue,
-            data.nombreEmpresaConyuePEP,
-            data.fechaInscripcionNegocioConyuguePEP,
-            data.giroNegocioConyuguePEP,
-            data.ingresosMensualesConyuguePEP,
-            data.categoriadeNegocioConyuguePEP,
-            data.anioResidirNegocioConyuguePEP,
-            data.ubicacionNegocioConyuguePEP
+
+            ArrayConyugue[no].tipoConyugue,
+            ArrayConyugue[no].apellidoConyugue,
+            ArrayConyugue[no].nombreConyugue,
+            ArrayConyugue[no].cedulaConyuguePEP,
+            ArrayConyugue[no].fechaExpiracionCedulaConyuguePEP,
+            ArrayConyugue[no].fechaNacimientoConyuguePEP,
+            ArrayConyugue[no].actividadEconomicaConyuguePEP,
+            ArrayConyugue[no].profesionConyuguePEP,
+            ArrayConyugue[no].pasaporteConyuguePEP,
+            ArrayConyugue[no].nacionalidadPasaporteConyuguePEP,
+            ArrayConyugue[no].tieneSegundaNacionalidadConyuguePEP,
+            ArrayConyugue[no].UbicacionSegundaNacionalidadConyuguePEP,
+            ArrayConyugue[no].aniosResidirConuygue,
+            ArrayConyugue[no].ubicacionconyugue,
+            ArrayConyugue[no].tipoCorreoConyuguePEP,
+            ArrayConyugue[no].correoConyuguePEP,
+            ArrayConyugue[no].tipoTelefonoConyuguePEP,
+            ArrayConyugue[no].telefonoConyuguePEP,
+            ArrayConyugue[no].referenciaLaboralConyuguePEP,
+            ArrayConyugue[no].sexoReferenciaLaboralConyuguePEP,
+            ArrayConyugue[no].primerApellidoReferenciaLaboralPEP,
+            ArrayConyugue[no].primerNombreReferenciaLaboralPEP,
+            ArrayConyugue[no].fechaIngresoReferenciaLaboralConyugue,
+            ArrayConyugue[no].fechaEgresoReferenciaLaboralConyugue,
+            ArrayConyugue[no].puestoReferenciaConyuguePEP,
+            ArrayConyugue[no].salarioReferenciaConyuguePEP,
+            ArrayConyugue[no].direccionReferenciaLaboralConyuguePEP,
+            ArrayConyugue[no].tipoCorreoContactoConyuguePEP,
+            ArrayConyugue[no].CorreoContactoConyuguePEP,
+            ArrayConyugue[no].tipoTelefonoContactoConyuguePEP,
+            ArrayConyugue[no].telefonoContactoConyugue,
+            ArrayConyugue[no].nombreEmpresaConyuguePEP,
+            ArrayConyugue[no].fechaInscripcionNegocioConyuguePEP,
+            ArrayConyugue[no].giroNegocioConyuguePEP,
+            ArrayConyugue[no].ingresosMensualesConyuguePEP,
+            ArrayConyugue[no].categoriadeNegocioConyuguePEP,
+            ArrayConyugue[no].anioResidirNegocioConyuguePEP,
+            ArrayConyugue[no].ubicacionNegocioConyuguePEP,
+
+
+
+
+
+            // data.tipoConyugue,
+            // data.apellidoConyugue,
+            // data.nombreConyugue,
+            // data.cedulaConyuguePEP,
+            // data.fechaExpiracionCedulaConyuguePEP,
+            // data.fechaNacimientoConyuguePEP,
+            // data.actividadEconomicaConyuguePEP,
+            // data.profesionConyuguePEP,
+            // data.pasaporteConyuguePEP,
+            // data.nacionalidadPasaporteConyuguePEP,
+            // data.tieneSegundaNacionalidadConyuguePEP,
+            // data.UbicacionSegundaNacionalidadConyuguePEP,
+            // data.aniosResidirConuygue,
+            // data.ubicacionconyugue,
+            // data.tipoCorreoConyuguePEP,
+            // data.correoConyuguePEP,
+            // data.tipoTelefonoConyuguePEP,
+            // data.telefonoConyuguePEP,
+            // data.referenciaLaboralConyuguePEP,
+            // data.sexoReferenciaLaboralConyuguePEP,
+            // data.primerApellidoReferenciaLaboralPEP,
+            // data.primerNombreReferenciaLaboralPEP,
+            // data.fechaIngresoReferenciaLaboralConyugue,
+            // data.fechaEgresoReferenciaLaboralConyugue,
+            // data.puestoReferenciaConyuguePEP,
+            // data.salarioReferenciaConyuguePEP,
+            // data.direccionReferenciaLaboralConyuguePEP,
+            // data.tipoCorreoContactoConyuguePEP,
+            // data.CorreoContactoConyuguePEP,
+            // data.tipoTelefonoContactoConyuguePEP,
+            // data.telefonoContactoConyugue,
+            // data.nombreEmpresaConyuguePEP,
+            // data.fechaInscripcionNegocioConyuguePEP,
+            // data.giroNegocioConyuguePEP,
+            // data.ingresosMensualesConyuguePEP,
+            // data.categoriadeNegocioConyuguePEP,
+            // data.anioResidirNegocioConyuguePEP,
+            // data.ubicacionNegocioConyuguePEP
           );
 
           cotizador.direccionCliente(
-            data.aniosResidir,
-            data.ubicacionResidencia
+            ArrayDireccion[no].aniosResidir,
+            ArrayDireccion[no].IngreseUbicacion
+            
+            
+            // data.aniosResidir,
+            // data.ubicacionResidencia
           );
 
           cotizador.contactoCliente(
-            data.tipoCorreoContactoCliente,
-            data.tipoTelefonoContactoCliente,
-            data.telefonoContactoCliente
+
+            ArrayContacto[no].tipoCorreoContactoCliente,
+            ArrayContacto[no].correoCliente,
+            ArrayContacto[no].tipoTelefonoContactoCliente,
+            ArrayContacto[no].telefonoContactoCliente
+            // data.tipoCorreoContactoCliente,
+            // data.correoCliente,
+            // data.tipoTelefonoContactoCliente,
+            // data.telefonoContactoCliente
           );
 
           cotizador.dependenciaEconomica(
-            data.tieneDependenciaEconomica,
-            data.parentescoDependenciaEconomica,
-            data.cedulaDependenciaEconomica,
-            data.fechaExpiracionCedulaDependenciaEconomica,
-            data.apellidoDependenciaEconomica,
-            data.nombredependenciaEconomica,
-            data.situacionlaboralCliente
+         ArrayDependenciaEco[no].tieneDependienciaEconomica,
+         ArrayDependenciaEco[no].parentescoDependenciaEconomica,
+         ArrayDependenciaEco[no].cedulaDependenciaEconomica,
+         ArrayDependenciaEco[no].fechaExpiracionCedulaDependenciaEconomica,
+         ArrayDependenciaEco[no].apellidoDependenciaEconomica,
+         ArrayDependenciaEco[no].nombredependenciaEconomica
+         
+         
+         
+         
+            // data.tieneDependenciaEconomica,
+            // data.parentescoDependenciaEconomica,
+            // data.cedulaDependenciaEconomica,
+            // data.fechaExpiracionCedulaDependenciaEconomica,
+            // data.apellidoDependenciaEconomica,
+            // data.nombredependenciaEconomica,
+         
           );
 
           cotizador.Dependientes(
-            data.tieneDependiente,
-            data.parentescoDependiente,
-            data.apellidoDependiente,
-            data.primerNombreDependiente
+            ArrayDependientes[no].tieneDependiente,
+            ArrayDependientes[no].parentescoDependiente,
+            ArrayDependientes[no].apellidoDependiente,
+            ArrayDependientes[no].primerNombreDependiente
+
+
+
+            // data.tieneDependiente,
+            // data.parentescoDependiente,
+            // data.apellidoDependiente,
+            // data.primerNombreDependiente
           );
 
           cotizador.perfilEconomico(
-            data.afectoISRCliente,
-            data.actividadEconomicaCliente,
-            data.claseCliente,
-            data.situacionlaboralCliente
+            ArrayPerfilEconomico[no].afectoISRCliente,
+            ArrayPerfilEconomico[no].actividadEconomicaCliente,
+            ArrayPerfilEconomico[no].claseCliente,
+            ArrayPerfilEconomico[no].situacionlaboralCliente
+
+
+            // data.afectoISRCliente,
+            // data.actividadEconomicaCliente,
+            // data.claseCliente,
+            // data.situacionlaboralCliente
           );
 
           cotizador.datosDelNegocio(
-            data.nombreEmpresaCliente,
-            data.FechaInscripcionNegocioCliente,
-            data.giroNegocioCliente,
-            data.ingresoMensuales,
-            data.categoriaDeNegocioCliente,
-            data.aniosResidirCliente,
-            data.ubicacionCliente
+            ArrayDatosNegocio[no].nombreEmpresaCliente,
+            ArrayDatosNegocio[no].FechaInscripcionNegocioCliente,
+            ArrayDatosNegocio[no].giroNegocioCliente,
+            ArrayDatosNegocio[no].ingresoMensuales,
+            ArrayDatosNegocio[no].categoriaDeNegocioCliente,
+            ArrayDatosNegocio[no].aniosResidirCliente,
+            ArrayDatosNegocio[no].ubicacionCliente
+
+
+
+
+
+            // data.nombreEmpresaCliente,
+            // data.FechaInscripcionNegocioCliente,
+            // data.giroNegocioCliente,
+            // data.ingresoMensuales,
+            // data.categoriaDeNegocioCliente,
+            // data.aniosResidirCliente,
+            // data.ubicacionCliente
           );
 
           cotizador.flujoFatca(
-            data.esNacidoUsaFatcaCliente,
-            data.esResidenteFatcaCliente,
-            data.esCiudadanoFatcaCliente,
-            data.poseeDobleNacionalidadUsaFatcaCliente,
-            data.esContribuyenteIsrFatcaCliente,
-            data.tienePoderRepresentacionFatcaCliente,
-            data.tieneDireccionFatcaCliente,
-            data.direccionclienteFatca,
-            data.tieneNumeroUsaFatcaCliente,
-            data.tieneZipUsaFatcaCliente,
-            data.tieneEinFatcaCliente,
-            data.tieneTinFatcaCliente,
-            data.esClienteRecalcitrante,
-            data.tipoCelularFatcaCliente,
-            data.telefonoFatcaCliente,
-            data.codigoZipFatcaCliente,
-            data.nombreEmpresaReferenciaLaboralCliente
+            ArrayFATCA[no].esNacidoUsaFatcaCliente,
+            ArrayFATCA[no].esResidenteFatcaCliente,
+            ArrayFATCA[no].esCiudadanoFatcaCliente,
+            ArrayFATCA[no].poseeDobleNacionalidadUsaFatcaCliente,
+            ArrayFATCA[no].esContribuyenteIsrFatcaCliente,
+            ArrayFATCA[no].tienePoderRepresentacionFatcaCliente,
+            ArrayFATCA[no].tieneDireccionFatcaCliente,
+            ArrayFATCA[no].direccionclienteFatca,
+            ArrayFATCA[no].tieneNumeroUsaFatcaCliente,
+            ArrayFATCA[no].tieneZipUsaFatcaCliente,
+            ArrayFATCA[no].tieneEinFatcaCliente,
+            ArrayFATCA[no].tieneTinFatcaCliente,
+            ArrayFATCA[no].esClienteRecalcitrante,
+            ArrayFATCA[no].tipoCelularFatcaCliente,
+            ArrayFATCA[no].telefonoFatcaCliente,
+            ArrayFATCA[no].codigoZipFatcaCliente
+
+
+
+
+
+
+            
+            // data.esNacidoUsaFatcaCliente,
+            // data.esResidenteFatcaCliente,
+            // data.esCiudadanoFatcaCliente,
+            // data.poseeDobleNacionalidadUsaFatcaCliente,
+            // data.esContribuyenteIsrFatcaCliente,
+            // data.tienePoderRepresentacionFatcaCliente,
+            // data.tieneDireccionFatcaCliente,
+            // data.direccionclienteFatca,
+            // data.tieneNumeroUsaFatcaCliente,
+            // data.tieneZipUsaFatcaCliente,
+            // data.tieneEinFatcaCliente,
+            // data.tieneTinFatcaCliente,
+            // data.esClienteRecalcitrante,
+            // data.tipoCelularFatcaCliente,
+            // data.telefonoFatcaCliente,
+            // data.codigoZipFatcaCliente,
+   
           );
 
           cotizador.referenciasLaborales(
-            data.referenciaTipoPersona,
-            data.generoReferenciaLaboralCliente,
-            data.apellidoReferenciaLaboralCliente,
-            data.nombreReferenciaLaboralCliente,
-            data.fechaIngresoReferenciaLaboralCliente,
-            data.fechaEgresoReferenciaLaboralCliente,
-            data.puestoReferenciaLaboralCliente,
-            data.salarioReferenciaLaboralCliente,
-            data.nombreEmpresaReferenciaLaboralCliente,
-            data.ubicacionReferencialLaboralCliente,
-            data.tipoCorreoReferencialLaboralCliente,
-            data.tipoTelefonoReferenciaLaboralCliente,
-            data.telefonoReferencialLaboralCliente
+
+            ArrayRefernciaLaboral[no].referenciaTipoPersona,
+            ArrayRefernciaLaboral[no].generoReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].apellidoReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].nombreReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].fechaIngresoReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].fechaEgresoReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].puestoReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].salarioReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].nombreEmpresaReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].ubicacionReferencialLaboralCliente,
+            ArrayRefernciaLaboral[no].tipoCorreoReferencialLaboralCliente,  
+            ArrayRefernciaLaboral[no].correoReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].tipoTelefonoReferenciaLaboralCliente,
+            ArrayRefernciaLaboral[no].telefonoReferencialLaboralCliente
+            
+            // data.referenciaTipoPersona,
+            // data.generoReferenciaLaboralCliente,
+            // data.apellidoReferenciaLaboralCliente,
+            // data.nombreReferenciaLaboralCliente,
+            // data.fechaIngresoReferenciaLaboralCliente,
+            // data.fechaEgresoReferenciaLaboralCliente,
+            // data.puestoReferenciaLaboralCliente,
+            // data.salarioReferenciaLaboralCliente,
+            // data.nombreEmpresaReferenciaLaboralCliente,
+            // data.ubicacionReferencialLaboralCliente,
+            // data.tipoCorreoReferencialLaboralCliente,
+            // data.correoReferenciaLaboralCliente,
+            // data.tipoTelefonoReferenciaLaboralCliente,
+            // data.telefonoReferencialLaboralCliente
           );
 
           cotizador.referencias(
@@ -855,21 +1138,16 @@ it("Agregar cliente", () => {
       });
     } else if (data.TipodePersona.toLowerCase() == "juridico") {
       cy.log("JURIDICO PAPS");
-      
 
       PJ.Identificacion(data);
-
 
       PJ.DatosGeneralesPersonaJuridica(data);
       [];
     } else {
-
       cy.log("*******************************************************");
       cy.log("Debe de ingresar un tipo de cliente: Natural o Juridico");
       cy.log("*******************************************************");
-
     }
-    
-  })//TERMINA IT AGREGAR CLIENTE
-   // no++
+  }); //TERMINA IT AGREGAR CLIENTE
+  // no++
 }); // TERMINA EL IT "Exploración automática de pantalla desconocida"
