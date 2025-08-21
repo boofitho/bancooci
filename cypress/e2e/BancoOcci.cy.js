@@ -330,7 +330,7 @@ it("Agregar cliente", () => {
         cy.get('body', { timeout: 5000 }).then(($body) => {
           if ($body.text().includes('El último elemento de cada rama debe ser una persona natural')) {
             cy.log('Si aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
-            cy.xpathClk("(//button[contains(@class, 'swal2-confirm') and contains(., 'Aceptar')])[1]")
+//            cy.xpathClk("(//button[contains(@class, 'swal2-confirm') and contains(., 'Aceptar')])[1]")
 //            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")
             cy.log('NATURAL "El último elemento de cada rama debe ser una persona natural"')
             cy.xpathClk("//mat-icon[text()='add']")

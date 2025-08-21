@@ -297,3 +297,17 @@ Cypress.Commands.add('CentrarXpathTest', (index) => {
   });
 });
 
+Cypress.Commands.add('CentrarXpath', (xpath) => {
+  cy.oculto()
+  cy.log("CentrarXpathTest")
+  
+  cy.xpath(xpath, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView({ block: "center", inline: "center" }) // 👈 centra en pantalla
+        } else {
+      cy.log(`⚠️ No se encontró el paso número ${index}`);
+    }
+  });
+});
+

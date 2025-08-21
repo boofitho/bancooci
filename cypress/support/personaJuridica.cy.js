@@ -78,6 +78,8 @@ class personaJuridica {
     cy.IngresoFecha(dataRL.FechaRef, "(//mat-label[contains(text(), 'Seleccione una fecha')]/ancestor::mat-form-field//button)[3]")
     cy.xpathBtxt(dataRL.PrimerApellidoREF, "(//mat-label[contains(text(), 'Primer Apellido')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataRL.SegundoApellidoREF, "(//mat-label[contains(text(), 'Segundo Apellido')]/ancestor::mat-form-field//input)[1]")
+    cy.Centrar(3)
+    cy.CentrarXpath("(//div[@class='mat-step ng-star-inserted'])[4]")
     cy.xpathBtxt(dataRL.PrimerNombreRef, "(//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataRL.SegundoNombreRef, "(//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataRL.OtroNombreREF, "(//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input)[1]")  
@@ -88,10 +90,10 @@ class personaJuridica {
     //se debede agregar un natural luego de un juridico  
   }
   AggRefNatural(dataID,dataIC,dataDGP){
-    cy.Centrar(3)
     //Paso: 0 ingresamos 
     cy.xpathClk("(//button[contains(., 'NATURAL')])[1]")
     cy.oculto()
+    cy.CentrarXpath("(//div[@class='mat-step ng-star-inserted'])[4]")
     //Paso: 1 Identificacion 
     cy.xpathBtxt(dataID.CedulaRef, "(//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataID.PasaporteRef, "(//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input)[1]")
@@ -103,11 +105,13 @@ class personaJuridica {
     cy.IngresoFecha(dataID.FechaRef, "(//mat-label[contains(text(), 'Seleccione una fecha')]/ancestor::mat-form-field//button)[2]")
     cy.xpathClk("(//button[contains(., 'Siguiente paso')])[1]")
     //Paso: 2 Información Complementaria
-    cy.xpathBtxtClear(dataIC.PaisOrRef, "(//mat-label[contains(text(), 'País de Origen')]/ancestor::mat-form-field//input)[2]")
+    cy.CentrarXpath("(//div[@class='mat-step ng-star-inserted'])[5]")
+        cy.xpathBtxtClear(dataIC.PaisOrRef, "(//mat-label[contains(text(), 'País de Origen')]/ancestor::mat-form-field//input)[2]")
     cy.xpathBtxt(dataIC.TipoRef, "(//mat-label[contains(text(), 'Tipo')]/ancestor::mat-form-field//input)[2]")
     cy.xpathBtxt(dataIC.PorcentajeRef, "//mat-label[normalize-space()='% de Participación']/ancestor::mat-form-field//input")
     cy.xpathClk("(//button[contains(., 'Siguiente paso')])[2]")
     //Paso: 3.1 Datos Generales Persona natural  
+    cy.CentrarXpath("(//div[@class='mat-step ng-star-inserted'])[6]")
     cy.xpathBtxt(dataDGP.PrimerApellidoREF, "(//mat-label[contains(text(), 'Primer Apellido')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataDGP.SegundoApellidoREF, "(//mat-label[contains(text(), 'Segundo Apellido')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataDGP.PrimerNombreRef, "(//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
@@ -116,6 +120,7 @@ class personaJuridica {
     cy.xpathBtxt(dataDGP.GeneroRef, "(//mat-radio-button[contains(., '"+dataDGP.GeneroRef+"')])[1]") //mismo tema TPJ
     //Paso: 3.2 Nacionalidad y Residencia
     cy.xpathBtxtClear(dataDGP.PaisRecRef, "(//mat-label[contains(text(), 'País de Residencia')]/ancestor::mat-form-field//input)[1]")
+    cy.CentrarXpath("(//div[@class='mat-step ng-star-inserted'])[7]")
     cy.xpathBtxt(dataDGP.RegionRef, "(//mat-label[contains(text(), 'Región')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataDGP.DepRef, "(//mat-label[contains(text(), 'Departamento')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataDGP.MunRef, "(//mat-label[contains(text(), 'Municipio')]/ancestor::mat-form-field//input)[1]")
@@ -127,6 +132,9 @@ class personaJuridica {
       && dataDGP.SegundaNacionalidadRef !== "" &&  dataDGP.SegundaNacionalidadRef.toLowerCase() == "estadounidense") {
     // entra solo si tiene un valor distinto de null, undefined y vacío y es estadounidense
     cy.xpathBtxt(dataDGP.SegundaNacionalidadRef, "(//mat-label[contains(text(), '2da. Nacionalidad')]/ancestor::mat-form-field//input)[1]")
+ 
+    cy.CentrarXpath("(//mat-step-header[@class='mat-step-header mat-vertical-stepper-header mat-primary ng-star-inserted'])[7]")
+ 
     cy.xpathBtxt(dataDGP.SocialSecurityRef, "(//mat-label[contains(text(), 'Social Security Number')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataDGP.UbiSegNacRef, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[4]")
     }else{
@@ -332,6 +340,8 @@ class personaJuridica {
 
     //### PASO #9
     FATCA(data){
+    cy.Centrar(9)        
+
     if (data.a){
       cy.xpathClk("//span[normalize-space(text()) = 'Entidad No Financiera Hondureña Sin Dueños Sustanciales de EE.UU.']/ancestor::div[contains(@class, 'row-check-I')]//input[@type='checkbox']")
         if(data.aClienteRecalcitrante){
