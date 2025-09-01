@@ -60,6 +60,20 @@ class MetodosGenerales{
         });
       }
 
+      DescargaImagen(URL_Datos, nombreArchivo){
+        const sheetUrl2 = URL_Datos;
+
+        cy.request({
+          url: sheetUrl2,
+          encoding: 'binary',
+          method: 'GET'
+        }).then((response) => {
+          const fileBuffer = Buffer.from(response.body, 'binary');
+          cy.writeFile("cypress/fixtures/" + nombreArchivo + ".jpg", fileBuffer, { encoding: 'binary' });
+        });
+      }
+
+
 
       ArchivoNubeE(URL_ERRORES){
         const sheetUrl = URL_ERRORES;

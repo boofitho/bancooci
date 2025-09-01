@@ -7,8 +7,8 @@ const excelToJson = require('convert-excel-to-json');
 
 
 module.exports = defineConfig({
-  viewportWidth: 1500,
-  viewportHeight: 900,
+  viewportWidth: 2500,
+  viewportHeight: 1500,
   e2e: {
         scrollBehavior: false, // 👈 Cypress NO hará scroll automático
       env: {

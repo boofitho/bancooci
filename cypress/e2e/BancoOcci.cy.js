@@ -10,21 +10,11 @@ const URL_Var = Cypress.env('URL_VAR');       //link URL´s para descargar los d
 
 let ArrayVar = []
 
-let ArrayCliente = []
-let ArrayID = []
-let ArrayDataGenP = []
-let ArrayCaptAccionistas = []
-let ArrayCapJuntaDir = []
-let ArrayRepreLegalDG = []
-let ArrayRepreLegalDir = [] 
-let ArrayRepreLegalCont = []
-let ArrayPerfilEconomico = []
-let ArrayDireccion = []
-let ArrayContacto = []
-let ArrayFATCA = []
-let ArrayReferencias = []
-let ArrayDigitalDocs = []
-let ArrayClienteFinalizado = []
+let ArrayCliente = [], ArrayID = [], ArrayDataGenP = [], ArrayCaptAccionistas = [], ArrayCapJuntaDir = [],
+    ArrayRepreLegalDG = [], ArrayRepreLegalDir = [], ArrayRepreLegalCont = [], ArrayPerfilEconomico = [],
+    ArrayDireccion = [], ArrayContacto = [], ArrayFATCA = [], ArrayReferencias = [], ArrayDigitDoc = [],
+    ArrayClienteFinalizado = [];
+
 
 let ArrayConCorreo =[]
 let ArrayConTelefono =[]
@@ -58,182 +48,32 @@ describe("BancoOcci", () => {
  }); // TERMINA BEFORE
 
   before('Descarga de archivos datos y lectura de hojas del mismo', () => {
+
     //descarga archivo "datos"
     Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos")  
    
-    //lista las hojas disponibles en el archivo datos
-    cy.task('listarHojasExcel', { filePath: 'cypress/fixtures/datos.xlsx' }).then((nombres) => {
-      cy.log('Hojas disponibles: ' + nombres.join(', '));
+    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx" }).then((excelData) => {
+      ArrayCliente = excelData["0 Cliente"] || [];
+      ArrayID = excelData["1 Identificacion"] || [];
+      ArrayDataGenP = excelData["2 DatosGenPer"] || [];
+      ArrayCaptAccionistas = excelData["3 Captura de accionistas"] || [];
+      ArrayCapJuntaDir = excelData["4 Captura de junta directiva"] || [];
+      ArrayRepreLegalDG = excelData["5 RLDatos Generales"] || [];
+      ArrayRepreLegalDir = excelData["5 RLDireccion"] || [];
+      ArrayRepreLegalCont = excelData["5 RLContacto"] || [];
+      ArrayPerfilEconomico = excelData["6 PerfilEconomico"] || [];
+      ArrayDireccion = excelData["7 Dirección"] || [];
+      ArrayContacto = excelData["8 Contacto"] || [];
+      ArrayFATCA = excelData["9 FATCA"] || [];
+      ArrayReferencias = excelData["10 referencia"] || [];
+      ArrayDigitDoc = excelData["11 DigitDoc"] || [];
+  
     });
-
-    /*Inicio lectura del archivo "datos" por hojas*/
-    
-    //lectura del archivo "datos" hoja 0
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "0 Cliente"}).then((datosCliente) => {
-      datosCliente.forEach((fila) => {
-        ArrayCliente.push(fila); // O cualquier lógica que necesites
-      });
-    });
- 
-    //lectura del archivo "datos" hoja 1 "Identificacion"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "1 Identificacion"}).then((ID) => {
-      ID.forEach((filaVar) => {
-        ArrayID.push(filaVar);
-      });
-    });
-          
-  //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "2 DatosGenPer"}).then((DataGenP) => {
-      DataGenP.forEach((filaVar) => {
-        ArrayDataGenP.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 3 "Captura de accionistas"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "3 Captura de accionistas"}).then((CaptAccionistas) => {
-      CaptAccionistas.forEach((filaVar) => {
-        ArrayCaptAccionistas.push(filaVar);
-      });
-    });
-    
-    //lectura del archivo "datos" hoja 4 "Captura de junta directiva"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "4 Captura de junta directiva"}).then((CapJuntaDir) => {
-      CapJuntaDir.forEach((filaVar) => {
-        ArrayCapJuntaDir.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 5 "Representante Legal - Datos Generales"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "5 RLDatos Generales"}).then((RepreLegalDG) => {
-      RepreLegalDG.forEach((filaVar) => {
-        ArrayRepreLegalDG.push(filaVar);
-      });
-    });
- 
-    //lectura del archivo "datos" hoja 6 "Representante Legal - Direccion"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "5 RLDireccion"}).then((RepreLegalDir) => {
-      RepreLegalDir.forEach((filaVar) => {
-        ArrayRepreLegalDir.push(filaVar);
-      });
-    });
-    
-    //lectura del archivo "datos" hoja 7 "Representante Legal - Contacto"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "5 RLContacto"}).then((RepreLegalCont) => {
-      RepreLegalCont.forEach((filaVar) => {
-        ArrayRepreLegalCont.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 8 "Perfil Economico"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "6 PerfilEconomico"}).then((PerfilEconomico) => {
-      PerfilEconomico.forEach((filaVar) => {
-        ArrayPerfilEconomico.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 9 "Dirección"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "7 Dirección"}).then((Direccion) => {
-      Direccion.forEach((filaVar) => {
-        ArrayDireccion.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 10 "Contacto"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "8 Contacto"}).then((Contacto) => {
-      Contacto.forEach((filaVar) => {
-        ArrayContacto.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 11 "FATCA"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "9 FATCA"}).then((FATCA) => {
-      FATCA.forEach((filaVar) => {
-        ArrayFATCA.push(filaVar);
-      });
-    });    
-
-    //lectura del archivo "datos" hoja 12 "Referencias"
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: "10 referencia"}).then((Referencias) => {
-      Referencias.forEach((filaVar) => {
-        ArrayReferencias.push(filaVar);
-      });
-    }); 
-
-
-//    13 DigitDoc, 14 Finalizado
-
-    // //lectura del archivo "datos" hoja 13 "Digitalización de documentos"
-    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 13 }).then((DigitalDocs) => {
-    //     DigitalDocs.forEach((filaVar) => {
-    //     ArrayDigitalDocs.push(filaVar)
-    //   })
-    // }); 
-    // //lectura del archivo "datos" hoja 14 "Cliente Finalizado"
-    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 14 }).then((ClienteFinalizado) => {
-    //     ClienteFinalizado.forEach((filaVar) => {
-    //     ArrayClienteFinalizado.push(filaVar)
-    //   })
-    // }); 
-
-    //Fin lectura del archivo datos 
-        
-  })// TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
+   });// TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
 
   before('Descarga de archivos complemetnarios y lectura de hojas de los mismo', () => {
       //descarga de archivos secundarios de los datos
-
-
-   
-
-      // //descarga archivo "Perfil Economico - Informacion Financiera"
-      // Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].InfFinanciera, "PerfilEcoInfFinanciera")       
-      // //inicio lectura hojas archivo "Perfil Economico - Informacion Financiera"
-      // //lectura del archivo "Perfil Economico - Informacion Financiera" hoja 0 "Inf Financiera"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoInfFinanciera.xlsx", hoja: "Inf Financiera"}).then((InfFinanciera) => {
-      //   InfFinanciera.forEach((filaVar) => {
-      //     ArrayInfFinanciera.push(filaVar); 
-      //   });
-      // });
-      // //Fin lectura hojas archivo "Perfil Economico - Informacion Financiera"
-
-      // //descarga archivo "Perfil Economico - Informacion donde Opera"
-      // Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].InfDondeOpera, "PerfilEcoInfDondeOpera")            
-      // //inicio lectura hojas archivo "Perfil Economico - Informacion donde Opera"
-      // //lectura del archivo "Perfil Economico - Informacion donde Opera" hoja 0 "Inf DondeOpera"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoInfDondeOpera.xlsx", hoja: "Inf DondeOpera"}).then((InfDondeOpera) => {
-      //   InfDondeOpera.forEach((filaVar) => {
-      //     ArrayInfDondeOpera.push(filaVar); 
-      //   });
-      // });
-      // //Fin lectura hojas archivo "Perfil Economico - Informacion donde Opera"
-    
-      // //descarga archivo "Perfil Economico - Proveedor"
-      // Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].Proveedor, "PerfilEcoProveedor")            
-      // //inicio lectura hojas archivo "Perfil Economico - Proveedor"
-      // //lectura del archivo "Perfil Economico - Proveedor" hoja 0 "proveedores"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoProveedor.xlsx", hoja: "proveedores"}).then((Proveedor) => {
-      //   Proveedor.forEach((filaVar) => {
-      //     ArrayProveedor.push(filaVar); 
-      //   });
-      // });
-      // //Fin lectura hojas archivo "Perfil Economico - Proveedor"
-          
-      // //descarga archivo "Contacto"
-      // Generales.DescargaArchivoComplementos(ArrayContacto[0].URL_Contacto, "Contacto")            
-      // //inicio lectura hojas archivo "Contacto"
-      // //lectura del archivo "Contacto" hoja 0 "correo"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/Contacto.xlsx", hoja: "correo"}).then((ConCorreo) => {
-      //   ConCorreo.forEach((filaVar) => {
-      //     ArrayConCorreo.push(filaVar); 
-      //   });
-      // });
-      // //lectura del archivo "Contacto" hoja 1 "telefono"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/Contacto.xlsx", hoja: "telefono"}).then((ConTelefono) => {
-      //   ConTelefono.forEach((filaVar) => {
-      //     ArrayConTelefono.push(filaVar); 
-      //   });
-      // });
-      // //Fin lectura hojas archivo "Contacto"
+  
 
       //descarga archivo "referencia"
       Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefBancarias, "refBancaria")            
@@ -247,6 +87,8 @@ describe("BancoOcci", () => {
       //Fin lectura hojas archivo "Contacto"
 
 
+      Generales.DescargaImagen(ArrayDigitDoc[0].URL_Imagen, "DNITest")            
+      Generales.DescargaImagen(ArrayDigitDoc[1].URL_Imagen, "RTNTest")            
 
 
 
@@ -308,6 +150,7 @@ it("Agregar cliente", () => {
       // FIN PASO #2
 
       //PASO #3
+
       cy.log(ArrayCaptAccionistas[no].TieneRef)
       if (ArrayCaptAccionistas[no].TieneRef){
         cy.log(ArrayCaptAccionistas[no].TieneRef + "Verdadero ArrayCaptAccionistas[no].TieneRef")
@@ -384,6 +227,7 @@ it("Agregar cliente", () => {
       if (ArrayCapJuntaDir[no].TieneJD){
 
       //descarga archivo "Captura de junta directiva"
+      Generales.DescargaArchivoComplementos(ArrayCapJuntaDir[no].URL_JuntaDirectiva, "CapJuntaDir")            
       //inicio lectura hojas archivo "Captura de junta directiva"
       //lectura del archivo "Captura de junta directiva" hoja 0 "Junta Directiva "
       cy.task("readExcelToJson", { filePath: "cypress/fixtures/CapJuntaDir.xlsx"}).then((JuntaDir) => {
