@@ -40,11 +40,11 @@ Cypress.Commands.add('leerHojaExcel', (nombreHoja) => {
 
 
 Cypress.Commands.add('xpathClk', (xpath) => {
+  cy.oculto();
+
   cy.xpath(xpath, { timeout: 60000 }).then($el => {
     if ($el.length > 0) {
       cy.wrap($el)
-        .scrollIntoView()
-        .should('be.visible')
         .should('not.be.disabled')
         .click({ force: true });
         //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
@@ -56,58 +56,60 @@ Cypress.Commands.add('xpathClk', (xpath) => {
   })});
 
 Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
+  cy.oculto();
+
+  // Verificamos si la variable es null, undefined o vacía
+  if (!variable || String(variable).trim() === '') {
+    cy.log(`⏭️ Variable vacía para xpath: ${xpath}, se omite la acción.`);
+    return; // Sale del comando sin ejecutar nada más
+  }
+
   cy.xpath(xpath, { timeout: 60000 }).then($el => {
     if ($el.length > 0) {
       cy.wrap($el)
-        .scrollIntoView()
-        .should('be.visible')
+        .click({ force: true })
         .should('not.be.disabled')
-        // .clear() esto no es necesario ??? 
         .type(String(variable) + '{enter}')
-        .click({ force: true });
-        //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
-        cy.oculto();
-  
-      } else {
+     
+
+      // Ejecutamos el comando oculto
+      cy.oculto();
+
+    } else {
       cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
     }
-  })
-
-  // cy.xpath(xpath, { timeout: 60000 })
-  // .scrollIntoView({})
-  // .should('be.visible')
-  // .should('not.be.disabled')
-  // .type(String(varibale) + '{enter}')
-  // .click({force: true})
-  // cy.oculto()
+  });
+        cy.oculto();
 });
 
 Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
+  cy.oculto();
+
+  // Validar si la variable está vacía, nula o indefinida
+  if (!variable || String(variable).trim() === '') {
+    cy.log(`⏭️ Variable vacía para xpath: ${xpath}, se omite la acción.`);
+    return;
+  }
+
   cy.xpath(xpath, { timeout: 60000 }).then($el => {
     if ($el.length > 0) {
       cy.wrap($el)
-        .scrollIntoView()
-        .should('be.visible')
         .should('not.be.disabled')
         .clear()
         .type(String(variable) + '{enter}')
         .click({ force: true });
-        //ejecutamos el comando oculto si en dado caso tuviera espera luego del click
-        cy.oculto();
-  
-      } else {
+
+      // Ejecutamos el comando oculto
+      cy.oculto();
+
+    } else {
       cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
     }
-  })
-  // cy.xpath(xpath, { timeout: 60000 })
-  // .scrollIntoView({})
-  // .should('be.visible')
-  // .should('not.be.disabled')
-  // .clear()
-  // .type(String(varibale) + '{enter}')
-  // .click({force: true})
-  // cy.oculto()
+  });
+        cy.oculto();
+
 });
+
 
 
 Cypress.Commands.add('busquedaCliente', (data) => {
@@ -130,68 +132,10 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   cy.wait(500)
   cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
 });
-Cypress.Commands.add('conClk', (cont) => {
-cy.contains(cont, { timeout: 60000 })
-  .scrollIntoView({})
-  .should('be.visible')
-  .should('not.be.disabled')
-  .click({force: true});
-  cy.oculto()
-});
 
-Cypress.Commands.add("conBtxt", (varibale, cont) => {
-  cy.contains(cont, { timeout: 60000 })
-    .should("be.visible")
-    .should("not.be.disabled")
-    .type(String(varibale))
-    .click({ force: true });
-  cy.oculto();
-});
 
-Cypress.Commands.add("busquedaCliente", (data) => {
-  // Paso 1: Ir al módulo
-  cy.xpathClk("//span[contains(text(), 'Operación')]");
-  cy.wait(2000);
-  cy.xpathClk("//span[contains(text(), 'Búsqueda clientes')]");
 
-  // Paso 2: Selección de tipo documento
-  cy.xpathClk(
-    "//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input"
-  );
-  cy.contains(".mat-mdc-option span", data.tipoDocumento, {
-    timeout: 60000,
-  }).click({ force: true });
 
-  // Paso 3: Llenar número y buscar
-  cy.xpathBtxt(
-    data.InfoTipoDocumento,
-    "(//mat-label[normalize-space()='Identificación'])[1]"
-  );
-  cy.xpathClk("//span[normalize-space(text()) = 'Buscar']");
-  cy.get(".loading", { timeout: 600000 }).should("not.exist");
-  // Paso 4: Evaluar si aparece el mensaje de "No hay resultados..."
-  cy.get("body").then(($body) => {
-    if (
-      $body
-        .text()
-        .includes("No hay resultados para los criterios proporcionados.")
-    ) {
-      // Cliente NO encontrado → Crear
-      cy.log("No se encontró el cliente. Creando...");
-      cy.xpathClk("//span[normalize-space(text()) = 'Agregar']");
-      cy.wait(500);
-      cy.xpathClk("//span[normalize-space(text()) = 'Cliente']");
-    } else {
-      // Cliente SÍ existe → Clic al mat-icon (persona)
-      cy.log("Cliente encontrado. Seleccionando...");
-      cy.xpath("//mat-icon[@aria-label='person']")
-        .first()
-        .click({ force: true });
-      cy.get(".loading", { timeout: 600000 }).should("not.exist");
-    }
-  });
-
-})
 
 
 Cypress.Commands.add('xpathTest', (variable, xpath) => {
@@ -311,40 +255,82 @@ Cypress.Commands.add("ingresoJson", (valorJson) => {
 
 
 Cypress.Commands.add("IngresoFecha", (Fecha, xpAbrirFecha) => {
+
+  // Validar si la fecha está vacía, nula o indefinida
+  if (!Fecha || String(Fecha).trim() === '') {
+    cy.log(`⏭️ Fecha vacía para xpath: ${xpAbrirFecha}, se omite la acción.`);
+    return;
+  }
+
   // Paso 1: Parsear la fecha
   const [dia, mes, anio] = Fecha.split("/");
 
   const mesesAbreviados = [
-    "ENE",
-    "FEB",
-    "MAR",
-    "ABR",
-    "MAY",
-    "JUN",
-    "JUL",
-    "AGO",
-    "SEP",
-    "OCT",
-    "NOV",
-    "DIC",
+    "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
+    "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
   ];
   const mesAbreviado = mesesAbreviados[parseInt(mes, 10) - 1];
 
-  // Paso 2: Abrir el selector de fecha (click en el botón del calendario)
-  cy.xpath(xpAbrirFecha).should("be.visible").click();
+  // Paso 2: Abrir el selector de fecha
+  cy.xpath(xpAbrirFecha)
+  //.scrollIntoView({ block: "center" })
+  .should('not.be.disabled')
+  .click({ force: true })
 
   // Paso 3: Cambiar al modo de selección de año
-  cy.get(".mat-calendar-period-button").click(); // cambia a vista de año
+  cy.get(".mat-calendar-period-button").click({ force: true });
 
   // Paso 4: Seleccionar año
-  cy.contains(".mat-calendar-body-cell-content", anio).click();
+  cy.contains(".mat-calendar-body-cell-content", anio).click({ force: true });
 
   // Paso 5: Seleccionar mes
-  cy.contains(".mat-calendar-body-cell-content", mesAbreviado).click();
+  cy.contains(".mat-calendar-body-cell-content", mesAbreviado).click({ force: true });
 
-  // Paso 6: Seleccionar día (sin ceros a la izquierda)
-  cy.contains(
-    ".mat-calendar-body-cell-content",
-    String(parseInt(dia, 10))
-  ).click();
+  // Paso 6: Seleccionar día
+  cy.contains(".mat-calendar-body-cell-content", String(parseInt(dia, 10))).click({ force: true });
+  cy.oculto()
+
 });
+
+
+Cypress.Commands.add("clickSiguiente", (stepName) => {
+  cy.xpath(`//h4[contains(text(),'${stepName}')]
+    /ancestor::div[contains(@class,'mat-step-header')]
+    /following::div[contains(@class,'mat-vertical-stepper-content')][1]
+    //button[.//span[contains(text(),'Siguiente')]]`, { timeout: 10000 }
+  ).should('be.visible').click();
+});
+
+
+
+Cypress.Commands.add('Centrar', (index) => {
+  cy.oculto()
+  const xpath = "//div[contains(@class,'mat-step ng-star-inserted')]";
+  
+  cy.xpath(`(${xpath})[${index}]`, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView({ block: "center", inline: "center" }) // 👈 centra en pantalla
+        } else {
+      cy.log(`⚠️ No se encontró el paso número ${index}`);
+    }
+  });
+});
+
+
+
+Cypress.Commands.add('CentrarXpathTest', (index) => {
+  cy.oculto()
+  cy.log("CentrarXpathTest")
+  const xpath = "//mat-form-field//input[@id='mat-input-60']";
+  
+  cy.xpath(`(${xpath})[${index}]`, { timeout: 60000 }).then($el => {
+    if ($el.length > 0) {
+      cy.wrap($el)
+        .scrollIntoView({ block: "center", inline: "center" }) // 👈 centra en pantalla
+        } else {
+      cy.log(`⚠️ No se encontró el paso número ${index}`);
+    }
+  });
+});
+

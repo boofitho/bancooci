@@ -47,8 +47,6 @@ let ArrayProveedor = [];
 let ArrayConCorreo = [];
 let ArrayConTelefono = [];
 
-
-
 //variables para bancoocci
 let url = "https://plataforma-qa.bytesw.cloud/";
 let usuario = "OPERADORQA";
@@ -237,7 +235,7 @@ const data = {
   telefonoReferencialLaboralCliente: "50490072611",
 
   //Referencias Clientes
-  referenciasBancarias: "no",
+  tieneReferenciasBancarias: "no",
   //tipo de cuenta las cuales pueden ser: Cuentas / Tarjetas o Préstamos
   tipodeCuentaReferenciaCliente: "Cuentas",
   origenCuentaReferenciaCliente: "Local",
@@ -307,190 +305,7 @@ describe("BancoOcci", () => {
     cy.task("deleteAllFiles", folderPath); //con este comando borramos el folderpath de screenshots
   }); // TERMINA BEFORE
 
-  it("Descarga de archivos datos y lectura de hojas del mismo", () => {
-    //descarga archivo "datos"
-    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos");
-    cy.wait(5000); // descargando archivo
-
-    //lista las hojas disponibles en el archivo datos
-    cy.task("listarHojasExcel", {
-      filePath: "cypress/fixtures/datos.xlsx",
-    }).then((nombres) => {
-      cy.log("Hojas disponibles: " + nombres.join(", "));
-    });
-
-    /*Inicio lectura del archivo "datos" por hojas*/
-
-    //lectura del archivo "datos" hoja 0
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "0 Cliente",
-    }).then((datosCliente) => {
-      datosCliente.forEach((fila) => {
-        ArrayCliente.push(fila); // O cualquier lógica que necesites
-      });
-    });
-
-    //lectura del archivo "datos" hoja 1 "Identificacion"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "1 Identificacion",
-    }).then((ID) => {
-      ID.forEach((filaVar) => {
-        ArrayID.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "2 DatosGenPer",
-    }).then((DataGenP) => {
-      DataGenP.forEach((filaVar) => {
-        ArrayDataGenP.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 3 "Captura de accionistas"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "3 Captura de accionistas",
-    }).then((CaptAccionistas) => {
-      CaptAccionistas.forEach((filaVar) => {
-        ArrayCaptAccionistas.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 4 "Captura de junta directiva"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "4 Captura de junta directiva",
-    }).then((CapJuntaDir) => {
-      CapJuntaDir.forEach((filaVar) => {
-        ArrayCapJuntaDir.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 5 "Representante Legal - Datos Generales"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "5 RLDatos Generales",
-    }).then((RepreLegalDG) => {
-      RepreLegalDG.forEach((filaVar) => {
-        ArrayRepreLegalDG.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 6 "Representante Legal - Direccion"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "5 RLDireccion",
-    }).then((RepreLegalDir) => {
-      RepreLegalDir.forEach((filaVar) => {
-        ArrayRepreLegalDir.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 7 "Representante Legal - Contacto"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "5 RLContacto",
-    }).then((RepreLegalCont) => {
-      RepreLegalCont.forEach((filaVar) => {
-        ArrayRepreLegalCont.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos"  "Perfil Economico"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "6 PerfilEconomico",
-    }).then((PerfilEconomico) => {
-      PerfilEconomico.forEach((filaVar) => {
-        ArrayPerfilEconomico.push(filaVar);
-      });
-    });
-
-        //lectura del archivo "datos" Datos del negocio"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "Datos Negocio",
-    }).then((DatosNegocio) => {
-      DatosNegocio.forEach((filaVar) => {
-        ArrayDatosNegocio.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 9 "Dirección"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "7 Dirección",
-    }).then((Direccion) => {
-      Direccion.forEach((filaVar) => {
-        ArrayDireccion.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 10 "Contacto"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "8 Contacto",
-    }).then((Contacto) => {
-      Contacto.forEach((filaVar) => {
-        ArrayContacto.push(filaVar);
-      });
-    });
-
-    //lectura del archivo "datos" hoja 11 "FATCA"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "9 FATCA",
-    }).then((FATCA) => {
-      FATCA.forEach((filaVar) => {
-        ArrayFATCA.push(filaVar);
-      });
-    });
-
-   //lectura del archivo "datos" de Referencia Laboral 
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "Referencia Laboral",
-    }).then((RefernciaLaboral) => {
-      RefernciaLaboral.forEach((filaVar) => {
-        ArrayRefernciaLaboral.push(filaVar);
-      });
-    });
-
-    
-    //lectura del archivo "datos" hoja 12 "Referencias"
-    cy.task("readExcelToJson", {
-      filePath: "cypress/fixtures/datos.xlsx",
-      hoja: "10 referencia",
-    }).then((Referencias) => {
-      Referencias.forEach((filaVar) => {
-        ArrayReferencias.push(filaVar);
-      });
-    });
-
-    //    13 DigitDoc, 14 Finalizado
-
-    // //lectura del archivo "datos" hoja 13 "Digitalización de documentos"
-    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 13 }).then((DigitalDocs) => {
-    //     DigitalDocs.forEach((filaVar) => {
-    //     ArrayDigitalDocs.push(filaVar)
-    //   })
-    // });
-    // //lectura del archivo "datos" hoja 14 "Cliente Finalizado"
-    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 14 }).then((ClienteFinalizado) => {
-    //     ClienteFinalizado.forEach((filaVar) => {
-    //     ArrayClienteFinalizado.push(filaVar)
-    //   })
-    // });
-
-    //Fin lectura del archivo datos
-  }); // TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
-
-  it("Descarga de archivos datos y lectura de hojas del mismo", () => {
+  before("Descarga de archivos datos y lectura de hojas del mismo", () => {
     //descarga archivo "datos"
     Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos");
     cy.wait(5000); // descargando archivo
@@ -584,7 +399,7 @@ describe("BancoOcci", () => {
       });
     });
 
-      //lectura del archivo "datos" hoja 6 "Conyugue (cuando es casado y cuando es PEP casado)"
+    //lectura del archivo "datos" hoja 6 "Conyugue (cuando es casado y cuando es PEP casado)"
     cy.task("readExcelToJson", {
       filePath: "cypress/fixtures/datos.xlsx",
       hoja: "6 conyugue",
@@ -644,10 +459,7 @@ describe("BancoOcci", () => {
       });
     });
 
-
-
-
-//lectura del archivo "datos" hoja 13 "Contacto"
+    //lectura del archivo "datos" hoja 13 "Contacto"
     cy.task("readExcelToJson", {
       filePath: "cypress/fixtures/datos.xlsx",
       hoja: "8 Contacto",
@@ -657,7 +469,184 @@ describe("BancoOcci", () => {
       });
     });
 
+    //lectura del archivo "datos" hoja 11 "FATCA"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "9 FATCA",
+    }).then((FATCA) => {
+      FATCA.forEach((filaVar) => {
+        ArrayFATCA.push(filaVar);
+      });
+    });
+    //lectura del archivo "datos" de Referencia Laboral
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "Referencia Laboral",
+    }).then((RefernciaLaboral) => {
+      RefernciaLaboral.forEach((filaVar) => {
+        ArrayRefernciaLaboral.push(filaVar);
+      });
+    });
+    //lectura del archivo "datos" hoja 12 "Referencias"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "10 referencia",
+    }).then((Referencias) => {
+      Referencias.forEach((filaVar) => {
+        ArrayReferencias.push(filaVar);
+      });
+    });
 
+    //    13 DigitDoc, 14 Finalizado
+
+    // //lectura del archivo "datos" hoja 13 "Digitalización de documentos"
+    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 13 }).then((DigitalDocs) => {
+    //     DigitalDocs.forEach((filaVar) => {
+    //     ArrayDigitalDocs.push(filaVar)
+    //   })
+    // });
+    // //lectura del archivo "datos" hoja 14 "Cliente Finalizado"
+    // cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx", hoja: 14 }).then((ClienteFinalizado) => {
+    //     ClienteFinalizado.forEach((filaVar) => {
+    //     ArrayClienteFinalizado.push(filaVar)
+    //   })
+    // });
+
+    //Fin lectura del archivo datos
+  }); // TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
+
+  it("Descarga de archivos datos y lectura de hojas del mismo", () => {
+    //descarga archivo "datos"
+    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos");
+
+    //lista las hojas disponibles en el archivo datos
+    cy.task("listarHojasExcel", {
+      filePath: "cypress/fixtures/datos.xlsx",
+    }).then((nombres) => {
+      cy.log("Hojas disponibles: " + nombres.join(", "));
+    });
+
+    /*Inicio lectura del archivo "datos" por hojas*/
+
+    //lectura del archivo "datos" hoja 0
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "0 Cliente",
+    }).then((datosCliente) => {
+      datosCliente.forEach((fila) => {
+        ArrayCliente.push(fila); // O cualquier lógica que necesites
+      });
+    });
+
+    //lectura del archivo "datos" hoja 1 "Identificacion"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "1 Identificacion",
+    }).then((ID) => {
+      ID.forEach((filaVar) => {
+        ArrayID.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 2 "Datos Generales Persona juridica"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "2 DatosGenPer",
+    }).then((DataGenP) => {
+      DataGenP.forEach((filaVar) => {
+        ArrayDataGenP.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 3 "Captura de accionistas"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "3 Captura de accionistas",
+    }).then((CaptAccionistas) => {
+      CaptAccionistas.forEach((filaVar) => {
+        ArrayCaptAccionistas.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 4 "Captura de junta directiva"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "4 Captura de junta directiva",
+    }).then((CapJuntaDir) => {
+      CapJuntaDir.forEach((filaVar) => {
+        ArrayCapJuntaDir.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 5 "Representante Legal - Datos Generales"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "5 RLDatos Generales",
+    }).then((RepreLegalDG) => {
+      RepreLegalDG.forEach((filaVar) => {
+        ArrayRepreLegalDG.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 6 "Representante Legal - Direccion"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "5 RLDireccion",
+    }).then((RepreLegalDir) => {
+      RepreLegalDir.forEach((filaVar) => {
+        ArrayRepreLegalDir.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 7 "Representante Legal - Contacto"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "5 RLContacto",
+    }).then((RepreLegalCont) => {
+      RepreLegalCont.forEach((filaVar) => {
+        ArrayRepreLegalCont.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 8 "Perfil Economico"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "6 PerfilEconomico",
+    }).then((PerfilEconomico) => {
+      PerfilEconomico.forEach((filaVar) => {
+        ArrayPerfilEconomico.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" Datos del negocio"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "Datos Negocio",
+    }).then((DatosNegocio) => {
+      DatosNegocio.forEach((filaVar) => {
+        ArrayDatosNegocio.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 9 "Dirección"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "7 Dirección",
+    }).then((Direccion) => {
+      Direccion.forEach((filaVar) => {
+        ArrayDireccion.push(filaVar);
+      });
+    });
+
+    //lectura del archivo "datos" hoja 10 "Contacto"
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+      hoja: "8 Contacto",
+    }).then((Contacto) => {
+      Contacto.forEach((filaVar) => {
+        ArrayContacto.push(filaVar);
+      });
+    });
 
     //lectura del archivo "datos" hoja 11 "FATCA"
     cy.task("readExcelToJson", {
@@ -778,7 +767,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
           );
 
           cotizador.PersonaPep(
-            
             ArrayCargosPerNatural[no].esPEP,
             ArrayCargosPerNatural[no].institucionPEP,
             ArrayCargosPerNatural[no].cargoOcupadoPEP,
@@ -809,16 +797,13 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
           );
 
           cotizador.ParentescosPEP(
-            
-             ArrayCargosPerNatural[no].apellidoMamaPEP,
-             ArrayCargosPerNatural[no].primerNombreMamaPEP,
-             ArrayCargosPerNatural[no].direccionMamaPEP,
-             ArrayCargosPerNatural[no].tiposuegrxPEP,
-             ArrayCargosPerNatural[no].apellidosuegrxPEP,
-             ArrayCargosPerNatural[no].primerNombreSuegrxPEP,
-            
-            
-            
+            ArrayCargosPerNatural[no].apellidoMamaPEP,
+            ArrayCargosPerNatural[no].primerNombreMamaPEP,
+            ArrayCargosPerNatural[no].direccionMamaPEP,
+            ArrayCargosPerNatural[no].tiposuegrxPEP,
+            ArrayCargosPerNatural[no].apellidosuegrxPEP,
+            ArrayCargosPerNatural[no].primerNombreSuegrxPEP
+
             // data.apellidoMamaPEP,
             // data.primerNombreMamaPEP,
             // data.direccionMamaPEP,
@@ -828,12 +813,11 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
           );
 
           cotizador.esCasado(
-
             ArrayConyugue[no].tipoConyugue,
             ArrayConyugue[no].apellidoConyugue,
             ArrayConyugue[no].nombreConyugue,
             ArrayConyugue[no].tipoCelularConyugue,
-            ArrayConyugue[no].numeroConyugue,
+            ArrayConyugue[no].numeroConyugue
             // data.tipoConyugue,
             // data.apellidoConyugue,
             // data.nombreConyugue,
@@ -842,7 +826,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
           );
 
           cotizador.escasadoPEP(
-
             ArrayConyugue[no].tipoConyugue,
             ArrayConyugue[no].apellidoConyugue,
             ArrayConyugue[no].nombreConyugue,
@@ -880,11 +863,7 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayConyugue[no].ingresosMensualesConyuguePEP,
             ArrayConyugue[no].categoriadeNegocioConyuguePEP,
             ArrayConyugue[no].anioResidirNegocioConyuguePEP,
-            ArrayConyugue[no].ubicacionNegocioConyuguePEP,
-
-
-
-
+            ArrayConyugue[no].ubicacionNegocioConyuguePEP
 
             // data.tipoConyugue,
             // data.apellidoConyugue,
@@ -929,14 +908,12 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
           cotizador.direccionCliente(
             ArrayDireccion[no].aniosResidir,
             ArrayDireccion[no].IngreseUbicacion
-            
-            
+
             // data.aniosResidir,
             // data.ubicacionResidencia
           );
 
           cotizador.contactoCliente(
-
             ArrayContacto[no].tipoCorreoContactoCliente,
             ArrayContacto[no].correoCliente,
             ArrayContacto[no].tipoTelefonoContactoCliente,
@@ -948,23 +925,19 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
           );
 
           cotizador.dependenciaEconomica(
-         ArrayDependenciaEco[no].tieneDependienciaEconomica,
-         ArrayDependenciaEco[no].parentescoDependenciaEconomica,
-         ArrayDependenciaEco[no].cedulaDependenciaEconomica,
-         ArrayDependenciaEco[no].fechaExpiracionCedulaDependenciaEconomica,
-         ArrayDependenciaEco[no].apellidoDependenciaEconomica,
-         ArrayDependenciaEco[no].nombredependenciaEconomica
-         
-         
-         
-         
+            ArrayDependenciaEco[no].tieneDependienciaEconomica,
+            ArrayDependenciaEco[no].parentescoDependenciaEconomica,
+            ArrayDependenciaEco[no].cedulaDependenciaEconomica,
+            ArrayDependenciaEco[no].fechaExpiracionCedulaDependenciaEconomica,
+            ArrayDependenciaEco[no].apellidoDependenciaEconomica,
+            ArrayDependenciaEco[no].nombredependenciaEconomica
+
             // data.tieneDependenciaEconomica,
             // data.parentescoDependenciaEconomica,
             // data.cedulaDependenciaEconomica,
             // data.fechaExpiracionCedulaDependenciaEconomica,
             // data.apellidoDependenciaEconomica,
             // data.nombredependenciaEconomica,
-         
           );
 
           cotizador.Dependientes(
@@ -972,8 +945,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayDependientes[no].parentescoDependiente,
             ArrayDependientes[no].apellidoDependiente,
             ArrayDependientes[no].primerNombreDependiente
-
-
 
             // data.tieneDependiente,
             // data.parentescoDependiente,
@@ -985,8 +956,8 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayPerfilEconomico[no].afectoISRCliente,
             ArrayPerfilEconomico[no].actividadEconomicaCliente,
             ArrayPerfilEconomico[no].claseCliente,
-            ArrayPerfilEconomico[no].situacionlaboralCliente
-
+            ArrayPerfilEconomico[no].situacionlaboralCliente,
+            ArrayPerfilEconomico[no].institucionPerfilEconomico
 
             // data.afectoISRCliente,
             // data.actividadEconomicaCliente,
@@ -1002,10 +973,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayDatosNegocio[no].categoriaDeNegocioCliente,
             ArrayDatosNegocio[no].aniosResidirCliente,
             ArrayDatosNegocio[no].ubicacionCliente
-
-
-
-
 
             // data.nombreEmpresaCliente,
             // data.FechaInscripcionNegocioCliente,
@@ -1034,12 +1001,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayFATCA[no].telefonoFatcaCliente,
             ArrayFATCA[no].codigoZipFatcaCliente
 
-
-
-
-
-
-            
             // data.esNacidoUsaFatcaCliente,
             // data.esResidenteFatcaCliente,
             // data.esCiudadanoFatcaCliente,
@@ -1056,11 +1017,9 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             // data.tipoCelularFatcaCliente,
             // data.telefonoFatcaCliente,
             // data.codigoZipFatcaCliente,
-   
           );
 
           cotizador.referenciasLaborales(
-
             ArrayRefernciaLaboral[no].referenciaTipoPersona,
             ArrayRefernciaLaboral[no].generoReferenciaLaboralCliente,
             ArrayRefernciaLaboral[no].apellidoReferenciaLaboralCliente,
@@ -1071,11 +1030,11 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayRefernciaLaboral[no].salarioReferenciaLaboralCliente,
             ArrayRefernciaLaboral[no].nombreEmpresaReferenciaLaboralCliente,
             ArrayRefernciaLaboral[no].ubicacionReferencialLaboralCliente,
-            ArrayRefernciaLaboral[no].tipoCorreoReferencialLaboralCliente,  
+            ArrayRefernciaLaboral[no].tipoCorreoReferencialLaboralCliente,
             ArrayRefernciaLaboral[no].correoReferenciaLaboralCliente,
             ArrayRefernciaLaboral[no].tipoTelefonoReferenciaLaboralCliente,
             ArrayRefernciaLaboral[no].telefonoReferencialLaboralCliente
-            
+
             // data.referenciaTipoPersona,
             // data.generoReferenciaLaboralCliente,
             // data.apellidoReferenciaLaboralCliente,
@@ -1092,43 +1051,225 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             // data.telefonoReferencialLaboralCliente
           );
 
-          cotizador.referencias(
-            data.referenciasBancarias,
-            data.tipodeCuentaReferenciaCliente,
-            data.origenCuentaReferenciaCliente,
-            data.numerodeReferenciaCuentaBancariaCliente,
-            data.productoCuentaReferenciaBancariaCliente,
-            data.aperturaAproximadaCuentaReferenciaBancariaCliente,
-            data.institucionCuentaReferenciaBancariaCliente,
-            data.numeroTarjetaReferenciaBancariaCliente,
-            data.productoTarjetaReferenciaLaboralCliente,
-            data.limiteCreditoTarjetaReferenciaBancariaCliente,
-            data.fechaVencimientoTarjetaReferenciaBancariaCliente,
-            data.institucionTarjetaReferenciaLaboralCliente,
-            data.numeroPrestamoReferenciaBancariaCliente,
-            data.tipodePrestamoReferenciaBancariaCliente,
-            data.montoDeudaPrestamoReferenciaBancariaCliente,
-            data.fechaAperturaAproximadaPrestamoReferenciaBancariaCliente,
-            data.institucionPrestamoReferenciaLaboralCliente,
-            data.tieneReferenciasComerciales,
-            data.nombreReferenciaComercialCliente,
-            data.direccionReferencialComercialCliente,
-            data.tipoCorreoReferenciaComercialCliente,
-            data.correoReferenciaLaboralCliente,
-            data.tipoTelefonoReferenciaComercialCliente,
-            data.numeroTelefonoReferenciaComercialCliente,
-            data.tieneReferenciasFamiliares,
-            data.parentescoReferenciaFamiliarCliente,
-            data.apellidoReferenciaFamiliarCliente,
-            data.nombreReferenciaFamiliarCliente,
-            data.tipoTelefonoReferenciaFamiliarCliente,
-            data.telefonoReferenciaFamiliarCliente,
-            data.tieneReferenciasPersonales,
-            data.apellidoreferenciaPersonalCliente,
-            data.nombreReferenciaPersonalCliente,
-            data.tipoTelefonoReferenciaPersonalCliente,
-            data.telefonoReferenciaPersonalCliente
-          );
+          if (ArrayReferencias[no].TieneRefBanc) {
+            //descarga archivo "ReferenciasPN"
+            Generales.DescargaArchivoComplementos(
+              ArrayReferencias[no].URL_RefBancarias,
+              "ReferenciasPN"
+            );
+            //inicio lectura hojas archivo "ReferenciasPN"
+            cy.task("readExcelToJson", {
+              filePath: "cypress/fixtures/ReferenciasPN.xlsx",
+            }).then((ReferenciasPN) => {
+         
+                const ArrayRefBancariaPN = ReferenciasPN["Ref Bancarias"] || [];
+                const ArrayRefComercialPN = ReferenciasPN["Ref Comerciales"] || [];
+                const ArrayRefFamiliarPN = ReferenciasPN["Ref Familiares"] || [];
+                const ArrayRefPersonalPN = ReferenciasPN["Ref Personales"] || [];
+                cy.xpath(
+                  "//mat-panel-title[text()=' Referencias Bancarias ']/ancestor::mat-expansion-panel-header"
+                )
+                  .filter(":visible:not([disabled])")
+                  .first()
+                  .scrollIntoView()
+                  .should("be.visible")
+                  .click({ force: true, timeout: 6000 });
+                for (let i = 0; i < ArrayRefBancariaPN.length; i++) {
+                  cotizador.referenciasBancarias(
+                    ArrayRefBancariaPN[i].tieneReferenciasBancarias,
+                    ArrayRefBancariaPN[i].tipodeCuentaReferenciaCliente,
+                    ArrayRefBancariaPN[i].origenCuentaReferenciaCliente,
+                    ArrayRefBancariaPN[i]
+                      .numerodeReferenciaCuentaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .productoCuentaReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .aperturaAproximadaCuentaReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .institucionCuentaReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .numeroTarjetaReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .productoTarjetaReferenciaLaboralCliente,
+                    ArrayRefBancariaPN[i]
+                      .limiteCreditoTarjetaReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .fechaVencimientoTarjetaReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .institucionTarjetaReferenciaLaboralCliente,
+                    ArrayRefBancariaPN[i]
+                      .numeroPrestamoReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .tipodePrestamoReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .montoDeudaPrestamoReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .fechaAperturaAproximadaPrestamoReferenciaBancariaCliente,
+                    ArrayRefBancariaPN[i]
+                      .institucionPrestamoReferenciaLaboralCliente
+                  );
+                }
+
+                cy.xpath(
+                  "//mat-panel-title[contains(normalize-space(), 'Referencias Comerciales')]/ancestor::mat-expansion-panel-header"
+                )
+                  .filter(":visible:not([disabled])")
+                  .first()
+                  .scrollIntoView()
+                  .should("be.visible")
+                  .click({ force: true, timeout: 6000 });
+                for (let k = 0; k < ArrayRefComercialPN.length; k++) {
+                                  cotizador.referenciasComerciales(
+                    ArrayRefComercialPN[k].tieneReferenciasComerciales,
+                    ArrayRefComercialPN[k].nombreReferenciaComercialCliente,
+                    ArrayRefComercialPN[k].direccionReferencialComercialCliente,
+                    ArrayRefComercialPN[k].tipoCorreoReferenciaComercialCliente,
+                    ArrayRefComercialPN[k].correoReferenciaLaboralCliente,
+                    ArrayRefComercialPN[k]
+                      .tipoTelefonoReferenciaComercialCliente,
+                    ArrayRefComercialPN[k]
+                      .numeroTelefonoReferenciaComercialCliente
+                  );
+                }
+                   cy.xpath(
+                  "//mat-panel-title[contains(normalize-space(), 'Referencias Comerciales')]/ancestor::mat-expansion-panel-header"
+                )
+                  .filter(":visible:not([disabled])")
+                  .first()
+                  .scrollIntoView()
+                  .should("be.visible")
+                  .click({ force: true, timeout: 6000 });
+
+                cy.xpath(
+                  "//mat-expansion-panel-header[.//mat-panel-title[normalize-space()='Referencias Familiares']]"
+                )
+                  .filter(":visible:not([disabled])")
+                  .first()
+                  .scrollIntoView()
+                  .should("be.visible")
+                  .click({ force: true });
+                for (let l = 0; l < ArrayRefFamiliarPN.length; l++) {
+                  cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
+cy.xpath("//button[.//span[normalize-space()='Editar']]").then($btn => {
+  const $visibleBtn = $btn.filter(":visible:not([disabled])");
+  if ($visibleBtn.length > 0) {
+    cy.wrap($visibleBtn)
+      .first()
+      .scrollIntoView()
+      .should("be.visible")
+      .click({ force: true });
+  } else {
+    cy.log("No hay botón Editar visible, se omite el click");
+  }
+});
+    
+                  cotizador.referenciasFamiliares(
+                    ArrayRefFamiliarPN[l].tieneReferenciasFamiliares,
+                    ArrayRefFamiliarPN[l].parentescoReferenciaFamiliarCliente,
+                    ArrayRefFamiliarPN[l].apellidoReferenciaFamiliarCliente,
+                    ArrayRefFamiliarPN[l].nombreReferenciaFamiliarCliente,
+                    ArrayRefFamiliarPN[l].tipoTelefonoReferenciaFamiliarCliente,
+                    ArrayRefFamiliarPN[l].telefonoReferenciaFamiliarCliente
+                  );
+                }
+                cy.xpath(
+                  "//mat-expansion-panel-header[.//mat-panel-title[normalize-space()='Referencias Familiares']]"
+                )
+                  .filter(":visible:not([disabled])")
+                  .first()
+                  .scrollIntoView()
+                  .should("be.visible")
+                  .click({ force: true });
+                cy.xpath(
+                  "//mat-expansion-panel-header[normalize-space(.//mat-panel-title) = 'Referencias Personales']"
+                )
+                  .filter(":visible:not([disabled])")
+                  .first()
+                  .scrollIntoView()
+                  .should("be.visible")
+                  .click({ force: true });
+                for (let m = 0; m < ArrayRefPersonalPN.length; m++) {
+                  cy.xpath("//button[.//span[normalize-space()='Editar']]").then($btn => {
+  const $visibleBtn = $btn.filter(":visible:not([disabled])");
+  if ($visibleBtn.length > 0) {
+    cy.wrap($visibleBtn)
+      .first()
+      .scrollIntoView()
+      .should("be.visible")
+      .click({ force: true });
+  } else {
+    cy.log("No hay botón Editar visible, se omite el click");
+  }
+});
+                  
+                  cotizador.referenciasPersonales(
+                    ArrayRefPersonalPN[m].tieneReferenciasPersonales,
+                    ArrayRefPersonalPN[m].apellidoreferenciaPersonalCliente,
+                    ArrayRefPersonalPN[m].nombreReferenciaPersonalCliente,
+                    ArrayRefPersonalPN[m].tipoTelefonoReferenciaPersonalCliente,
+                    ArrayRefPersonalPN[m].telefonoReferenciaPersonalCliente
+                  );
+                }
+              
+            });
+          } else {
+            cy.log("No tiene referencias por lo que se salta el paso");
+          }
+            cy.xpath(
+                  "//mat-expansion-panel-header[normalize-space(.//mat-panel-title) = 'Referencias Personales']"
+                )
+                  .filter(":visible:not([disabled])")
+                  .first()
+                  .scrollIntoView()
+                  .should("be.visible")
+                  .click({ force: true });
+          cy.xpath(
+            "//button[.//span[contains(@class, 'mdc-button__label') and normalize-space(text())='Siguiente']]"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          // cotizador.referencias(
+
+          //   // data.tieneReferenciasBancarias,
+          //   // data.tipodeCuentaReferenciaCliente,
+          //   // data.origenCuentaReferenciaCliente,
+          //   // data.numerodeReferenciaCuentaBancariaCliente,
+          //   // data.productoCuentaReferenciaBancariaCliente,
+          //   // data.aperturaAproximadaCuentaReferenciaBancariaCliente,
+          //   // data.institucionCuentaReferenciaBancariaCliente,
+          //   // data.numeroTarjetaReferenciaBancariaCliente,
+          //   // data.productoTarjetaReferenciaLaboralCliente,
+          //   // data.limiteCreditoTarjetaReferenciaBancariaCliente,
+          //   // data.fechaVencimientoTarjetaReferenciaBancariaCliente,
+          //   // data.institucionTarjetaReferenciaLaboralCliente,
+          //   // data.numeroPrestamoReferenciaBancariaCliente,
+          //   // data.tipodePrestamoReferenciaBancariaCliente,
+          //   // data.montoDeudaPrestamoReferenciaBancariaCliente,
+          //   // data.fechaAperturaAproximadaPrestamoReferenciaBancariaCliente,
+          //   // data.institucionPrestamoReferenciaLaboralCliente,
+          //   // data.tieneReferenciasComerciales,
+          //   // data.nombreReferenciaComercialCliente,
+          //   // data.direccionReferencialComercialCliente,
+          //   // data.tipoCorreoReferenciaComercialCliente,
+          //   // data.correoReferenciaLaboralCliente,
+          //   // data.tipoTelefonoReferenciaComercialCliente,
+          //   // data.numeroTelefonoReferenciaComercialCliente,
+          //   // data.tieneReferenciasFamiliares,
+          //   // data.parentescoReferenciaFamiliarCliente,
+          //   // data.apellidoReferenciaFamiliarCliente,
+          //   // data.nombreReferenciaFamiliarCliente,
+          //   // data.tipoTelefonoReferenciaFamiliarCliente,
+          //   // data.telefonoReferenciaFamiliarCliente,
+          //   // data.tieneReferenciasPersonales,
+          //   // data.apellidoreferenciaPersonalCliente,
+          //   // data.nombreReferenciaPersonalCliente,
+          //   // data.tipoTelefonoReferenciaPersonalCliente,
+          //   // data.telefonoReferenciaPersonalCliente
+          // );
 
           cotizador.digitalizacionDocumentos();
         } else {
@@ -1136,13 +1277,273 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
           cotizador.ClienteCreadoParcialmente(data.esPEP, data.EstadoCivil);
         }
       });
-    } else if (data.TipodePersona.toLowerCase() == "juridico") {
+    } else if (ArrayID[no].TipodePersona.toLowerCase() == "jurídica") {
       cy.log("JURIDICO PAPS");
 
-      PJ.Identificacion(data);
+      //PASO #1
+      PJ.Identificacion(ArrayID[no]);
+      // FIN PASO #1
 
-      PJ.DatosGeneralesPersonaJuridica(data);
-      [];
+      //PASO #2
+      PJ.DatosGeneralesPersonaJuridica(ArrayDataGenP[no]);
+      // FIN PASO #2
+
+      //PASO #3
+      cy.log(ArrayCaptAccionistas[no].TieneRef);
+      if (ArrayCaptAccionistas[no].TieneRef) {
+        cy.log(
+          ArrayCaptAccionistas[no].TieneRef +
+            "Verdadero ArrayCaptAccionistas[no].TieneRef"
+        );
+        //descarga archivo "Captura de accionistas"
+        Generales.DescargaArchivoComplementos(
+          ArrayCaptAccionistas[no].URL_RefAccionistas,
+          "CaptAccionistas"
+        );
+        // Lee TODAS las hojas en una sola operación y realizacion del paso 3
+        cy.task("readExcelToJson", {
+          filePath: "cypress/fixtures/CaptAccionistas.xlsx",
+        }).then((excelData) => {
+          // Asigna los datos a los arrays correspondientes
+          const ArrayRefAccionistas = excelData["RefAccionista"] || [];
+          const ArrayIDcapAcc = excelData["Identificacion"] || [];
+          const ArrayInfCompl = excelData["Informacion Complementaria"] || [];
+          const ArrayDtsGnPJyN = excelData["DG PJ y N"] || [];
+          const ArrayRLCapAcc = excelData["Representante Legal"] || [];
+
+          cy.log(`Número de registros: ${ArrayRefAccionistas.length}`);
+          cy.oculto();
+          // Procesa los datos
+          for (let i = 0; i < ArrayRefAccionistas.length; i++) {
+            cy.get("body", { timeout: 5000 }).then(($body) => {
+              if (
+                $body
+                  .text()
+                  .includes(
+                    "El último elemento de cada rama debe ser una persona natural"
+                  )
+              ) {
+                cy.log(
+                  'Si aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" '
+                );
+                cy.xpathClk(
+                  "(//button[contains(@class, 'swal2-confirm') and contains(., 'Aceptar')])[1]"
+                );
+                //            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")
+                cy.log(
+                  'NATURAL "El último elemento de cada rama debe ser una persona natural"'
+                );
+                cy.xpathClk("//mat-icon[text()='add']");
+                // Aquí tu flujo cuando aparece el mensaje
+                PJ.AggRefNatural(
+                  ArrayIDcapAcc[i],
+                  ArrayInfCompl[i],
+                  ArrayDtsGnPJyN[i]
+                );
+              } else {
+                cy.log(
+                  'No aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" '
+                );
+                // Aquí el flujo alternativo
+                if (ArrayRefAccionistas[i].AggRef === "Jurídica") {
+                  cy.log("JURIDICO");
+                  cy.xpathClk("(//button[contains(., 'Agregar')])[1]");
+                  PJ.AggRefJuridica(
+                    ArrayIDcapAcc[i],
+                    ArrayInfCompl[i],
+                    ArrayDtsGnPJyN[i],
+                    ArrayRLCapAcc[i]
+                  );
+                  cy.xpathClk("(//button[contains(., 'Aceptar')])[1]");
+                } else if (ArrayRefAccionistas[i].AggRef === "Natural") {
+                  cy.xpath("//mat-icon[text()='add']", { timeout: 5000 }).then(
+                    ($el) => {
+                      if ($el.length > 0 && $el.is(":visible")) {
+                        // ✅ El elemento existe y está visible
+                        cy.wrap($el).click();
+                        cy.log("NATURAL");
+                        PJ.AggRefNatural(
+                          ArrayIDcapAcc[i],
+                          ArrayInfCompl[i],
+                          ArrayDtsGnPJyN[i]
+                        );
+                      } else {
+                        // ❌ El elemento no existe o está oculto
+                        cy.log("El icono 'add' no está visible");
+                        cy.log("NATURAL");
+                        PJ.AggRefNatural(
+                          ArrayIDcapAcc[i],
+                          ArrayInfCompl[i],
+                          ArrayDtsGnPJyN[i]
+                        );
+                      }
+                    }
+                  );
+                } else {
+                  cy.log(
+                    'No hay datos "Captura de accionistas" presionando boton siguiente'
+                  );
+                }
+              }
+            });
+          }
+        });
+      }
+      //presionamos siguiente luego de terminar la lectura o vlaidar si no hay referencias
+      cy.xpathClk(
+        "//span[contains(., 'Referencias Accionistas')]/ancestor::div[contains(@class, 'mat-vertical-content-container')]//button[span[contains(., 'Siguiente')]]"
+      );
+      // FIN PASO #3
+
+      //PASO #4
+      if (ArrayCapJuntaDir[no].TieneJD) {
+        //descarga archivo "Captura de junta directiva"
+        //inicio lectura hojas archivo "Captura de junta directiva"
+        //lectura del archivo "Captura de junta directiva" hoja 0 "Junta Directiva "
+        cy.task("readExcelToJson", {
+          filePath: "cypress/fixtures/CapJuntaDir.xlsx",
+        }).then((JuntaDir) => {
+          // Asigna los datos a los arrays correspondientes
+          const ArrayJuntaDir = JuntaDir["Junta Directiva"] || [];
+          for (let i = 0; i < ArrayJuntaDir.length; i++) {
+            PJ.CapturaJuntaDirectiva(ArrayJuntaDir[i]);
+          }
+        });
+      }
+      //Boton siguiente Paso #4
+      cy.xpathClk("(//button[contains(., 'Siguiente')])[4]");
+      // FIN PASO #4
+
+      //PASO #5
+      for (let i = 0; i < ArrayRepreLegalDG.length; i++) {
+        PJ.RepresentanteLegal(ArrayRepreLegalDG[no], ArrayRepreLegalDir[no]);
+        //descarga archivo "Representante Legal - Contacto"
+        Generales.DescargaArchivoComplementos(
+          ArrayRepreLegalCont[no].URL_Contacto,
+          "RepreLegalCont"
+        );
+        //lectura hojas archivo "Representante Legal - Contacto"
+        cy.task("readExcelToJson", {
+          filePath: "cypress/fixtures/RepreLegalCont.xlsx",
+        }).then((excelData) => {
+          // Asigna los datos a los arrays correspondientes
+          const ArrayRLcorreo = excelData["correo"] || [];
+          const ArrayRLtelefono = excelData["telefono"] || [];
+          //FIN lectura hojas archivo "Representante Legal - Contacto"
+
+          for (let i = 0; i < ArrayRLcorreo.length; i++) {
+            PJ.correoRL(ArrayRLcorreo[i]);
+          }
+          for (let i = 0; i < ArrayRLtelefono.length; i++) {
+            PJ.celularRL(ArrayRLtelefono[i]);
+          }
+        });
+        cy.xpathClk("(//button[contains(., 'Agregar')])[5]");
+      }
+      //Boton siguiente Paso #5
+      cy.xpathClk("(//button[contains(., 'Siguiente')])[7]");
+      // FIN PASO #5
+
+      //PASO #6
+      PJ.InfGenFin(ArrayPerfilEconomico[no]);
+      //descarga archivo "Perfil Economico - Informacion Financiera"
+      Generales.DescargaArchivoComplementos(
+        ArrayPerfilEconomico[no].URL_InfFinanciera,
+        "PerfilEcoInfFinanciera"
+      );
+      //lectura hojas archivo "Perfil Economico - Informacion Financiera"
+      //lectura del archivo "Perfil Economico - Informacion Financiera" hoja 0 "Inf Financiera"
+      cy.task("readExcelToJson", {
+        filePath: "cypress/fixtures/PerfilEcoInfFinanciera.xlsx",
+      }).then((InfFinanciera) => {
+        InfFinanciera.forEach((filaVar) => {
+          const ArrayInfFinanciera = filaVar["Inf Financiera"] || [];
+
+          for (let i = 0; i < ArrayInfFinanciera.length; i++) {
+            PJ.monedaPE(ArrayInfFinanciera[i]);
+          }
+          //cuando termine de agregar la informacion financiera continuara con el flujo
+          cy.xpathClk("(//button[contains(., 'Siguiente')])[8]");
+        });
+      });
+      Generales.DescargaArchivoComplementos(
+        ArrayPerfilEconomico[no].InfDondeOpera,
+        "PerfilEcoInfDondeOpera"
+      );
+      //lectura hojas archivo "Perfil Economico - Informacion donde Opera"
+      //lectura del archivo "Perfil Economico - Informacion donde Opera" hoja 0 "Inf DondeOpera"
+      cy.task("readExcelToJson", {
+        filePath: "cypress/fixtures/PerfilEcoInfDondeOpera.xlsx",
+      }).then((InfDondeOpera) => {
+        InfDondeOpera.forEach((filaVar) => {
+          const ArrayInfDondeOpera = filaVar["Inf DondeOpera"] || [];
+
+          for (let i = 0; i < ArrayInfDondeOpera.length; i++) {
+            PJ.InfOpera(ArrayInfDondeOpera[i]);
+          }
+          //cuando termine de agregar la informacion donde opera continuara con el flujo
+          cy.xpathClk("(//button[contains(., 'Siguiente')])[9]");
+        });
+      });
+      PJ.Relaciones(ArrayPerfilEconomico[no]);
+      //descarga archivo "Perfil Economico - Proveedor"
+      Generales.DescargaArchivoComplementos(
+        ArrayPerfilEconomico[0].Proveedor,
+        "PerfilEcoProveedor"
+      );
+      //lectura hojas archivo "Perfil Economico - Proveedor"
+      //lectura del archivo "Perfil Economico - Proveedor" hoja 0 "proveedores"
+      cy.task("readExcelToJson", {
+        filePath: "cypress/fixtures/PerfilEcoProveedor.xlsx",
+      }).then((Proveedor) => {
+        Proveedor.forEach((filaVar) => {
+          const ArrayProveedor = filaVar["proveedores"] || [];
+
+          for (let i = 0; i < ArrayProveedor.length; i++) {
+            PJ.PrincProvee(ArrayProveedor[i]);
+          }
+
+          //validar este siguiente no estoy seguro si es necesario
+          cy.xpathClk(
+            "(//button[.//span[contains(normalize-space(.), 'Finalizar')]])[1]"
+          );
+        });
+      });
+      // FIN PASO #6
+
+      //PASO #7
+      PJ.Direcciones(ArrayDireccion[no]);
+      // FIN PASO #7
+
+      //PASO #8
+      PJ.Contacto(ArrayContacto[no]);
+
+      //descarga archivo "Contacto"
+      Generales.DescargaArchivoComplementos(
+        ArrayContacto[0].URL_Contacto,
+        "Contacto"
+      );
+      //inicio lectura hojas archivo "Contacto"
+      cy.task("readExcelToJson", {
+        filePath: "cypress/fixtures/Contacto.xlsx",
+      }).then((dataContacto) => {
+        dataContacto.forEach((filaVar) => {
+          const ArrayConCorreo = filaVar["correo"] || [];
+          const ArrayConTelefono = filaVar["telefono"] || [];
+
+          for (let i = 0; i < ArrayConCorreo.length; i++) {
+            PJ.correo(ArrayConCorreo[i]);
+          }
+          for (let i = 0; i < ArrayConTelefono.length; i++) {
+            PJ.celular(ArrayConTelefono[i]);
+          }
+        });
+      });
+
+      // FIN PASO #8
+
+      //PASO #9
+      // FIN PASO #9
     } else {
       cy.log("*******************************************************");
       cy.log("Debe de ingresar un tipo de cliente: Natural o Juridico");
