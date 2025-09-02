@@ -2,8 +2,8 @@
 const { defineConfig } = require('cypress');
 const fs = require('fs');
 const path = require('path');
-const ExcelJS = require('exceljs');
-const excelToJson = require('convert-excel-to-json');
+const xlsx = require("xlsx");
+
 
 
 module.exports = defineConfig({
@@ -43,12 +43,49 @@ module.exports = defineConfig({
 
 
       //leer archivo
-      on('task', {
-        readExcelToJson({ filePath, hoja = null }) {
-          const xlsx = require("xlsx");
-          const workbook = xlsx.readFile(filePath);
+      // on('task', {
+      //   readExcelToJson({ filePath, hoja = null }) {
+      //     const xlsx = require("xlsx");
+      //     const workbook = xlsx.readFile(filePath);
 
-          // Si no se especifica hoja, devuelve todas las hojas en un objeto
+      //     // Si no se especifica hoja, devuelve todas las hojas en un objeto
+      //     if (!hoja) {
+      //       const result = {};
+      //       workbook.SheetNames.forEach(sheetName => {
+      //         const worksheet = workbook.Sheets[sheetName];
+      //         result[sheetName] = xlsx.utils.sheet_to_json(worksheet);
+      //       });
+      //       return result;
+      //     }
+
+      //     // Si se especifica hoja, devuelve solo esa hoja (comportamiento original)
+      //     const worksheet = workbook.Sheets[hoja];
+      //     if (!worksheet) {
+      //       throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
+      //     }
+      //     return xlsx.utils.sheet_to_json(worksheet);
+      //   }
+      // });
+
+      on("task", {
+        async readExcelToJson({ filePath, hoja = null, timeout = 10000, interval = 500 }) {
+          const absPath = path.resolve(filePath);
+          const start = Date.now();
+
+          // Esperar hasta que el archivo exista o se cumpla el timeout
+          while (true) {
+            if (fs.existsSync(absPath)) {
+              break; // Archivo encontrado
+            }
+            if (Date.now() - start > timeout) {
+              throw new Error(`Timeout: No se encontró el archivo en ${absPath} dentro de ${timeout}ms`);
+            }
+            await new Promise(r => setTimeout(r, interval)); // esperar un poco antes de volver a intentar
+          }
+
+          // Leer el archivo cuando ya esté disponible
+          const workbook = xlsx.readFile(absPath);
+
           if (!hoja) {
             const result = {};
             workbook.SheetNames.forEach(sheetName => {
@@ -58,32 +95,14 @@ module.exports = defineConfig({
             return result;
           }
 
-          // Si se especifica hoja, devuelve solo esa hoja (comportamiento original)
           const worksheet = workbook.Sheets[hoja];
           if (!worksheet) {
             throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
           }
+
           return xlsx.utils.sheet_to_json(worksheet);
         }
       });
-
-
-      // on('task', {
-      //   readExcelToJson({ filePath, hoja }) {
-      //     const xlsx = require("xlsx");
-      //     const workbook = xlsx.readFile(filePath);
-
-      //     const worksheet = workbook.Sheets[hoja]; // hoja = nombre exacto
-
-      //     if (!worksheet) {
-      //       throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
-      //     }
-
-      //     const jsonData = xlsx.utils.sheet_to_json(worksheet);
-      //     return jsonData;
-      //   }
-      // });     
-      //FIN leer archivo
 
       //Eliminar archivos 
       on('task', {

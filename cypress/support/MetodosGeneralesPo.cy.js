@@ -51,13 +51,15 @@ class MetodosGenerales{
           method: 'GET',
           headers: {
             'accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          }
+          },
+            timeout: 60000  // 👈 hasta 60 segundos
         }).then((response) => {
           // Convertir el binario a Buffer antes de escribirlo
           const fileBuffer = Buffer.from(response.body, 'binary');
 
           cy.writeFile("cypress/fixtures/"+nombreArchivo+".xlsx", fileBuffer, { encoding: 'binary' });
         });
+      cy.wait(3500)
       }
 
       DescargaImagen(URL_Datos, nombreArchivo){
