@@ -141,16 +141,15 @@ it("Agregar cliente", () => {
     } else if (ArrayID[no].TipodePersona.toLowerCase() == "jurídica") {
       cy.log("JURIDICO PAPS");
       
-      //PASO #1
+      //PASO #1 Identificacion
       PJ.Identificacion(ArrayID[no]);
-      // FIN PASO #1
+      // FIN PASO #1 Identificacion
 
-      //PASO #2
+      //PASO #2 Datos Generales Persona juridica
       PJ.DatosGeneralesPersonaJuridica(ArrayDataGenP[no]);
-      // FIN PASO #2
+      // FIN PASO #2 Datos Generales Persona juridica
 
-      //PASO #3
-
+      //PASO #3 Captura de accionistas
       cy.log(ArrayCaptAccionistas[no].TieneRef)
       if (ArrayCaptAccionistas[no].TieneRef){
         cy.log(ArrayCaptAccionistas[no].TieneRef + "Verdadero ArrayCaptAccionistas[no].TieneRef")
@@ -220,10 +219,10 @@ it("Agregar cliente", () => {
 
       }
       //presionamos siguiente luego de terminar la lectura o vlaidar si no hay referencias   
-      cy.xpathClk("//span[contains(., 'Referencias Accionistas')]/ancestor::div[contains(@class, 'mat-vertical-content-container')]//button[span[contains(., 'Siguiente')]]");
-      // FIN PASO #3
+      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Captura de accionistas')]]//button[.//span[normalize-space()='Siguiente']]");
+      // FIN PASO #3 Captura de accionistas
 
-      //PASO #4
+      //PASO #4 Captura de junta directiva
       if (ArrayCapJuntaDir[no].TieneJD){
 
       //descarga archivo "Captura de junta directiva"
@@ -239,10 +238,10 @@ it("Agregar cliente", () => {
       });
       }
       //Boton siguiente Paso #4
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[4]");
-      // FIN PASO #4
+      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Captura de junta directiva')]]//button[.//span[normalize-space()='Siguiente']]");
+      // FIN PASO #4 Captura de junta directiva
       
-      //PASO #5
+      //PASO #5 Representante Legal
       for (let i = 0; i < ArrayRepreLegalDG.length; i++) {
       PJ.RepresentanteLegal(ArrayRepreLegalDG[no], ArrayRepreLegalDir[no])
       //descarga archivo "Representante Legal - Contacto"
@@ -261,13 +260,12 @@ it("Agregar cliente", () => {
           PJ.celularRL(ArrayRLtelefono[i])
         }
       })
-      cy.xpathClk("(//button[contains(., 'Agregar')])[5]")
+      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Representante Legal')]]//button[.//span[normalize-space()='Agregar']])[3]")
       }      
-      //Boton siguiente Paso #5
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[7]");      
-      // FIN PASO #5
+      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Representante Legal')]]//button[.//span[normalize-space()='Siguiente']]");      
+      // FIN PASO #5 Representante Legal
 
-      //PASO #6
+      //PASO #6 Perfil Economico
       PJ.InfGenFin(ArrayPerfilEconomico[no])
       //descarga archivo "Perfil Economico - Informacion Financiera"
       Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[no].URL_InfFinanciera, "PerfilEcoInfFinanciera")       
@@ -282,7 +280,7 @@ it("Agregar cliente", () => {
           PJ.monedaPE(ArrayInfFinanciera[i])
         }
       //cuando termine de agregar la informacion financiera continuara con el flujo  
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[8]");
+      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Siguiente']])[1]");
       });
       Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[no].InfDondeOpera, "PerfilEcoInfDondeOpera")            
       //lectura hojas archivo "Perfil Economico - Informacion donde Opera"
@@ -294,7 +292,7 @@ it("Agregar cliente", () => {
           PJ.InfOpera(ArrayInfDondeOpera[i])
         }
       //cuando termine de agregar la informacion donde opera continuara con el flujo  
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[9]");
+      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Siguiente']])[2]");
 
           
       });     
@@ -311,16 +309,16 @@ it("Agregar cliente", () => {
         }
 
       //validar este siguiente no estoy seguro si es necesario
-      cy.xpathClk("(//button[.//span[contains(normalize-space(.), 'Finalizar')]])[1]")
+      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Finalizar']])[1]")
 
       });
-      // FIN PASO #6
+      // FIN PASO #6 Perfil Economico
       
-      //PASO #7
+      //PASO #7 Dirección
       PJ.Direcciones(ArrayDireccion[no])
-      // FIN PASO #7
+      // FIN PASO #7 Dirección
 
-      //PASO #8
+      //PASO #8 Contacto
       PJ.Contacto(ArrayContacto[no])
 
       //descarga archivo "Contacto"
@@ -339,14 +337,72 @@ it("Agregar cliente", () => {
 
       });
       
-      cy.xpathClk("(//button[contains(., 'Siguiente')])[13]");
+      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Contacto')]]//button[.//span[normalize-space()='Siguiente']])[2]");
 
-      // FIN PASO #8
+      // FIN PASO #8 Contacto
 
+      //PASO #9 FATCA
       PJ.FATCA(ArrayFATCA[no])
+      
+      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'FATCA')]]//button[.//span[normalize-space()='Siguiente']]");
 
-      //PASO #9
-      // FIN PASO #9
+      //FIN PASO #9 FATCA
+
+      //PASO #10 Referencias
+
+      //descarga archivo "Referenbcias"
+      Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefBancarias, "RefBancaria")            
+      //inicio lectura hojas archivo "Contacto"
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/RefBancaria.xlsx"}).then((ReferenciasBan) => {
+          const ArrayRefBancaria = ReferenciasBan["Ref Bancarias"] || [];
+          
+        for (let i = 0; i < ArrayRefBancaria.length; i++) {
+          PJ.RefBancaria(ArrayRefBancaria[i])     
+        }
+      });
+      //descarga archivo "Referenbcias"
+      Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefComercial, "RefComercial")            
+      //inicio lectura hojas archivo "Contacto"
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/RefComercial.xlsx"}).then((ReferenciasCom) => {
+          const ArrayRefComercial = ReferenciasCom["Ref Comerciales"] || [];
+          
+        for (let i = 0; i < ArrayRefComercial.length; i++) {
+          PJ.RefComercial(ArrayRefComercial[i])
+
+        //descarga archivo "Contacto"
+        Generales.DescargaArchivoComplementos(ArrayRefComercial[i].URL_CONTACTO, "RefComContacto")            
+        //inicio lectura hojas archivo "Contacto"
+        cy.task("readExcelToJson", { filePath: "cypress/fixtures/RefComContacto.xlsx"}).then((dataContacto) => {
+          const ArrayRefComCorreo = dataContacto["correo"] || [];
+          const ArrayRefComTelefono = dataContacto["telefono"] || [];
+
+        for (let i = 0; i < ArrayRefComCorreo.length; i++) {
+          PJ.correoRef(ArrayRefComCorreo[i])
+        }
+        for (let i = 0; i < ArrayRefComTelefono.length; i++) {
+          PJ.celularRef(ArrayRefComTelefono[i])
+        }
+
+      });
+      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Referencias')]]//button[.//span[normalize-space()='Agregar']])[4]")
+      }
+
+      });
+      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Referencias')]]//button[.//span[normalize-space()='Siguiente']]")
+      // FIN PASO #10 Referencias
+
+      // PASO #11 Digitalización de documentos
+
+      
+
+
+      // FIN PASO #11 Digitalización de documentos
+
+
+      // PASO #12 Cliente Finalizado
+
+      // FIN PASO #12 Cliente Finalizado
+
 
 
 
