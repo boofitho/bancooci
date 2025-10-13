@@ -6,9 +6,9 @@ const cotizador = new PersonaNatural();
 const Generales = new MetodosGenerales();
 const PJ = new personaJuridica();
 
-const URL_Var = Cypress.env('URL_VAR');       //link URL´s para descargar los documentos 
+const URL_Var = Cypress.env("URL_VAR"); //link URL´s para descargar los documentos
 
-let ArrayVar = []
+let ArrayVar = [];
 
 let ArrayCliente = [], ArrayID = [], ArrayDataGenP = [], ArrayCaptAccionistas = [], ArrayCapJuntaDir = [],
     ArrayRepreLegalDG = [], ArrayRepreLegalDir = [], ArrayRepreLegalCont = [], ArrayPerfilEconomico = [],
@@ -75,21 +75,19 @@ describe("BancoOcci", () => {
       //descarga de archivos secundarios de los datos
   
 
-      //descarga archivo "referencia"
-      Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefBancarias, "refBancaria")            
-      //inicio lectura hojas archivo "Contacto"
-      //lectura del archivo "Contacto" hoja 0 "correo"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/refBancaria.xlsx", hoja: "Ref Bancarias"}).then((RefBanca) => {
-        RefBanca.forEach((filaVar) => {
-          ArrayRefBanca.push(filaVar); 
-        });
-      });
-      //Fin lectura hojas archivo "Contacto"
-
-
-      Generales.DescargaImagen(ArrayDigitDoc[0].URL_Imagen, "DNITest")            
-      Generales.DescargaImagen(ArrayDigitDoc[1].URL_Imagen, "RTNTest")            
-
+      // //descarga archivo "referencia"
+      // Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefBancarias, "refBancaria")            
+      // //inicio lectura hojas archivo "Contacto"
+      // //lectura del archivo "Contacto" hoja 0 "correo"
+      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/refBancaria.xlsx", hoja: "Ref Bancarias"}).then((RefBanca) => {
+      //   RefBanca.forEach((filaVar) => {
+      //     ArrayRefBanca.push(filaVar); 
+      //   });
+      // });
+      // //Fin lectura hojas archivo "Contacto"
+      // for(let x = 0; x < ArrayDigitDoc.length; x++){
+      // Generales.DescargaImagen(ArrayDigitDoc[x].URL_Imagen, ArrayDigitDoc.NombreArchivo[x])            
+      // }
 
 
   })
@@ -143,6 +141,7 @@ it("Agregar cliente", () => {
       
       //PASO #1 Identificacion
       PJ.Identificacion(ArrayID[no]);
+      
       // FIN PASO #1 Identificacion
 
       //PASO #2 Datos Generales Persona juridica
@@ -168,12 +167,16 @@ it("Agregar cliente", () => {
         cy.oculto()
         // Procesa los datos
         for (let i = 0; i < ArrayRefAccionistas.length; i++) {
-  
+          cy.oculto()
+          cy.wait(1500)
         cy.get('body', { timeout: 5000 }).then(($body) => {
           if ($body.text().includes('El último elemento de cada rama debe ser una persona natural')) {
             cy.log('Si aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
 //            cy.xpathClk("(//button[contains(@class, 'swal2-confirm') and contains(., 'Aceptar')])[1]")
 //            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")
+            cy.wait(2000)
+            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
+
             cy.log('NATURAL "El último elemento de cada rama debe ser una persona natural"')
             cy.xpathClk("//mat-icon[text()='add']")
             // Aquí tu flujo cuando aparece el mensaje
@@ -189,8 +192,8 @@ it("Agregar cliente", () => {
             PJ.AggRefJuridica(ArrayIDcapAcc[i], 
               ArrayInfCompl[i], ArrayDtsGnPJyN[i], 
               ArrayRLCapAcc[i])
-            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
 
+              cy.wait(5000)
             }else if(ArrayRefAccionistas[i].AggRef === "Natural"){
               cy.xpath("//mat-icon[text()='add']", { timeout: 5000 }).then($el => {
                 if ($el.length > 0 && $el.is(':visible')) {
@@ -219,7 +222,7 @@ it("Agregar cliente", () => {
 
       }
       //presionamos siguiente luego de terminar la lectura o vlaidar si no hay referencias   
-      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Captura de accionistas')]]//button[.//span[normalize-space()='Siguiente']]");
+      cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Captura de accionistas')]]//button[.//span[normalize-space()='Siguiente']]");
       // FIN PASO #3 Captura de accionistas
 
       //PASO #4 Captura de junta directiva
@@ -238,7 +241,7 @@ it("Agregar cliente", () => {
       });
       }
       //Boton siguiente Paso #4
-      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Captura de junta directiva')]]//button[.//span[normalize-space()='Siguiente']]");
+      cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Captura de junta directiva')]]//button[.//span[normalize-space()='Siguiente']]");
       // FIN PASO #4 Captura de junta directiva
       
       //PASO #5 Representante Legal
@@ -261,8 +264,9 @@ it("Agregar cliente", () => {
         }
       })
       cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Representante Legal')]]//button[.//span[normalize-space()='Agregar']])[3]")
-      }      
-      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Representante Legal')]]//button[.//span[normalize-space()='Siguiente']]");      
+      }
+      cy.wait(1500)      
+      cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Representante Legal')]]//button[.//span[normalize-space()='Siguiente']]");      
       // FIN PASO #5 Representante Legal
 
       //PASO #6 Perfil Economico
@@ -280,7 +284,7 @@ it("Agregar cliente", () => {
           PJ.monedaPE(ArrayInfFinanciera[i])
         }
       //cuando termine de agregar la informacion financiera continuara con el flujo  
-      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Siguiente']])[1]");
+      cy.xpathClkWOF("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Siguiente']])[1]");
       });
       Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[no].InfDondeOpera, "PerfilEcoInfDondeOpera")            
       //lectura hojas archivo "Perfil Economico - Informacion donde Opera"
@@ -292,13 +296,13 @@ it("Agregar cliente", () => {
           PJ.InfOpera(ArrayInfDondeOpera[i])
         }
       //cuando termine de agregar la informacion donde opera continuara con el flujo  
-      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Siguiente']])[2]");
+      cy.xpathClkWOF("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Siguiente']])[2]");
 
           
       });     
       PJ.Relaciones(ArrayPerfilEconomico[no])
       //descarga archivo "Perfil Economico - Proveedor"
-      Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[0].Proveedor, "PerfilEcoProveedor")            
+      Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[no].Proveedor, "PerfilEcoProveedor")            
       //lectura hojas archivo "Perfil Economico - Proveedor"
       //lectura del archivo "Perfil Economico - Proveedor" hoja 0 "proveedores"
       cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoProveedor.xlsx"}).then((Proveedor) => {
@@ -309,7 +313,7 @@ it("Agregar cliente", () => {
         }
 
       //validar este siguiente no estoy seguro si es necesario
-      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Finalizar']])[1]")
+      cy.xpathClkWOF("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Finalizar']])[1]")
 
       });
       // FIN PASO #6 Perfil Economico
@@ -322,7 +326,8 @@ it("Agregar cliente", () => {
       PJ.Contacto(ArrayContacto[no])
 
       //descarga archivo "Contacto"
-      Generales.DescargaArchivoComplementos(ArrayContacto[0].URL_Contacto, "Contacto")            
+      Generales.DescargaArchivoComplementos(ArrayContacto[no].URL_Contacto, "Contacto")    
+      cy.wait(2500)        
       //inicio lectura hojas archivo "Contacto"
       cy.task("readExcelToJson", { filePath: "cypress/fixtures/Contacto.xlsx"}).then((dataContacto) => {
           const ArrayConCorreo = dataContacto["correo"] || [];
@@ -337,36 +342,53 @@ it("Agregar cliente", () => {
 
       });
       
-      cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Contacto')]]//button[.//span[normalize-space()='Siguiente']])[2]");
+      cy.xpathClkWOF("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Contacto')]]//button[.//span[normalize-space()='Siguiente']])[2]");
 
       // FIN PASO #8 Contacto
 
       //PASO #9 FATCA
       PJ.FATCA(ArrayFATCA[no])
       
-      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'FATCA')]]//button[.//span[normalize-space()='Siguiente']]");
+      cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'FATCA')]]//button[.//span[normalize-space()='Siguiente']]");
 
       //FIN PASO #9 FATCA
 
       //PASO #10 Referencias
-
+      cy.log("EMPËZANDO REFERENCIAS")
+      if(ArrayReferencias[no].TieneRefBanc){
+      cy.log("SI TIENE REFERENCIAS BANCARIAS")
       //descarga archivo "Referenbcias"
-      Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefBancarias, "RefBancaria")            
+      Generales.DescargaArchivoComplementos(ArrayReferencias[no].URL_RefBancarias, "TieneRefBanc")            
+      cy.log("DESCARGO REFERENCIAS BANCARIAS")
+
       //inicio lectura hojas archivo "Contacto"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/RefBancaria.xlsx"}).then((ReferenciasBan) => {
-          const ArrayRefBancaria = ReferenciasBan["Ref Bancarias"] || [];
-          
-        for (let i = 0; i < ArrayRefBancaria.length; i++) {
-          PJ.RefBancaria(ArrayRefBancaria[i])     
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/TieneRefBanc.xlsx"}).then((RefBan) => {
+          const ArrayTieneRefBancaria = RefBan["Ref Bancarias"] || [];
+          cy.log("LECTURA DE REFERENCIAS BANCARIAS" + ArrayTieneRefBancaria.length )
+        for (let i = 0; i < ArrayTieneRefBancaria.length; i++) {
+              cy.log("ENTRO AL FOR DE REFERENCIAS BANCARIAS" + ArrayTieneRefBancaria.length)
+          PJ.RefBancaria(ArrayTieneRefBancaria[i])     
         }
       });
+      
+      }else{
+        
+        cy.log("No tiene referencias bancarias")
+
+      }
+      if(ArrayReferencias[no].TieneRefCom){     
       //descarga archivo "Referenbcias"
-      Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefComercial, "RefComercial")            
+      cy.log("SI TIENE REFERENCIAS COMERCIALES")
+      Generales.DescargaArchivoComplementos(ArrayReferencias[no].URL_RefComercial, "RefComercial")            
       //inicio lectura hojas archivo "Contacto"
+      cy.log("DESCARGANDO REFERENCIAS COMERCIALES")
       cy.task("readExcelToJson", { filePath: "cypress/fixtures/RefComercial.xlsx"}).then((ReferenciasCom) => {
           const ArrayRefComercial = ReferenciasCom["Ref Comerciales"] || [];
+      cy.log("LECTURA REFERENCIAS COMERCIALES" + ArrayRefComercial.length)
           
         for (let i = 0; i < ArrayRefComercial.length; i++) {
+      cy.log("FOR REFERENCIAS COMERCIALES" + ArrayRefComercial.length)
+
           PJ.RefComercial(ArrayRefComercial[i])
 
         //descarga archivo "Contacto"
@@ -388,22 +410,31 @@ it("Agregar cliente", () => {
       }
 
       });
-      cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Referencias')]]//button[.//span[normalize-space()='Siguiente']]")
+
+      }else{
+        
+        cy.log("No tiene referencias comerciales")
+
+      }
+      cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Referencias')]]//button[.//span[normalize-space()='Siguiente']]")
       // FIN PASO #10 Referencias
 
       // PASO #11 Digitalización de documentos
+      Generales.DescargaImagen(ArrayDigitDoc[no])            
 
       
+      PJ.digitalizacionDocumentos(ArrayDigitDoc[no])
 
+      cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//button[.//span[normalize-space()='Siguiente']]")
 
       // FIN PASO #11 Digitalización de documentos
 
 
       // PASO #12 Cliente Finalizado
 
+      cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Cliente Finalizado')]]//button[.//span[normalize-space()='Finalizar']]")
+
       // FIN PASO #12 Cliente Finalizado
-
-
 
 
     } else {

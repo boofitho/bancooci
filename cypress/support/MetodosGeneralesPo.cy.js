@@ -24,46 +24,47 @@ class MetodosGenerales{
       }   
 
 
-      // DescargaArchivo(URL_Datos){
-      //   const sheetUrl2 = URL_Datos;
-
+    DescargaArchivoComplementos(URL_Datos, nombreArchivo){
+      const sheetUrl2 = URL_Datos;
+      cy.request({
+        url: sheetUrl2,
+        encoding: 'binary',
+        method: 'GET',
+        headers: {
+          'accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          },
+          timeout: 60000 // 👈 hasta 60 segundos
+          }).then((response) => {
+            // Convertir el binario a Buffer antes de escribirlo
+      const fileBuffer = Buffer.from(response.body, 'binary');
+      cy.writeFile("cypress/fixtures/"+nombreArchivo+".xlsx", fileBuffer, 
+        { encoding: 'binary' });      
+      });
+      cy.wait(3500)
+      }
+    
+ 
+  // DescargaArchivoComplementos(URL_Datos, nombreArchivo) {
       //   cy.request({
-      //     url: sheetUrl2,
+      //     url: URL_Datos,
       //     encoding: 'binary',
       //     method: 'GET',
       //     headers: {
       //       'accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      //     }
+      //     },
+      //     timeout: 60000
       //   }).then((response) => {
-      //     // Convertir el binario a Buffer antes de escribirlo
-      //     const fileBuffer = Buffer.from(response.body, 'binary');
-
-      //     cy.writeFile('cypress/fixtures/datos.xlsx', fileBuffer, { encoding: 'binary' });
+      //     const filePath = `cypress/fixtures/${nombreArchivo}.xlsx`;
+          
+      //     // Usamos el task en lugar de writeFile
+      //     cy.task("saveExcel", { filePath, data: response.body });
       //   });
+
+      //   cy.wait(3500);
       // }
 
-      DescargaArchivoComplementos(URL_Datos, nombreArchivo){
-        const sheetUrl2 = URL_Datos;
-
-        cy.request({
-          url: sheetUrl2,
-          encoding: 'binary',
-          method: 'GET',
-          headers: {
-            'accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          },
-            timeout: 60000  // 👈 hasta 60 segundos
-        }).then((response) => {
-          // Convertir el binario a Buffer antes de escribirlo
-          const fileBuffer = Buffer.from(response.body, 'binary');
-
-          cy.writeFile("cypress/fixtures/"+nombreArchivo+".xlsx", fileBuffer, { encoding: 'binary' });
-        });
-      cy.wait(3500)
-      }
-
-      DescargaImagen(URL_Datos, nombreArchivo){
-        const sheetUrl2 = URL_Datos;
+      DescargaImagen(data){
+        const sheetUrl2 = data.URL_Imagen;
 
         cy.request({
           url: sheetUrl2,
@@ -71,7 +72,7 @@ class MetodosGenerales{
           method: 'GET'
         }).then((response) => {
           const fileBuffer = Buffer.from(response.body, 'binary');
-          cy.writeFile("cypress/fixtures/" + nombreArchivo + ".jpg", fileBuffer, { encoding: 'binary' });
+          cy.writeFile("cypress/fixtures/" + data.NombreArchivo + ".jpg", fileBuffer, { encoding: 'binary' });
         });
       }
 

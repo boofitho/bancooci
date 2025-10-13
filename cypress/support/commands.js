@@ -38,28 +38,26 @@ Cypress.Commands.add('leerHojaExcel', (nombreHoja) => {
   });
 });
 
-// CLICK en elemento (radio, botón, etc.) - VERSIÓN MEJORADA
-Cypress.Commands.add('getClk', (Selector) => {
+Cypress.Commands.add('xpathClkWOF', (xpath) => {
   cy.oculto();
 
-  cy.get(Selector, { timeout: 60000 })
-  .should('be.enabled')
-  .click({ force: true });
+  cy.xpath(xpath, { timeout: 60000 })
+    .and('not.be.disabled')    // habilitado
+    .click({force: true});                  // sin force, espera el estado correcto
 
   cy.oculto();
 });
-
 // CLICK en elemento (radio, botón, etc.) - VERSIÓN MEJORADA
 Cypress.Commands.add('xpathClk', (xpath) => {
   cy.oculto();
 
   cy.xpath(xpath, { timeout: 60000 })
-  .and('not.be.disabled')
-  .click({ force: true });
+    .filter(":visible:not([disabled])")
+    .first()
+    .click({force: true});                  // sin force, espera el estado correcto
 
   cy.oculto();
 });
-
 
 // ESCRIBIR en input - VERSIÓN MEJORADA
 Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
@@ -68,10 +66,28 @@ Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
   if (!variable || String(variable).trim() === '') return;
 
   cy.xpath(xpath, { timeout: 60000 })
-        .click({ force: true })
-        .clear()
-        .type(String(variable) + '{enter}', {delay: 100});
+    .filter(":visible:not([disabled])")
+    .first()
+    .click({force: true})
+    .clear()
+    .type(String(variable) + '{enter}'/*, {delay: 100}*/);
 });
+
+// ESCRIBIR en input - VERSIÓN MEJORADA
+Cypress.Commands.add('xpathBtxtWE', (variable, xpath) => {
+  cy.oculto();
+
+  if (!variable || String(variable).trim() === '') return;
+
+  cy.xpath(xpath, { timeout: 60000 })
+    .filter(":visible:not([disabled])")
+    .first()
+    .click({force: true})
+    .clear()
+    .type(String(variable))
+    .blur();  // 👈 importante: dispara la validación reactiva
+});
+
 
 
 // ESCRIBIR en input (tipo texto o autocomplete) y limpiar antes
@@ -81,9 +97,11 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
   if (!variable || String(variable).trim() === '') return;
 
   cy.xpath(xpath, { timeout: 60000 })
-        .click({ force: true })  // da foco
-        .clear()                 // limpia el input
-        .type(String(variable) + '{enter}'); // escribe el valor
+      .filter(":visible:not([disabled])")
+      .first()
+      .click({force: true})
+      .clear()                 // limpia el input
+      .type(String(variable) + '{enter}'); // escribe el valor
 
       cy.oculto();
 
@@ -111,7 +129,8 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
 });
 
-Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
+
+Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
   cy.log("entra a validar");
   
   cy.get('body').then(($body) => {
@@ -130,7 +149,8 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type("OPERADORQA");
+        .type(data.Usuario);
+
 
       cy.wait(300);
 
@@ -140,7 +160,7 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type("byte0625");
+        .type(data.Password);
 
       cy.wait(300);
 

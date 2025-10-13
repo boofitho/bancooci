@@ -7,8 +7,8 @@ const xlsx = require("xlsx");
 
 
 module.exports = defineConfig({
-  viewportWidth: 2500,
-  viewportHeight: 1500,
+  viewportWidth: 2250,
+  viewportHeight: 1750,
   e2e: {
         scrollBehavior: false, // 👈 Cypress NO hará scroll automático
       env: {
@@ -68,7 +68,7 @@ module.exports = defineConfig({
       // });
 
       on("task", {
-        async readExcelToJson({ filePath, hoja = null, timeout = 10000, interval = 500 }) {
+        async readExcelToJson({ filePath, hoja = null, timeout = 60000, interval = 3000 }) {
           const absPath = path.resolve(filePath);
           const start = Date.now();
 
@@ -123,6 +123,13 @@ module.exports = defineConfig({
         }
       });
       //Fin Eliminar archivos 
+      on("task", {
+        saveExcel({ filePath, data }) {
+          const absPath = path.resolve(filePath);
+          fs.writeFileSync(absPath, data, "binary");
+          return null;
+        }
+      });
       //contar cantidad de filas
       on('task', {
         contarFilasExcel() {
