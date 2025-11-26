@@ -59,7 +59,7 @@ describe("BancoOcci", () => {
 
   before("Descarga de archivos datos y lectura de hojas del mismo", () => {
     //descarga archivo "datos"
-    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos");
+    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS_PN, "datos");
 
     cy.task("readExcelToJson", {
       filePath: "cypress/fixtures/datos.xlsx",

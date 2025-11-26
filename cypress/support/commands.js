@@ -27,6 +27,7 @@ Cypress.Commands.add("Login", (data) => {
   });
 });
 
+
 Cypress.Commands.add("oculto", () => {
   cy.get(".loading", { timeout: 60000 }).should("not.exist");
 });
@@ -38,28 +39,26 @@ Cypress.Commands.add('leerHojaExcel', (nombreHoja) => {
   });
 });
 
-// CLICK en elemento (radio, botón, etc.) - VERSIÓN MEJORADA
-Cypress.Commands.add('getClk', (Selector) => {
+Cypress.Commands.add('xpathClkWOF', (xpath) => {
   cy.oculto();
 
-  cy.get(Selector, { timeout: 60000 })
-  .should('be.enabled')
-  .click({ force: true });
+  cy.xpath(xpath, { timeout: 60000 })
+    .and('not.be.disabled')    // habilitado
+    .click({force: true});                  // sin force, espera el estado correcto
 
   cy.oculto();
 });
-
 // CLICK en elemento (radio, botón, etc.) - VERSIÓN MEJORADA
 Cypress.Commands.add('xpathClk', (xpath) => {
   cy.oculto();
 
   cy.xpath(xpath, { timeout: 60000 })
-  .and('not.be.disabled')
-  .click({ force: true });
+    //.filter(":visible:not([disabled])")
+    .first()
+    .click({force: true});                  // sin force, espera el estado correcto
 
   cy.oculto();
 });
-
 
 // ESCRIBIR en input - VERSIÓN MEJORADA
 Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
@@ -68,10 +67,28 @@ Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
   if (!variable || String(variable).trim() === '') return;
 
   cy.xpath(xpath, { timeout: 60000 })
-        .click({ force: true })
-        .clear()
-        .type(String(variable) + '{enter}', {delay: 100});
+    .filter(":visible:not([disabled])")
+    .first()
+    .click({force: true})
+    .clear()
+    .type(String(variable) + '{enter}'/*, {delay: 100}*/);
 });
+
+// ESCRIBIR en input - VERSIÓN MEJORADA
+Cypress.Commands.add('xpathBtxtWE', (variable, xpath) => {
+  cy.oculto();
+
+  if (!variable || String(variable).trim() === '') return;
+
+  cy.xpath(xpath, { timeout: 60000 })
+    .filter(":visible:not([disabled])")
+    .first()
+    .click({force: true})
+    .clear()
+    .type(String(variable))
+    .blur();  // 👈 importante: dispara la validación reactiva
+});
+
 
 
 // ESCRIBIR en input (tipo texto o autocomplete) y limpiar antes
@@ -81,9 +98,11 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
   if (!variable || String(variable).trim() === '') return;
 
   cy.xpath(xpath, { timeout: 60000 })
-        .click({ force: true })  // da foco
-        .clear()                 // limpia el input
-        .type(String(variable) + '{enter}'); // escribe el valor
+      //.filter(":visible:not([disabled])")
+      .first()
+      .click({force: true})
+      .clear()                 // limpia el input
+      .type(String(variable) + '{enter}'); // escribe el valor
 
       cy.oculto();
 
@@ -91,6 +110,8 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
 
 
 Cypress.Commands.add('busquedaCliente', (data) => {
+  cy.oculto()
+  cy.alertaSus()
   // Paso 1: Ingresa a buscar cliente
   cy.xpathClk("  //span[contains(text(), 'Operación')]")
   cy.wait(2000)
@@ -102,53 +123,19 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   // Paso 4: Click en identificacion y llenamos 
   cy.xpathBtxt(data.InfoTipoDocumento, "//mat-label[normalize-space(text())='Identificación']/ancestor::mat-form-field//input")
   // Paso 5: Click en "Buscar"
-  // cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")
-  cy.wait(500)
+//  cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")     =>  el metodo anterior da enter y resulta incesesario dar click en busca realiza la misma funcion 
+//  cy.wait(500)
   // Paso 6: Click en "Agregar"
   cy.xpathClk("//span[normalize-space(text()) = 'Agregar']")
   // Paso 7: Click en "Cliente"
   cy.wait(500)
   cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
+  cy.wait(1500)
+
 });
 
 
-
-
-
-
-Cypress.Commands.add('xpathTest', (variable, xpath) => {
-  cy.xpath(xpath, { timeout: 60000 }).then($el => {
-    if ($el.length > 0) {
-      cy.wrap($el)
-        .scrollIntoView()
-        .should('be.visible')
-        .should('not.be.disabled')
-        .clear()
-        .type(String(variable) + '{enter}')
-        .click({ force: true });
-
-      cy.oculto();
-    } else {
-      cy.log(`⚠️ No se encontró el xpath: ${xpath} de la variable ${variable}`);
-    }
-  }).catch(() => {
-    cy.log(`❌ Error al buscar el xpath: ${xpath} de la variable ${variable}`);
-  });
-});
-
-
-Cypress.Commands.add('xpathBtxtClear', (varibale, xpath) => {
-cy.xpath(xpath, { timeout: 60000 })
-  .scrollIntoView({})
-  .should('be.visible')
-  .should('not.be.disabled')
-  .clear()
-  .type(String(varibale) + '{enter}')
-  .click({force: true})
-  cy.oculto()
-});
-
-Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
+Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
   cy.log("entra a validar");
   
   cy.get('body').then(($body) => {
@@ -167,7 +154,8 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type("adminqa");
+        .type(data.Usuario);
+
 
       cy.wait(300);
 
@@ -177,7 +165,7 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type("byte25");
+        .type(data.Password);
 
       cy.wait(300);
 
@@ -289,3 +277,39 @@ Cypress.Commands.add('ScrollXpath', (Posb, PosI, xpath) => {
 
   cy.log("Se desplazó el xpath " + xpath);
 });
+
+
+Cypress.Commands.add('alertaSus', () => {
+  cy.get('body').then(($body) => {
+    // Verifica si el mensaje está presente en pantalla
+    if ($body.find('h2.swal2-title:contains("¿Desea suscribirse a las notificaciones?")').length > 0) {
+      cy.log('✅ Apareció el mensaje de suscripción');
+      // Si aparece, haz clic en el botón "No"
+      cy.xpath("//button[text()='Si']").click();
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
+
+      cy.wait(5000)
+    } else {
+      // Si no aparece, muestra un log
+      cy.log('⚠️ No apareció el mensaje de suscripción');
+    }
+  });
+});
+
+Cypress.Commands.add('alertaSus', () => {
+  cy.get('body').then(($body) => {
+    // Verifica si el mensaje está presente en pantalla
+    if ($body.find('h2.swal2-title:contains("¿Desea suscribirse a las notificaciones?")').length > 0) {
+      cy.log('✅ Apareció el mensaje de suscripción');
+      // Si aparece, haz clic en el botón "No"
+      cy.xpath("//button[text()='Si']").click();
+    } else {
+      // Si no aparece, muestra un log
+      cy.log('⚠️ No apareció el mensaje de suscripción');
+    }
+  });
+});
+
+
+
+

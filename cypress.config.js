@@ -2,13 +2,13 @@
 const { defineConfig } = require('cypress');
 const fs = require('fs');
 const path = require('path');
-const ExcelJS = require('exceljs');
-const excelToJson = require('convert-excel-to-json');
+const xlsx = require("xlsx");
+
 
 
 module.exports = defineConfig({
-  viewportWidth: 2500,
-  viewportHeight: 1500,
+  viewportWidth: 2250,
+  viewportHeight: 1750,
   e2e: {
         scrollBehavior: false, // 👈 Cypress NO hará scroll automático
       env: {
@@ -25,7 +25,7 @@ module.exports = defineConfig({
       on('before:browser:launch', (browser = {}, launchOptions) => {
         if (browser.family === 'chromium' && browser.name !== 'electron') {
           launchOptions.args.push('--enable-notifications');
-         //launchOptions.args.push('--disable-popup-blocking');
+//          launchOptions.args.push('--disable-popup-blocking');
         }
         return launchOptions;
       });
@@ -43,12 +43,49 @@ module.exports = defineConfig({
 
 
       //leer archivo
-      on('task', {
-        readExcelToJson({ filePath, hoja = null }) {
-          const xlsx = require("xlsx");
-          const workbook = xlsx.readFile(filePath);
+      // on('task', {
+      //   readExcelToJson({ filePath, hoja = null }) {
+      //     const xlsx = require("xlsx");
+      //     const workbook = xlsx.readFile(filePath);
 
-          // Si no se especifica hoja, devuelve todas las hojas en un objeto
+      //     // Si no se especifica hoja, devuelve todas las hojas en un objeto
+      //     if (!hoja) {
+      //       const result = {};
+      //       workbook.SheetNames.forEach(sheetName => {
+      //         const worksheet = workbook.Sheets[sheetName];
+      //         result[sheetName] = xlsx.utils.sheet_to_json(worksheet);
+      //       });
+      //       return result;
+      //     }
+
+      //     // Si se especifica hoja, devuelve solo esa hoja (comportamiento original)
+      //     const worksheet = workbook.Sheets[hoja];
+      //     if (!worksheet) {
+      //       throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
+      //     }
+      //     return xlsx.utils.sheet_to_json(worksheet);
+      //   }
+      // });
+
+      on("task", {
+        async readExcelToJson({ filePath, hoja = null, timeout = 60000, interval = 3000 }) {
+          const absPath = path.resolve(filePath);
+          const start = Date.now();
+
+          // Esperar hasta que el archivo exista o se cumpla el timeout
+          while (true) {
+            if (fs.existsSync(absPath)) {
+              break; // Archivo encontrado
+            }
+            if (Date.now() - start > timeout) {
+              throw new Error(`Timeout: No se encontró el archivo en ${absPath} dentro de ${timeout}ms`);
+            }
+            await new Promise(r => setTimeout(r, interval)); // esperar un poco antes de volver a intentar
+          }
+
+          // Leer el archivo cuando ya esté disponible
+          const workbook = xlsx.readFile(absPath);
+
           if (!hoja) {
             const result = {};
             workbook.SheetNames.forEach(sheetName => {
@@ -58,32 +95,14 @@ module.exports = defineConfig({
             return result;
           }
 
-          // Si se especifica hoja, devuelve solo esa hoja (comportamiento original)
           const worksheet = workbook.Sheets[hoja];
           if (!worksheet) {
             throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
           }
+
           return xlsx.utils.sheet_to_json(worksheet);
         }
       });
-
-
-      // on('task', {
-      //   readExcelToJson({ filePath, hoja }) {
-      //     const xlsx = require("xlsx");
-      //     const workbook = xlsx.readFile(filePath);
-
-      //     const worksheet = workbook.Sheets[hoja]; // hoja = nombre exacto
-
-      //     if (!worksheet) {
-      //       throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
-      //     }
-
-      //     const jsonData = xlsx.utils.sheet_to_json(worksheet);
-      //     return jsonData;
-      //   }
-      // });     
-      //FIN leer archivo
 
       //Eliminar archivos 
       on('task', {
@@ -104,6 +123,13 @@ module.exports = defineConfig({
         }
       });
       //Fin Eliminar archivos 
+      on("task", {
+        saveExcel({ filePath, data }) {
+          const absPath = path.resolve(filePath);
+          fs.writeFileSync(absPath, data, "binary");
+          return null;
+        }
+      });
       //contar cantidad de filas
       on('task', {
         contarFilasExcel() {
