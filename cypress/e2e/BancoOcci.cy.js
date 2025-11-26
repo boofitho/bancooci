@@ -29,257 +29,9 @@ let ArrayDependenciaEco = [];
 let ArrayDependientes = [];
 let ArrayDatosNegocio = [];
 let ArrayRefernciaLaboral = [];
-let ArrayDigitalDocs = [];
+let ArrayDigitDoc = [];
 let ArrayClienteFinalizado = [];
 
-//arrays archivos complemetnarios
-let ArrayRefAccionistas = [];
-let ArrayIDcapAcc = [];
-let ArrayInfCompl = [];
-let ArrayDtsGnPJyN = [];
-let ArrayRLCapAcc = [];
-let ArrayJuntaDir = [];
-let ArrayRLcorreo = [];
-let ArrayRLtelefono = [];
-let ArrayInfFinanciera = [];
-let ArrayInfDondeOpera = [];
-let ArrayProveedor = [];
-let ArrayConCorreo = [];
-let ArrayConTelefono = [];
-
-//variables para bancoocci
-let url = "https://plataforma-qa.bytesw.cloud/";
-let usuario = "OPERADORQA";
-let contrasena = "byte0625";
-
-const data = {
-  correo: "000196636@gmail.com",
-  //Buscar Cliente
-  tipoDocumento: "CEDULA",
-  InfoTipoDocumento: "0301200533110", // seguir con este     0301 2005 33078
-
-  //Agregar Cliente
-  //##### PASO 1 - Para Identificacion
-  TipodePersona: "natural",
-  RTN: "HN0301-2005-322892", //
-  //##### PASO 2 -  Datos Generales Persona J/N?
-  TPJ: "ONG",
-  RazonSoc: "Empresa XYZ SAC",
-  NombreCom: "XYZ",
-  Siglas: "XYZ",
-  PaisOr: "Perú",
-  CatNegocio: "Tecnología",
-  // Para DatosConstitucionEmpresa
-  TipSoc: "Sociedad Anónima",
-  FechaReg: "2022-01-01",
-  EnFormacion: false,
-  FechaIniOp: "2022-02-15",
-  // Para RegistroMercantil
-  Numero: "RM123456",
-  tomo: "45",
-  Pagina: "123",
-  PatenteCom: "PC78910",
-  EscriPermiso: "Escritura Pública #101",
-  //PASO 3
-  datopaso3: "??",
-
-  //Variables persona natural
-  //Validacion de fecha de expiracion de documento
-  persona: "Natural",
-  fechaExpericacionCedulaCliente: "06/11/2026",
-  textoGenero: "Masculino",
-  PrimerApellido: "amr",
-  PrimerNombre: "Cristobal",
-  fechaNacimientoCliente: "05/02/2005",
-  EstadoCivil: " Soltero(a) ", //  " Soltero(a) "  " Casado(a) "
-  gradoAcademico: " UNIVERSITARIO ",
-  profesion: " AGENTE DE VIAJES ",
-  NoAniosEducacion: "15",
-  capacidadadesEspeciales: " Ninguna ",
-  ocupacion: " JEFE DE SUPERVISION ", // ESTUDIANTE
-  //consulta si tiene dos nacionalidades
-  tieneDobleNacionalidad: "no",
-  segundaNacionalidad: " ESTADOUNIDENSE ",
-  NumeroSocial: "001-01-2881",
-  UbicacionSegundaNacionalidad: " ESTADOS UNIDOS DE AMERICA ",
-  //paso 3 persona expuesta politicamente
-  esPEP: "no",
-  institucionPEP: "Ministerio de energía",
-  cargoOcupadoPEP: "Gerente general",
-  periodoPEP: " 2019 - 2022 ",
-  //Espacio donde se debe de colocar si alguna empresa cuando es PEP
-  EmpresaJuridicaPEP: "Empresa", //Federaciones/organizaciones no lucrativas (ONG'S) , Organización/dirección de empresas
-  NombreEmpresaPEP: "El renacimientooss0667777777, S.A.",
-  PatrimonioTipodeDocumentoPEP: " A - REGISTRO TRIBUTARIO NACIONAL ",
-  PatrimonioIdentificacionPEP: "HN0301-2005-322853",
-  PatrimonioActividadEconomicaPEP: " SERVICIOS FINANCIEROS ",
-  PatrimonioPorcentPEP: 30,
-  fechaInicialEmpresaPEP: "12/03/1995",
-  fechaFinalEmpresaPEP: "13/03/2032",
-  PatrimonioPuestoPEP: "Representante legal",
-  //Parentescos 'PEP'
-  apellidoMamaPEP: "Lopez",
-  primerNombreMamaPEP: "Maria",
-  direccionMamaPEP: "Ciudad",
-  // apellidoPapaPEP: "Lopez",
-  // primerNombrePapaPEP: "Roberto",
-
-  tiposuegrxPEP: " Suegro ",
-  apellidosuegrxPEP: "Alvarez",
-  primerNombreSuegrxPEP: "Francisco",
-
-  //Variables para conysugue
-  tipoConyugue: "FEMENINO",
-  apellidoConyugue: "nc", // ver
-  nombreConyugue: "Ana",
-  tipoCelularConyugue: " Celular ",
-  numeroConyugue: "50403072640",
-  //Conyugue cuando es PEP
-  cedulaConyuguePEP: "0209199200090",
-  fechaExpiracionCedulaConyuguePEP: "06/03/2030",
-  fechaNacimientoConyuguePEP: "08/07/1995",
-  actividadEconomicaConyuguePEP: " SERVICIOS FINANCIEROS ",
-  profesionConyuguePEP: " AGENTE DE SEGUROS ",
-  pasaporteConyuguePEP: "000000000000144",
-  nacionalidadPasaporteConyuguePEP: " HONDURAS ",
-  tieneSegundaNacionalidadConyuguePEP: "si",
-  UbicacionSegundaNacionalidadConyuguePEP: " ESTADOUNIDENSE ",
-  aniosResidirConuygue: "12",
-  ubicacionconyugue: "Comayagua",
-  tipoCorreoConyuguePEP: " Correo Personal ",
-  tipoTelefonoConyuguePEP: " Celular ",
-  telefonoConyuguePEP: "50409072637",
-  referenciaLaboralConyuguePEP: "NATURAL",
-  sexoReferenciaLaboralConyuguePEP: "MASCULINO",
-  primerApellidoReferenciaLaboralPEP: "Cisneros",
-  primerNombreReferenciaLaboralPEP: "Alllcn",
-  fechaIngresoReferenciaLaboralConyugue: "06/04/1999",
-  fechaEgresoReferenciaLaboralConyugue: "16/01/2020",
-  puestoReferenciaConyuguePEP: "Tecnico",
-  direccionReferenciaLaboralConyuguePEP: "Comayagua",
-  tipoCorreoContactoConyuguePEP: " Correo Personal ",
-  tipoTelefonoContactoConyuguePEP: " Celular ",
-  telefonoContactoConyugue: "50415072609",
-  nombreEmpresaConyuguePEP: "El agua Vivaa, S.A.",
-  fechaInscripcionNegocioConyuguePEP: "19/03/2005",
-  giroNegocioConyuguePEP: "Ventas",
-  ingresosMensualesConyuguePEP: "1000000",
-  categoriadeNegocioConyuguePEP: "Distribucion y ventas",
-  anioResidirNegocioConyuguePEP: "12",
-  ubicacionNegocioConyuguePEP: "Comayagua",
-  //variables para direccion del cliente
-  aniosResidir: "14",
-  ubicacionResidencia: "comayagua",
-  tipoCorreoContactoCliente: " Correo de Trabajo ",
-  tipoTelefonoContactoCliente: " Celular ",
-  telefonoContactoCliente: "50421090297", //importante
-
-  //Dependencia economica
-  tieneDependenciaEconomica: "no",
-  parentescoDependenciaEconomica: " Papá ",
-  cedulaDependenciaEconomica: "0302195500315",
-  fechaExpiracionCedulaDependenciaEconomica: "17/03/2030",
-  apellidoDependenciaEconomica: "mzf",
-  nombredependenciaEconomica: "Luis",
-  //Dependientes
-  tieneDependiente: "no",
-  parentescoDependiente: " Nieto ",
-  apellidoDependiente: "qlg",
-  primerNombreDependiente: "Francisco",
-  //Actividad Econmica
-  afectoISRCliente: "si",
-  actividadEconomicaCliente: " SERVICIOS FINANCIEROS ",
-  claseCliente: " PUBLICO EN GENERAL ",
-  situacionlaboralCliente: " Comerciante ", // Comerciante/Asalariado
-
-  //Datos del negocio cuandos es comerciante
-  nombreEmpresaCliente: "El llano, S.A.",
-  FechaInscripcionNegocioCliente: "12/03/1999",
-  giroNegocioCliente: "Ventas",
-  ingresoMensuales: "10000",
-  categoriaDeNegocioCliente: "Distribuciones",
-  aniosResidirCliente: "10",
-  ubicacionCliente: "Cortes",
-  //Datos FATCA
-  esNacidoUsaFatcaCliente: "Si",
-  esResidenteFatcaCliente: "Si",
-  esCiudadanoFatcaCliente: "Si",
-  poseeDobleNacionalidadUsaFatcaCliente: "Si",
-  esContribuyenteIsrFatcaCliente: "Si",
-  tienePoderRepresentacionFatcaCliente: "Si",
-  tieneDireccionFatcaCliente: "Si",
-  direccionclienteFatca:
-    "Edificio Harry S. Truman, 2201 C Street, Foggy Bottom, Cuadrante Noroeste, Washington D. C., 20520, Estados Unidos",
-  tieneNumeroUsaFatcaCliente: "Si",
-  tieneZipUsaFatcaCliente: "Si",
-  tieneEinFatcaCliente: "No",
-  tieneTinFatcaCliente: "No",
-  esClienteRecalcitrante: "Si",
-  tipoCelularFatcaCliente: " Celular ",
-  telefonoFatcaCliente: "20200000073",
-  codigoZipFatcaCliente: "20001",
-
-  //Referencias laborales cuando es Comerciante/Asalariado
-  referenciaTipoPersona: "Natural",
-  generoReferenciaLaboralCliente: "Masculino",
-  apellidoReferenciaLaboralCliente: "Juarez",
-  nombreReferenciaLaboralCliente: "Rodrigo",
-  fechaIngresoReferenciaLaboralCliente: "02/09/2001",
-  fechaEgresoReferenciaLaboralCliente: "02/10/2013",
-  puestoReferenciaLaboralCliente: "Coordinador",
-  salarioReferenciaLaboralCliente: " 100000.01 - 200000 ",
-  nombreEmpresaReferenciaLaboralCliente: "El Conejo, S.A.",
-  ubicacionReferencialLaboralCliente: "Choluteca",
-  tipoCorreoReferencialLaboralCliente: " Correo Personal ",
-  tipoTelefonoReferenciaLaboralCliente: " Laboral ",
-  telefonoReferencialLaboralCliente: "50490072611",
-
-  //Referencias Clientes
-  tieneReferenciasBancarias: "no",
-  //tipo de cuenta las cuales pueden ser: Cuentas / Tarjetas o Préstamos
-  tipodeCuentaReferenciaCliente: "Cuentas",
-  origenCuentaReferenciaCliente: "Local",
-  //Variablles si tiene cuentas
-  numerodeReferenciaCuentaBancariaCliente: "0100000000000058",
-  productoCuentaReferenciaBancariaCliente: "Monetarios", // Monetarios u Ahorros
-  aperturaAproximadaCuentaReferenciaBancariaCliente: "02/05/2001",
-  institucionCuentaReferenciaBancariaCliente: "Banco atlantida, s.a.",
-  //variables cuando ingresa tarjeta de creditox|
-  numeroTarjetaReferenciaBancariaCliente: "0000000000000025",
-  productoTarjetaReferenciaLaboralCliente: "American Express",
-  limiteCreditoTarjetaReferenciaBancariaCliente: "150000",
-  fechaVencimientoTarjetaReferenciaBancariaCliente: "31/08/2027",
-  institucionTarjetaReferenciaLaboralCliente: "Banco atlantida, s.a.",
-  //Variables cuando hay préstamos
-  numeroPrestamoReferenciaBancariaCliente: "9234505",
-  tipodePrestamoReferenciaBancariaCliente: "Hipotecario",
-  montoDeudaPrestamoReferenciaBancariaCliente: "1000000",
-  fechaAperturaAproximadaPrestamoReferenciaBancariaCliente: "31/07/2021",
-  institucionPrestamoReferenciaLaboralCliente: "Banco atlantida, s.a.",
-  //Variables cuando hay referencias Comerciales
-  tieneReferenciasComerciales: "no",
-  nombreReferenciaComercialCliente: "El comercio2, S.A.",
-  direccionReferencialComercialCliente: "Comayagua",
-  tipoCorreoReferenciaComercialCliente: "Correo de Trabajo",
-  correoReferenciaLaboralCliente: "Elcomercio2",
-  tipoTelefonoReferenciaComercialCliente: "Celular",
-  numeroTelefonoReferenciaComercialCliente: "50401082538",
-  //Referencias Familiares
-  tieneReferenciasFamiliares: "no",
-  parentescoReferenciaFamiliarCliente: "Primo",
-  apellidoReferenciaFamiliarCliente: "Alvarez",
-  nombreReferenciaFamiliarCliente: "Diego",
-  tipoTelefonoReferenciaFamiliarCliente: "Celular",
-  telefonoReferenciaFamiliarCliente: "50408042518",
-  //Referencias Personales
-  tieneReferenciasPersonales: "no",
-  apellidoreferenciaPersonalCliente: "Meany",
-  nombreReferenciaPersonalCliente: "Rodrigo",
-  tipoTelefonoReferenciaPersonalCliente: "Laboral",
-  telefonoReferenciaPersonalCliente: "50408052514",
-
-  //Digitalizar Documentos
-};
 let no = 2;
 describe("BancoOcci", () => {
   Cypress.on("uncaught:exception", (err, Runnable) => {
@@ -305,12 +57,13 @@ describe("BancoOcci", () => {
     cy.task("deleteAllFiles", folderPath); //con este comando borramos el folderpath de screenshots
   }); // TERMINA BEFORE
 
-  before('Descarga de archivos datos y lectura de hojas del mismo', () => {
-
+  before("Descarga de archivos datos y lectura de hojas del mismo", () => {
     //descarga archivo "datos"
-    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos")  
-   
-    cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx" }).then((excelData) => {
+    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos");
+
+    cy.task("readExcelToJson", {
+      filePath: "cypress/fixtures/datos.xlsx",
+    }).then((excelData) => {
       ArrayCliente = excelData["0 Cliente"] || [];
       ArrayID = excelData["1 Identificacion"] || [];
       ArrayDataGenP = excelData["2 DatosGenPer"] || [];
@@ -325,36 +78,31 @@ describe("BancoOcci", () => {
       ArrayFATCA = excelData["9 FATCA"] || [];
       ArrayReferencias = excelData["10 referencia"] || [];
       ArrayDigitDoc = excelData["11 DigitDoc"] || [];
-  
+      ArrayCargosPerNatural = excelData["3 Cargos PerNat"];
+      ArrayConyugue = excelData["6 conyugue"];
+      ArrayDependenciaEco = excelData["Dependencia Eco"];
+      ArrayDependientes = excelData["Dependientes"];
+      ArrayDatosNegocio = excelData["Datos Negocio"];
+      ArrayRefernciaLaboral = excelData["Referencia Laboral"];
     });
-   });// TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
+  }); // TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
 
-  before('Descarga de archivos complemetnarios y lectura de hojas de los mismo', () => {
+  before(
+    "Descarga de archivos complemetnarios y lectura de hojas de los mismo",
+    () => {
       //descarga de archivos secundarios de los datos
-  
 
       //descarga archivo "referencia"
-      Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefBancarias, "refBancaria")            
+      Generales.DescargaArchivoComplementos(
+        ArrayReferencias[0].URL_RefBancarias,
+        "refBancaria"
+      );
       //inicio lectura hojas archivo "Contacto"
-      //lectura del archivo "Contacto" hoja 0 "correo"
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/refBancaria.xlsx", hoja: "Ref Bancarias"}).then((RefBanca) => {
-        RefBanca.forEach((filaVar) => {
-          ArrayRefBanca.push(filaVar); 
-        });
-      });
-      //Fin lectura hojas archivo "Contacto"
 
-
-      Generales.DescargaImagen(ArrayDigitDoc[0].URL_Imagen, "DNITest")            
-      Generales.DescargaImagen(ArrayDigitDoc[1].URL_Imagen, "RTNTest")            
-
-
-
-  })
-
-
-
-
+      Generales.DescargaImagen(ArrayDigitDoc[0].URL_Imagen, "DNITest");
+      Generales.DescargaImagen(ArrayDigitDoc[1].URL_Imagen, "RTNTest");
+    }
+  );
 
   /*
 cy.xpath("//button[contains(., 'Siguiente')]")
@@ -401,8 +149,7 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
           cotizador.IdentificacionGeneralPersonaNatural(
             ArrayID[no].InfoTipoDocumento,
             ArrayID[no].FechaExp,
-            ArrayID[no].RTN,
-            data.correo
+            ArrayID[no].RTN
           );
           cotizador.DatosGeneralesPersonaNatural(
             ArrayDataGenP[no].Genero,
@@ -419,21 +166,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayDataGenP[no].SegundaNacionalidad,
             ArrayDataGenP[no].NumeroSocial,
             ArrayDataGenP[no].UbicacionSegundaNacionalidad
-
-            // data.textoGenero,
-            // data.PrimerApellido,
-            // data.PrimerNombre,
-            // data.fechaNacimientoCliente,
-            // data.EstadoCivil,
-            // data.gradoAcademico,
-            // data.profesion,
-            // data.NoAniosEducacion,
-            // data.capacidadadesEspeciales,
-            // data.ocupacion,
-            // data.segundaNacionalidad,
-            // data.tieneDobleNacionalidad,
-            // data.NumeroSocial,
-            // data.UbicacionSegundaNacionalidad
           );
 
           cotizador.PersonaPep(
@@ -450,20 +182,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayCargosPerNatural[no].fechaInicialEmpresaPEP,
             ArrayCargosPerNatural[no].fechaFinalEmpresaPEP,
             ArrayCargosPerNatural[no].PatrimonioPuestoPEP
-
-            // data.esPEP,
-            // data.institucionPEP,
-            // data.cargoOcupadoPEP,
-            // data.periodoPEP,
-            // data.EmpresaJuridicaPEP,
-            // data.NombreEmpresaPEP,
-            // data.PatrimonioTipodeDocumentoPEP,
-            // data.PatrimonioIdentificacionPEP,
-            // data.PatrimonioActividadEconomicaPEP,
-            // data.PatrimonioPorcentPEP,
-            // data.fechaInicialEmpresaPEP,
-            // data.fechaFinalEmpresaPEP,
-            // data.PatrimonioPuestoPEP
           );
 
           cotizador.ParentescosPEP(
@@ -473,13 +191,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayCargosPerNatural[no].tiposuegrxPEP,
             ArrayCargosPerNatural[no].apellidosuegrxPEP,
             ArrayCargosPerNatural[no].primerNombreSuegrxPEP
-
-            // data.apellidoMamaPEP,
-            // data.primerNombreMamaPEP,
-            // data.direccionMamaPEP,
-            // data.tiposuegrxPEP,
-            // data.apellidosuegrxPEP,
-            // data.primerNombreSuegrxPEP
           );
 
           cotizador.esCasado(
@@ -488,11 +199,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayConyugue[no].nombreConyugue,
             ArrayConyugue[no].tipoCelularConyugue,
             ArrayConyugue[no].numeroConyugue
-            // data.tipoConyugue,
-            // data.apellidoConyugue,
-            // data.nombreConyugue,
-            // data.tipoCelularConyugue,
-            // data.numeroConyugue
           );
 
           cotizador.escasadoPEP(
@@ -534,53 +240,11 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayConyugue[no].categoriadeNegocioConyuguePEP,
             ArrayConyugue[no].anioResidirNegocioConyuguePEP,
             ArrayConyugue[no].ubicacionNegocioConyuguePEP
-
-            // data.tipoConyugue,
-            // data.apellidoConyugue,
-            // data.nombreConyugue,
-            // data.cedulaConyuguePEP,
-            // data.fechaExpiracionCedulaConyuguePEP,
-            // data.fechaNacimientoConyuguePEP,
-            // data.actividadEconomicaConyuguePEP,
-            // data.profesionConyuguePEP,
-            // data.pasaporteConyuguePEP,
-            // data.nacionalidadPasaporteConyuguePEP,
-            // data.tieneSegundaNacionalidadConyuguePEP,
-            // data.UbicacionSegundaNacionalidadConyuguePEP,
-            // data.aniosResidirConuygue,
-            // data.ubicacionconyugue,
-            // data.tipoCorreoConyuguePEP,
-            // data.correoConyuguePEP,
-            // data.tipoTelefonoConyuguePEP,
-            // data.telefonoConyuguePEP,
-            // data.referenciaLaboralConyuguePEP,
-            // data.sexoReferenciaLaboralConyuguePEP,
-            // data.primerApellidoReferenciaLaboralPEP,
-            // data.primerNombreReferenciaLaboralPEP,
-            // data.fechaIngresoReferenciaLaboralConyugue,
-            // data.fechaEgresoReferenciaLaboralConyugue,
-            // data.puestoReferenciaConyuguePEP,
-            // data.salarioReferenciaConyuguePEP,
-            // data.direccionReferenciaLaboralConyuguePEP,
-            // data.tipoCorreoContactoConyuguePEP,
-            // data.CorreoContactoConyuguePEP,
-            // data.tipoTelefonoContactoConyuguePEP,
-            // data.telefonoContactoConyugue,
-            // data.nombreEmpresaConyuguePEP,
-            // data.fechaInscripcionNegocioConyuguePEP,
-            // data.giroNegocioConyuguePEP,
-            // data.ingresosMensualesConyuguePEP,
-            // data.categoriadeNegocioConyuguePEP,
-            // data.anioResidirNegocioConyuguePEP,
-            // data.ubicacionNegocioConyuguePEP
           );
 
           cotizador.direccionCliente(
             ArrayDireccion[no].aniosResidir,
             ArrayDireccion[no].IngreseUbicacion
-
-            // data.aniosResidir,
-            // data.ubicacionResidencia
           );
 
           cotizador.contactoCliente(
@@ -588,10 +252,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayContacto[no].correoCliente,
             ArrayContacto[no].tipoTelefonoContactoCliente,
             ArrayContacto[no].telefonoContactoCliente
-            // data.tipoCorreoContactoCliente,
-            // data.correoCliente,
-            // data.tipoTelefonoContactoCliente,
-            // data.telefonoContactoCliente
           );
 
           cotizador.dependenciaEconomica(
@@ -601,13 +261,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayDependenciaEco[no].fechaExpiracionCedulaDependenciaEconomica,
             ArrayDependenciaEco[no].apellidoDependenciaEconomica,
             ArrayDependenciaEco[no].nombredependenciaEconomica
-
-            // data.tieneDependenciaEconomica,
-            // data.parentescoDependenciaEconomica,
-            // data.cedulaDependenciaEconomica,
-            // data.fechaExpiracionCedulaDependenciaEconomica,
-            // data.apellidoDependenciaEconomica,
-            // data.nombredependenciaEconomica,
           );
 
           cotizador.Dependientes(
@@ -615,11 +268,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayDependientes[no].parentescoDependiente,
             ArrayDependientes[no].apellidoDependiente,
             ArrayDependientes[no].primerNombreDependiente
-
-            // data.tieneDependiente,
-            // data.parentescoDependiente,
-            // data.apellidoDependiente,
-            // data.primerNombreDependiente
           );
 
           cotizador.perfilEconomico(
@@ -628,11 +276,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayPerfilEconomico[no].claseCliente,
             ArrayPerfilEconomico[no].situacionlaboralCliente,
             ArrayPerfilEconomico[no].institucionPerfilEconomico
-
-            // data.afectoISRCliente,
-            // data.actividadEconomicaCliente,
-            // data.claseCliente,
-            // data.situacionlaboralCliente
           );
 
           cotizador.datosDelNegocio(
@@ -643,14 +286,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayDatosNegocio[no].categoriaDeNegocioCliente,
             ArrayDatosNegocio[no].aniosResidirCliente,
             ArrayDatosNegocio[no].ubicacionCliente
-
-            // data.nombreEmpresaCliente,
-            // data.FechaInscripcionNegocioCliente,
-            // data.giroNegocioCliente,
-            // data.ingresoMensuales,
-            // data.categoriaDeNegocioCliente,
-            // data.aniosResidirCliente,
-            // data.ubicacionCliente
           );
 
           cotizador.flujoFatca(
@@ -670,23 +305,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayFATCA[no].tipoCelularFatcaCliente,
             ArrayFATCA[no].telefonoFatcaCliente,
             ArrayFATCA[no].codigoZipFatcaCliente
-
-            // data.esNacidoUsaFatcaCliente,
-            // data.esResidenteFatcaCliente,
-            // data.esCiudadanoFatcaCliente,
-            // data.poseeDobleNacionalidadUsaFatcaCliente,
-            // data.esContribuyenteIsrFatcaCliente,
-            // data.tienePoderRepresentacionFatcaCliente,
-            // data.tieneDireccionFatcaCliente,
-            // data.direccionclienteFatca,
-            // data.tieneNumeroUsaFatcaCliente,
-            // data.tieneZipUsaFatcaCliente,
-            // data.tieneEinFatcaCliente,
-            // data.tieneTinFatcaCliente,
-            // data.esClienteRecalcitrante,
-            // data.tipoCelularFatcaCliente,
-            // data.telefonoFatcaCliente,
-            // data.codigoZipFatcaCliente,
           );
 
           cotizador.referenciasLaborales(
@@ -704,21 +322,6 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             ArrayRefernciaLaboral[no].correoReferenciaLaboralCliente,
             ArrayRefernciaLaboral[no].tipoTelefonoReferenciaLaboralCliente,
             ArrayRefernciaLaboral[no].telefonoReferencialLaboralCliente
-
-            // data.referenciaTipoPersona,
-            // data.generoReferenciaLaboralCliente,
-            // data.apellidoReferenciaLaboralCliente,
-            // data.nombreReferenciaLaboralCliente,
-            // data.fechaIngresoReferenciaLaboralCliente,
-            // data.fechaEgresoReferenciaLaboralCliente,
-            // data.puestoReferenciaLaboralCliente,
-            // data.salarioReferenciaLaboralCliente,
-            // data.nombreEmpresaReferenciaLaboralCliente,
-            // data.ubicacionReferencialLaboralCliente,
-            // data.tipoCorreoReferencialLaboralCliente,
-            // data.correoReferenciaLaboralCliente,
-            // data.tipoTelefonoReferenciaLaboralCliente,
-            // data.telefonoReferencialLaboralCliente
           );
 
           if (ArrayReferencias[no].TieneRefBanc) {
@@ -731,169 +334,165 @@ aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda
             cy.task("readExcelToJson", {
               filePath: "cypress/fixtures/ReferenciasPN.xlsx",
             }).then((ReferenciasPN) => {
-         
-                const ArrayRefBancariaPN = ReferenciasPN["Ref Bancarias"] || [];
-                const ArrayRefComercialPN = ReferenciasPN["Ref Comerciales"] || [];
-                const ArrayRefFamiliarPN = ReferenciasPN["Ref Familiares"] || [];
-                const ArrayRefPersonalPN = ReferenciasPN["Ref Personales"] || [];
-                cy.xpath(
-                  "//mat-panel-title[text()=' Referencias Bancarias ']/ancestor::mat-expansion-panel-header"
-                )
-                  .filter(":visible:not([disabled])")
-                  .first()
-                  .scrollIntoView()
-                  .should("be.visible")
-                  .click({ force: true, timeout: 6000 });
-                for (let i = 0; i < ArrayRefBancariaPN.length; i++) {
-                  cotizador.referenciasBancarias(
-                    ArrayRefBancariaPN[i].tieneReferenciasBancarias,
-                    ArrayRefBancariaPN[i].tipodeCuentaReferenciaCliente,
-                    ArrayRefBancariaPN[i].origenCuentaReferenciaCliente,
-                    ArrayRefBancariaPN[i]
-                      .numerodeReferenciaCuentaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .productoCuentaReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .aperturaAproximadaCuentaReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .institucionCuentaReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .numeroTarjetaReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .productoTarjetaReferenciaLaboralCliente,
-                    ArrayRefBancariaPN[i]
-                      .limiteCreditoTarjetaReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .fechaVencimientoTarjetaReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .institucionTarjetaReferenciaLaboralCliente,
-                    ArrayRefBancariaPN[i]
-                      .numeroPrestamoReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .tipodePrestamoReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .montoDeudaPrestamoReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .fechaAperturaAproximadaPrestamoReferenciaBancariaCliente,
-                    ArrayRefBancariaPN[i]
-                      .institucionPrestamoReferenciaLaboralCliente
-                  );
-                }
+              const ArrayRefBancariaPN = ReferenciasPN["Ref Bancarias"] || [];
+              const ArrayRefComercialPN =
+                ReferenciasPN["Ref Comerciales"] || [];
+              const ArrayRefFamiliarPN = ReferenciasPN["Ref Familiares"] || [];
+              const ArrayRefPersonalPN = ReferenciasPN["Ref Personales"] || [];
+              cy.xpath(
+                "//mat-panel-title[text()=' Referencias Bancarias ']/ancestor::mat-expansion-panel-header"
+              )
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .click({ force: true, timeout: 6000 });
+              for (let i = 0; i < ArrayRefBancariaPN.length; i++) {
+                cotizador.referenciasBancarias(
+                  ArrayRefBancariaPN[i].tieneReferenciasBancarias,
+                  ArrayRefBancariaPN[i].tipodeCuentaReferenciaCliente,
+                  ArrayRefBancariaPN[i].origenCuentaReferenciaCliente,
+                  ArrayRefBancariaPN[i].numerodeReferenciaCuentaBancariaCliente,
+                  ArrayRefBancariaPN[i].productoCuentaReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i]
+                    .aperturaAproximadaCuentaReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i]
+                    .institucionCuentaReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i].numeroTarjetaReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i].productoTarjetaReferenciaLaboralCliente,
+                  ArrayRefBancariaPN[i]
+                    .limiteCreditoTarjetaReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i]
+                    .fechaVencimientoTarjetaReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i]
+                    .institucionTarjetaReferenciaLaboralCliente,
+                  ArrayRefBancariaPN[i].numeroPrestamoReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i].tipodePrestamoReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i]
+                    .montoDeudaPrestamoReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i]
+                    .fechaAperturaAproximadaPrestamoReferenciaBancariaCliente,
+                  ArrayRefBancariaPN[i]
+                    .institucionPrestamoReferenciaLaboralCliente
+                );
+              }
 
-                cy.xpath(
-                  "//mat-panel-title[contains(normalize-space(), 'Referencias Comerciales')]/ancestor::mat-expansion-panel-header"
-                )
-                  .filter(":visible:not([disabled])")
-                  .first()
-                  .scrollIntoView()
-                  .should("be.visible")
-                  .click({ force: true, timeout: 6000 });
-                for (let k = 0; k < ArrayRefComercialPN.length; k++) {
-                                  cotizador.referenciasComerciales(
-                    ArrayRefComercialPN[k].tieneReferenciasComerciales,
-                    ArrayRefComercialPN[k].nombreReferenciaComercialCliente,
-                    ArrayRefComercialPN[k].direccionReferencialComercialCliente,
-                    ArrayRefComercialPN[k].tipoCorreoReferenciaComercialCliente,
-                    ArrayRefComercialPN[k].correoReferenciaLaboralCliente,
-                    ArrayRefComercialPN[k]
-                      .tipoTelefonoReferenciaComercialCliente,
-                    ArrayRefComercialPN[k]
-                      .numeroTelefonoReferenciaComercialCliente
-                  );
-                }
-                   cy.xpath(
-                  "//mat-panel-title[contains(normalize-space(), 'Referencias Comerciales')]/ancestor::mat-expansion-panel-header"
-                )
-                  .filter(":visible:not([disabled])")
-                  .first()
-                  .scrollIntoView()
-                  .should("be.visible")
-                  .click({ force: true, timeout: 6000 });
+              cy.xpath(
+                "//mat-panel-title[contains(normalize-space(), 'Referencias Comerciales')]/ancestor::mat-expansion-panel-header"
+              )
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .click({ force: true, timeout: 6000 });
+              for (let k = 0; k < ArrayRefComercialPN.length; k++) {
+                cotizador.referenciasComerciales(
+                  ArrayRefComercialPN[k].tieneReferenciasComerciales,
+                  ArrayRefComercialPN[k].nombreReferenciaComercialCliente,
+                  ArrayRefComercialPN[k].direccionReferencialComercialCliente,
+                  ArrayRefComercialPN[k].tipoCorreoReferenciaComercialCliente,
+                  ArrayRefComercialPN[k].correoReferenciaLaboralCliente,
+                  ArrayRefComercialPN[k].tipoTelefonoReferenciaComercialCliente,
+                  ArrayRefComercialPN[k]
+                    .numeroTelefonoReferenciaComercialCliente
+                );
+              }
+              cy.xpath(
+                "//mat-panel-title[contains(normalize-space(), 'Referencias Comerciales')]/ancestor::mat-expansion-panel-header"
+              )
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .click({ force: true, timeout: 6000 });
 
-                cy.xpath(
-                  "//mat-expansion-panel-header[.//mat-panel-title[normalize-space()='Referencias Familiares']]"
-                )
-                  .filter(":visible:not([disabled])")
-                  .first()
-                  .scrollIntoView()
-                  .should("be.visible")
-                  .click({ force: true });
-                for (let l = 0; l < ArrayRefFamiliarPN.length; l++) {
-                  cy.get(".loading", { timeout: 60000 }).should("not.exist");
+              cy.xpath(
+                "//mat-expansion-panel-header[.//mat-panel-title[normalize-space()='Referencias Familiares']]"
+              )
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .click({ force: true });
+              for (let l = 0; l < ArrayRefFamiliarPN.length; l++) {
+                cy.get(".loading", { timeout: 60000 }).should("not.exist");
 
-cy.xpath("//button[.//span[normalize-space()='Editar']]").then($btn => {
-  const $visibleBtn = $btn.filter(":visible:not([disabled])");
-  if ($visibleBtn.length > 0) {
-    cy.wrap($visibleBtn)
-      .first()
-      .scrollIntoView()
-      .should("be.visible")
-      .click({ force: true });
-  } else {
-    cy.log("No hay botón Editar visible, se omite el click");
-  }
-});
-    
-                  cotizador.referenciasFamiliares(
-                    ArrayRefFamiliarPN[l].tieneReferenciasFamiliares,
-                    ArrayRefFamiliarPN[l].parentescoReferenciaFamiliarCliente,
-                    ArrayRefFamiliarPN[l].apellidoReferenciaFamiliarCliente,
-                    ArrayRefFamiliarPN[l].nombreReferenciaFamiliarCliente,
-                    ArrayRefFamiliarPN[l].tipoTelefonoReferenciaFamiliarCliente,
-                    ArrayRefFamiliarPN[l].telefonoReferenciaFamiliarCliente
-                  );
-                }
-                cy.xpath(
-                  "//mat-expansion-panel-header[.//mat-panel-title[normalize-space()='Referencias Familiares']]"
-                )
-                  .filter(":visible:not([disabled])")
-                  .first()
-                  .scrollIntoView()
-                  .should("be.visible")
-                  .click({ force: true });
-                cy.xpath(
-                  "//mat-expansion-panel-header[normalize-space(.//mat-panel-title) = 'Referencias Personales']"
-                )
-                  .filter(":visible:not([disabled])")
-                  .first()
-                  .scrollIntoView()
-                  .should("be.visible")
-                  .click({ force: true });
-                for (let m = 0; m < ArrayRefPersonalPN.length; m++) {
-                  cy.xpath("//button[.//span[normalize-space()='Editar']]").then($btn => {
-  const $visibleBtn = $btn.filter(":visible:not([disabled])");
-  if ($visibleBtn.length > 0) {
-    cy.wrap($visibleBtn)
-      .first()
-      .scrollIntoView()
-      .should("be.visible")
-      .click({ force: true });
-  } else {
-    cy.log("No hay botón Editar visible, se omite el click");
-  }
-});
-                  
-                  cotizador.referenciasPersonales(
-                    ArrayRefPersonalPN[m].tieneReferenciasPersonales,
-                    ArrayRefPersonalPN[m].apellidoreferenciaPersonalCliente,
-                    ArrayRefPersonalPN[m].nombreReferenciaPersonalCliente,
-                    ArrayRefPersonalPN[m].tipoTelefonoReferenciaPersonalCliente,
-                    ArrayRefPersonalPN[m].telefonoReferenciaPersonalCliente
-                  );
-                }
-              
+                cy.xpath("//button[.//span[normalize-space()='Editar']]").then(
+                  ($btn) => {
+                    const $visibleBtn = $btn.filter(":visible:not([disabled])");
+                    if ($visibleBtn.length > 0) {
+                      cy.wrap($visibleBtn)
+                        .first()
+                        .scrollIntoView()
+                        .should("be.visible")
+                        .click({ force: true });
+                    } else {
+                      cy.log("No hay botón Editar visible, se omite el click");
+                    }
+                  }
+                );
+
+                cotizador.referenciasFamiliares(
+                  ArrayRefFamiliarPN[l].tieneReferenciasFamiliares,
+                  ArrayRefFamiliarPN[l].parentescoReferenciaFamiliarCliente,
+                  ArrayRefFamiliarPN[l].apellidoReferenciaFamiliarCliente,
+                  ArrayRefFamiliarPN[l].nombreReferenciaFamiliarCliente,
+                  ArrayRefFamiliarPN[l].tipoTelefonoReferenciaFamiliarCliente,
+                  ArrayRefFamiliarPN[l].telefonoReferenciaFamiliarCliente
+                );
+              }
+              cy.xpath(
+                "//mat-expansion-panel-header[.//mat-panel-title[normalize-space()='Referencias Familiares']]"
+              )
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .click({ force: true });
+              cy.xpath(
+                "//mat-expansion-panel-header[normalize-space(.//mat-panel-title) = 'Referencias Personales']"
+              )
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .click({ force: true });
+              for (let m = 0; m < ArrayRefPersonalPN.length; m++) {
+                cy.xpath("//button[.//span[normalize-space()='Editar']]").then(
+                  ($btn) => {
+                    const $visibleBtn = $btn.filter(":visible:not([disabled])");
+                    if ($visibleBtn.length > 0) {
+                      cy.wrap($visibleBtn)
+                        .first()
+                        .scrollIntoView()
+                        .should("be.visible")
+                        .click({ force: true });
+                    } else {
+                      cy.log("No hay botón Editar visible, se omite el click");
+                    }
+                  }
+                );
+
+                cotizador.referenciasPersonales(
+                  ArrayRefPersonalPN[m].tieneReferenciasPersonales,
+                  ArrayRefPersonalPN[m].apellidoreferenciaPersonalCliente,
+                  ArrayRefPersonalPN[m].nombreReferenciaPersonalCliente,
+                  ArrayRefPersonalPN[m].tipoTelefonoReferenciaPersonalCliente,
+                  ArrayRefPersonalPN[m].telefonoReferenciaPersonalCliente
+                );
+              }
             });
           } else {
             cy.log("No tiene referencias por lo que se salta el paso");
           }
-            cy.xpath(
-                  "//mat-expansion-panel-header[normalize-space(.//mat-panel-title) = 'Referencias Personales']"
-                )
-                  .filter(":visible:not([disabled])")
-                  .first()
-                  .scrollIntoView()
-                  .should("be.visible")
-                  .click({ force: true });
+          cy.xpath(
+            "//mat-expansion-panel-header[normalize-space(.//mat-panel-title) = 'Referencias Personales']"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true });
           cy.xpath(
             "//button[.//span[contains(@class, 'mdc-button__label') and normalize-space(text())='Siguiente']]"
           )
@@ -902,49 +501,10 @@ cy.xpath("//button[.//span[normalize-space()='Editar']]").then($btn => {
             .scrollIntoView()
             .should("be.visible")
             .click({ force: true, timeout: 6000 });
-          // cotizador.referencias(
-
-          //   // data.tieneReferenciasBancarias,
-          //   // data.tipodeCuentaReferenciaCliente,
-          //   // data.origenCuentaReferenciaCliente,
-          //   // data.numerodeReferenciaCuentaBancariaCliente,
-          //   // data.productoCuentaReferenciaBancariaCliente,
-          //   // data.aperturaAproximadaCuentaReferenciaBancariaCliente,
-          //   // data.institucionCuentaReferenciaBancariaCliente,
-          //   // data.numeroTarjetaReferenciaBancariaCliente,
-          //   // data.productoTarjetaReferenciaLaboralCliente,
-          //   // data.limiteCreditoTarjetaReferenciaBancariaCliente,
-          //   // data.fechaVencimientoTarjetaReferenciaBancariaCliente,
-          //   // data.institucionTarjetaReferenciaLaboralCliente,
-          //   // data.numeroPrestamoReferenciaBancariaCliente,
-          //   // data.tipodePrestamoReferenciaBancariaCliente,
-          //   // data.montoDeudaPrestamoReferenciaBancariaCliente,
-          //   // data.fechaAperturaAproximadaPrestamoReferenciaBancariaCliente,
-          //   // data.institucionPrestamoReferenciaLaboralCliente,
-          //   // data.tieneReferenciasComerciales,
-          //   // data.nombreReferenciaComercialCliente,
-          //   // data.direccionReferencialComercialCliente,
-          //   // data.tipoCorreoReferenciaComercialCliente,
-          //   // data.correoReferenciaLaboralCliente,
-          //   // data.tipoTelefonoReferenciaComercialCliente,
-          //   // data.numeroTelefonoReferenciaComercialCliente,
-          //   // data.tieneReferenciasFamiliares,
-          //   // data.parentescoReferenciaFamiliarCliente,
-          //   // data.apellidoReferenciaFamiliarCliente,
-          //   // data.nombreReferenciaFamiliarCliente,
-          //   // data.tipoTelefonoReferenciaFamiliarCliente,
-          //   // data.telefonoReferenciaFamiliarCliente,
-          //   // data.tieneReferenciasPersonales,
-          //   // data.apellidoreferenciaPersonalCliente,
-          //   // data.nombreReferenciaPersonalCliente,
-          //   // data.tipoTelefonoReferenciaPersonalCliente,
-          //   // data.telefonoReferenciaPersonalCliente
-          // );
 
           cotizador.digitalizacionDocumentos();
         } else {
           cy.log("Cliente ya existe. No se creará.");
-          cotizador.ClienteCreadoParcialmente(data.esPEP, data.EstadoCivil);
         }
       });
     } else if (ArrayID[no].TipodePersona.toLowerCase() == "jurídica") {
@@ -960,73 +520,103 @@ cy.xpath("//button[.//span[normalize-space()='Editar']]").then($btn => {
 
       //PASO #3
 
-      cy.log(ArrayCaptAccionistas[no].TieneRef)
-      if (ArrayCaptAccionistas[no].TieneRef){
-        cy.log(ArrayCaptAccionistas[no].TieneRef + "Verdadero ArrayCaptAccionistas[no].TieneRef")
-      //descarga archivo "Captura de accionistas"
-      Generales.DescargaArchivoComplementos(ArrayCaptAccionistas[no].URL_RefAccionistas, "CaptAccionistas");
-      // Lee TODAS las hojas en una sola operación y realizacion del paso 3
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CaptAccionistas.xlsx" }).then((excelData) => {
-        // Asigna los datos a los arrays correspondientes
-        const ArrayRefAccionistas = excelData["RefAccionista"] || [];
-        const ArrayIDcapAcc = excelData["Identificacion"] || [];
-        const ArrayInfCompl = excelData["Informacion Complementaria"] || [];
-        const ArrayDtsGnPJyN = excelData["DG PJ y N"] || [];
-        const ArrayRLCapAcc = excelData["Representante Legal"] || [];
+      cy.log(ArrayCaptAccionistas[no].TieneRef);
+      if (ArrayCaptAccionistas[no].TieneRef) {
+        cy.log(
+          ArrayCaptAccionistas[no].TieneRef +
+            "Verdadero ArrayCaptAccionistas[no].TieneRef"
+        );
+        //descarga archivo "Captura de accionistas"
+        Generales.DescargaArchivoComplementos(
+          ArrayCaptAccionistas[no].URL_RefAccionistas,
+          "CaptAccionistas"
+        );
+        // Lee TODAS las hojas en una sola operación y realizacion del paso 3
+        cy.task("readExcelToJson", {
+          filePath: "cypress/fixtures/CaptAccionistas.xlsx",
+        }).then((excelData) => {
+          // Asigna los datos a los arrays correspondientes
+          const ArrayRefAccionistas = excelData["RefAccionista"] || [];
+          const ArrayIDcapAcc = excelData["Identificacion"] || [];
+          const ArrayInfCompl = excelData["Informacion Complementaria"] || [];
+          const ArrayDtsGnPJyN = excelData["DG PJ y N"] || [];
+          const ArrayRLCapAcc = excelData["Representante Legal"] || [];
 
-        cy.log(`Número de registros: ${ArrayRefAccionistas.length}`);
-        cy.oculto()
-        // Procesa los datos
-        for (let i = 0; i < ArrayRefAccionistas.length; i++) {
-  
-        cy.get('body', { timeout: 5000 }).then(($body) => {
-          if ($body.text().includes('El último elemento de cada rama debe ser una persona natural')) {
-            cy.log('Si aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
-//            cy.xpathClk("(//button[contains(@class, 'swal2-confirm') and contains(., 'Aceptar')])[1]")
-//            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")
-            cy.log('NATURAL "El último elemento de cada rama debe ser una persona natural"')
-            cy.xpathClk("//mat-icon[text()='add']")
-            // Aquí tu flujo cuando aparece el mensaje
-            PJ.AggRefNatural(ArrayIDcapAcc[i], 
-              ArrayInfCompl[i], ArrayDtsGnPJyN[i])
-          } else {
-            cy.log('No aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" ');
-            // Aquí el flujo alternativo
-            if(ArrayRefAccionistas[i].AggRef === "Jurídica"){
-            
-            cy.log('JURIDICO')
-            cy.xpathClk("(//button[contains(., 'Agregar')])[1]")
-            PJ.AggRefJuridica(ArrayIDcapAcc[i], 
-              ArrayInfCompl[i], ArrayDtsGnPJyN[i], 
-              ArrayRLCapAcc[i])
-            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")       
-
-            }else if(ArrayRefAccionistas[i].AggRef === "Natural"){
-              cy.xpath("//mat-icon[text()='add']", { timeout: 5000 }).then($el => {
-                if ($el.length > 0 && $el.is(':visible')) {
-                  // ✅ El elemento existe y está visible
-                  cy.wrap($el).click();
-                          cy.log('NATURAL')
-                          PJ.AggRefNatural(ArrayIDcapAcc[i], 
-                            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
-
+          cy.log(`Número de registros: ${ArrayRefAccionistas.length}`);
+          cy.oculto();
+          // Procesa los datos
+          for (let i = 0; i < ArrayRefAccionistas.length; i++) {
+            cy.get("body", { timeout: 5000 }).then(($body) => {
+              if (
+                $body
+                  .text()
+                  .includes(
+                    "El último elemento de cada rama debe ser una persona natural"
+                  )
+              ) {
+                cy.log(
+                  'Si aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" '
+                );
+                //            cy.xpathClk("(//button[contains(@class, 'swal2-confirm') and contains(., 'Aceptar')])[1]")
+                //            cy.xpathClk("(//button[contains(., 'Aceptar')])[1]")
+                cy.log(
+                  'NATURAL "El último elemento de cada rama debe ser una persona natural"'
+                );
+                cy.xpathClk("//mat-icon[text()='add']");
+                // Aquí tu flujo cuando aparece el mensaje
+                PJ.AggRefNatural(
+                  ArrayIDcapAcc[i],
+                  ArrayInfCompl[i],
+                  ArrayDtsGnPJyN[i]
+                );
+              } else {
+                cy.log(
+                  'No aparecio el mensaje "El último elemento de cada rama debe ser una persona natural" '
+                );
+                // Aquí el flujo alternativo
+                if (ArrayRefAccionistas[i].AggRef === "Jurídica") {
+                  cy.log("JURIDICO");
+                  cy.xpathClk("(//button[contains(., 'Agregar')])[1]");
+                  PJ.AggRefJuridica(
+                    ArrayIDcapAcc[i],
+                    ArrayInfCompl[i],
+                    ArrayDtsGnPJyN[i],
+                    ArrayRLCapAcc[i]
+                  );
+                  cy.xpathClk("(//button[contains(., 'Aceptar')])[1]");
+                } else if (ArrayRefAccionistas[i].AggRef === "Natural") {
+                  cy.xpath("//mat-icon[text()='add']", { timeout: 5000 }).then(
+                    ($el) => {
+                      if ($el.length > 0 && $el.is(":visible")) {
+                        // ✅ El elemento existe y está visible
+                        cy.wrap($el).click();
+                        cy.log("NATURAL");
+                        PJ.AggRefNatural(
+                          ArrayIDcapAcc[i],
+                          ArrayInfCompl[i],
+                          ArrayDtsGnPJyN[i]
+                        );
+                      } else {
+                        // ❌ El elemento no existe o está oculto
+                        cy.log("El icono 'add' no está visible");
+                        cy.log("NATURAL");
+                        PJ.AggRefNatural(
+                          ArrayIDcapAcc[i],
+                          ArrayInfCompl[i],
+                          ArrayDtsGnPJyN[i]
+                        );
+                      }
+                    }
+                  );
                 } else {
-                  // ❌ El elemento no existe o está oculto
-                  cy.log("El icono 'add' no está visible");
-                          cy.log('NATURAL')
-                          PJ.AggRefNatural(ArrayIDcapAcc[i], 
-                            ArrayInfCompl[i], ArrayDtsGnPJyN[i])
+                  cy.log(
+                    'No hay datos "Captura de accionistas" presionando boton siguiente'
+                  );
                 }
-            }); 
-              }else{ 
-                cy.log('No hay datos "Captura de accionistas" presionando boton siguiente')
               }
-            }
-          });
-        }
-
-      });
-
+            });
+          }
+        });
       }
       //presionamos siguiente luego de terminar la lectura o vlaidar si no hay referencias
       cy.xpathClk(
@@ -1035,19 +625,23 @@ cy.xpath("//button[.//span[normalize-space()='Editar']]").then($btn => {
       // FIN PASO #3
 
       //PASO #4
-      if (ArrayCapJuntaDir[no].TieneJD){
-
-      //descarga archivo "Captura de junta directiva"
-      Generales.DescargaArchivoComplementos(ArrayCapJuntaDir[no].URL_JuntaDirectiva, "CapJuntaDir")            
-      //inicio lectura hojas archivo "Captura de junta directiva"
-      //lectura del archivo "Captura de junta directiva" hoja 0 "Junta Directiva "
-      cy.task("readExcelToJson", { filePath: "cypress/fixtures/CapJuntaDir.xlsx"}).then((JuntaDir) => {
-        // Asigna los datos a los arrays correspondientes
-        const ArrayJuntaDir = JuntaDir["Junta Directiva"] || [];
-        for (let i = 0; i < ArrayJuntaDir.length; i++) {
-          PJ.CapturaJuntaDirectiva(ArrayJuntaDir[i])
-        }
-      });
+      if (ArrayCapJuntaDir[no].TieneJD) {
+        //descarga archivo "Captura de junta directiva"
+        Generales.DescargaArchivoComplementos(
+          ArrayCapJuntaDir[no].URL_JuntaDirectiva,
+          "CapJuntaDir"
+        );
+        //inicio lectura hojas archivo "Captura de junta directiva"
+        //lectura del archivo "Captura de junta directiva" hoja 0 "Junta Directiva "
+        cy.task("readExcelToJson", {
+          filePath: "cypress/fixtures/CapJuntaDir.xlsx",
+        }).then((JuntaDir) => {
+          // Asigna los datos a los arrays correspondientes
+          const ArrayJuntaDir = JuntaDir["Junta Directiva"] || [];
+          for (let i = 0; i < ArrayJuntaDir.length; i++) {
+            PJ.CapturaJuntaDirectiva(ArrayJuntaDir[i]);
+          }
+        });
       }
       //Boton siguiente Paso #4
       cy.xpathClk("(//button[contains(., 'Siguiente')])[4]");

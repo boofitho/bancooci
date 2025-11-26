@@ -102,7 +102,7 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   // Paso 4: Click en identificacion y llenamos 
   cy.xpathBtxt(data.InfoTipoDocumento, "//mat-label[normalize-space(text())='Identificación']/ancestor::mat-form-field//input")
   // Paso 5: Click en "Buscar"
-  cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")
+  // cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")
   cy.wait(500)
   // Paso 6: Click en "Agregar"
   cy.xpathClk("//span[normalize-space(text()) = 'Agregar']")
@@ -177,7 +177,7 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (motivo) => {
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type("adminqa");
+        .type("byte25");
 
       cy.wait(300);
 

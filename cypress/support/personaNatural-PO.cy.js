@@ -143,9 +143,13 @@ class PersonaNatural {
       }); //Fin de escritura tipo de documento de registro tributario nacional
 
     //Boton para dar siguiente en el flujo no. 2
-    cy.contains("span", "Siguiente", { timeout: 60000 })
+  cy.xpath(
+      "//span[@class='mdc-button__label'][normalize-space()='Siguiente']"
+    )
+      .filter(":visible:not([disabled])")
+      .first()
+      .scrollIntoView()
       .should("be.visible")
-      .should("not.be.disabled")
       .click({ force: true });
     cy.wait(3000);
     cy.seleccionarAutorizacionLocal("Autorizacion RTN");
@@ -415,7 +419,8 @@ cy.xpath(
         .first()
         .scrollIntoView()
         .should("be.visible")
-        .type(`${institucionPEP}{enter}`, {force:true})
+        .click({force:true})
+        .xpath(`//mat-option//span[normalize-space(text())= '${institucionPEP}']`).click({force:true})
         .wait(500)
         .then(() => {
           cy.get(".loading", { timeout: 60000 }).should("not.exist");
@@ -424,7 +429,10 @@ cy.xpath(
         .first()
         .scrollIntoView()
         .should("be.visible")
-            .type(cargoOcupadoPEP, {force:true});
+            .click({force:true})
+            cy.wait(500)
+            cy.xpath(`//mat-option//span[normalize-space(text())= "${cargoOcupadoPEP}"]`).click({force:true});
+
           cy.contains("mat-label", "Periodo en que ocupó el cargo", {
             timeout: 6000,
           })
@@ -1098,16 +1106,17 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
       cy.get("body").type("{pageUp}");
       cy.wait(1000);
       cy.get(".loading", { timeout: 70000 }).should("not.exist");
+      cy.xpath("//div[@class='mat-step-label mat-step-label-active']/div[@class='mat-step-text-label ng-star-inserted' and normalize-space()='Parentescos']").scrollIntoView({force:true})
       cy.wait(3000);
       cy.xpath('//input[@placeholder="Ingrese los años de residir"]')
-        .filter(":not(:disabled)")
+      .filter(":visible:not([disabled])")
         .first()
         .scrollIntoView()
         .should("be.visible")
         .type(aniosResidirConuygue, { timeout: 6000, force: true });
       cy.wait(1000);
       cy.xpath("//mat-label[normalize-space()='Ingrese una ubicación']/ancestor::mat-form-field//input")
-        .filter(":not(:disabled)")
+       .filter(":visible:not([disabled])")
         .first()
         .scrollIntoView()
         .should("be.visible")
@@ -1140,9 +1149,9 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
       cy.wait(500);
       cy.get(".loading", { timeout: 60000 }).should("not.exist");
       cy.xpath(
-        "(//span[@class='mdc-button__label'][normalize-space()='Siguiente'])[7]"
+        "//span[@class='mdc-button__label'][normalize-space()='Siguiente']"
       )
-        .filter(":not(:disabled)")
+     .filter(":visible:not([disabled])")
         .first()
         .scrollIntoView()
         .should("be.visible")
@@ -1500,7 +1509,9 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
           .tab()
           .type(ingresosMensualesConyuguePEP, { force: true })
           .tab()
-          .type(categoriadeNegocioConyuguePEP, { force: true });
+          .xpath(`//mat-option//span[normalize-space(text())= '${categoriadeNegocioConyuguePEP}']`)
+            cy.wait(500)
+            cy.get(".mat-mdc-autocomplete-panel mat-option").eq(0).click();
         cy.xpath(
           "(//mat-label[text()='Años de residir']/ancestor::mat-form-field//input)[3]"
         )
@@ -1844,8 +1855,9 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         .scrollIntoView()
         .should("be.visible")
         .type(correoCliente, { force: true });
-      cy.xpath("(//button[.//span[normalize-space()='Agregar']])[1]")
-        .filter(":not(:disabled)")
+        cy.wait(500)
+      cy.xpath("//button[.//span[normalize-space()='Agregar']]")
+       .filter(":visible:not([disabled])")
         .first()
         .scrollIntoView()
         .should("be.visible")
@@ -1882,8 +1894,8 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
             .type(telefonoContactoCliente, { force: true });
         });
       cy.wait(500);
-      cy.xpath("(//button[.//span[normalize-space()='Agregar']])[2]")
-        .filter(":not(:disabled)")
+      cy.xpath("//button[.//span[normalize-space()='Agregar']]")
+       .filter(":visible:not([disabled])")
         .first()
         .scrollIntoView()
         .should("be.visible")
@@ -1963,7 +1975,7 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         .click({ force: true });
       cy.wait(500);
       cy.xpath("(//button[.//span[normalize-space()='Siguiente']])[6]")
-        .filter(":not(:disabled)")
+    .filter(":visible:not([disabled])")
         .first()
         .scrollIntoView()
         .should("be.visible")
@@ -3188,6 +3200,7 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         .scrollIntoView()
         .should("be.visible")
         .click({ force: true });
+        cy.wait(1000)
       cy.seleccionarAutorizacionLocal("No afecto ISR");
     }
 
@@ -3245,7 +3258,10 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
-        .type(categoriaDeNegocioCliente, { force: true });
+            .xpath(`//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`)
+            cy.wait(500)
+            cy.get(".mat-mdc-autocomplete-panel mat-option").eq(0).click();
+    
       cy.xpath("//input[@placeholder='Ingrese los años de residir']")
         .filter(":visible:not([disabled])")
         .first()
@@ -3321,7 +3337,9 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
-        .type(categoriaDeNegocioCliente, { force: true });
+              .xpath(`//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`)
+            cy.wait(500)
+        cy.get(".mat-mdc-autocomplete-panel mat-option").eq(0).click();
       cy.xpath("//input[@placeholder='Ingrese los años de residir']")
         .filter(":visible:not([disabled])")
         .first()
@@ -3399,7 +3417,10 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
-        .type(categoriaDeNegocioCliente, { force: true });
+            .type(categoriaDeNegocioCliente, {force:true})
+            cy.wait(500)
+
+        .click({force:true})
       cy.xpath("//input[@placeholder='Ingrese los años de residir']")
         .filter(":visible:not([disabled])")
         .first()
@@ -3476,7 +3497,9 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
-        .type(categoriaDeNegocioCliente, { force: true });
+             .xpath(`//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`)
+             cy.wait(500)
+    cy.get(".mat-mdc-autocomplete-panel mat-option").eq(0).click();
       cy.xpath("(//input[@placeholder='Ingrese los años de residir'])[2]")
         .filter(":visible:not([disabled])")
         .first()
@@ -3553,7 +3576,8 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         .tab()
         .type(ingresoMensuales, { force: true })
         .tab()
-        .type(categoriaDeNegocioCliente, { force: true });
+        .xpath(`//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`)
+       cy.get(".mat-mdc-autocomplete-panel mat-option").eq(0).click();
       cy.xpath("//input[@placeholder='Ingrese los años de residir']")
         .filter(":visible:not([disabled])")
         .first()
@@ -3599,191 +3623,191 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
     cy.get(".loading", { timeout: 60000 }).should("not.exist");
   }
 
-  flujoFatca(
-    esNacidoUsaFatcaCliente,
-    esResidenteFatcaCliente,
-    esCiudadanoFatcaCliente,
-    poseeDobleNacionalidadUsaFatcaCliente,
-    esContribuyenteIsrFatcaCliente,
-    tienePoderRepresentacionFatcaCliente,
-    tieneDireccionFatcaCliente,
-    direccionclienteFatca,
-    tieneNumeroUsaFatcaCliente,
-    tieneZipUsaFatcaCliente,
-    tieneEinFatcaCliente,
-    tieneTinFatcaCliente,
-    esClienteRecalcitrante,
-    tipoCelularFatcaCliente,
-    telefonoFatcaCliente,
-    codigoZipFatcaCliente
+flujoFatca(
+  esNacidoUsaFatcaCliente,
+  esResidenteFatcaCliente,
+  esCiudadanoFatcaCliente,
+  poseeDobleNacionalidadUsaFatcaCliente,
+  esContribuyenteIsrFatcaCliente,
+  tienePoderRepresentacionFatcaCliente,
+  tieneDireccionFatcaCliente,
+  direccionclienteFatca,
+  tieneNumeroUsaFatcaCliente,
+  tieneZipUsaFatcaCliente,
+  tieneEinFatcaCliente,
+  tieneTinFatcaCliente,
+  esClienteRecalcitrante,
+  tipoCelularFatcaCliente,
+  telefonoFatcaCliente,
+  codigoZipFatcaCliente
+) {
+  if (
+    this.segundaNacionalidad === "ESTADOUNIDENSE" &&
+    this.tieneDobleNacionalidad === "Si"
   ) {
-    if (
-      this.segundaNacionalidad === "ESTADOUNIDENSE" &&
-      this.tieneDobleNacionalidad === "Si"
-    ) {
-      cy.log("Es estadounidense, por lo que debemos de llenar el flujo");
-      // Función para marcar "Sí" si la variable es "Si", de lo contrario marca "No"
+    cy.log("Es estadounidense, por lo que debemos de llenar el flujo");
+    // Función para marcar "Sí" si la variable es "Si", de lo contrario marca "No"
 
-      const seleccionarOpcion = (pregunta, valor) => {
-        cy.contains("mat-radio-group .question", pregunta) // Busca el texto de la pregunta
-          .parents("mat-radio-group") // Sube al grupo de radio buttons
-          .find(`mat-radio-button label:contains("${valor}")`) // Busca el label ("Si" o "No")
-          .click({ force: true });
-      };
-      // Uso:
-      seleccionarOpcion(
-        "Su lugar de nacimiento es los Estados Unidos de Norteamérica",
-        esNacidoUsaFatcaCliente
-      );
-      seleccionarOpcion(
-        "Es Residente permanente en los Estados Unidos de Norteamérica",
-        esResidenteFatcaCliente
-      );
-      seleccionarOpcion(
-        "Es Ciudadano o Nacionalizado de los Estados Unidos de Norteamérica",
-        esCiudadanoFatcaCliente
-      );
-      seleccionarOpcion(
-        "Posee Doble Nacionalidad siendo alguna los Estados Unidos de Norteamérica",
-        poseeDobleNacionalidadUsaFatcaCliente
-      );
-      seleccionarOpcion(
-        "Es Contribuyente de ISR de los Estados Unidos de Norteamérica",
-        esContribuyenteIsrFatcaCliente
-      );
-      seleccionarOpcion(
-        "Cuenta con Poder de Representación de Persona con Dirección de EEUU",
-        tienePoderRepresentacionFatcaCliente
-      );
-      seleccionarOpcion(
-        "Cuenta con alguna Dirección Residencial, Postal en EEUU",
-        tieneDireccionFatcaCliente
-      );
+    const seleccionarOpcion = (pregunta, valor) => {
+      cy.contains("mat-radio-group .question", pregunta) // Busca el texto de la pregunta
+        .parents("mat-radio-group") // Sube al grupo de radio buttons
+        .find(`mat-radio-button label:contains("${valor}")`) // Busca el label ("Si" o "No")
+        .click({ force: true });
+    };
+    // Uso:
+    seleccionarOpcion(
+      "Su lugar de nacimiento es los Estados Unidos de Norteamérica",
+      esNacidoUsaFatcaCliente
+    );
+    seleccionarOpcion(
+      "Es Residente permanente en los Estados Unidos de Norteamérica",
+      esResidenteFatcaCliente
+    );
+    seleccionarOpcion(
+      "Es Ciudadano o Nacionalizado de los Estados Unidos de Norteamérica",
+      esCiudadanoFatcaCliente
+    );
+    seleccionarOpcion(
+      "Posee Doble Nacionalidad siendo alguna los Estados Unidos de Norteamérica",
+      poseeDobleNacionalidadUsaFatcaCliente
+    );
+    seleccionarOpcion(
+      "Es Contribuyente de ISR de los Estados Unidos de Norteamérica",
+      esContribuyenteIsrFatcaCliente
+    );
+    seleccionarOpcion(
+      "Cuenta con Poder de Representación de Persona con Dirección de EEUU",
+      tienePoderRepresentacionFatcaCliente
+    );
+    seleccionarOpcion(
+      "Cuenta con alguna Dirección Residencial, Postal en EEUU",
+      tieneDireccionFatcaCliente
+    );
 
-      // Función para marcar checkboxes basada en "Si" o "No"
-      const marcarCheckboxSiNo = (textoLabel, valor) => {
-        const debeMarcar = valor === "Si"; // Convierte "Si" a true, cualquier otro valor a false
+    // Función CORREGIDA para marcar checkboxes basada en "Si" o "No"
+    const marcarCheckboxSiNo = (textoLabel, valor) => {
+      const debeMarcar = valor === "Si"; // Convierte "Si" a true, cualquier otro valor a false
 
-        cy.xpath(
-          `//span[contains(@class, "question-check") and contains(text(), "${textoLabel}")]/preceding::mat-checkbox[1]//input[@type="checkbox"]`
-        )
-          .should(debeMarcar ? "not.be.checked" : "not.be.checked") // Verifica estado inicial
-          .then(($checkbox) => {
-            if (debeMarcar && !$checkbox.is(":checked")) {
-              cy.wrap($checkbox).click({ force: true }).should("be.checked");
-            } else if (!debeMarcar && $checkbox.is(":checked")) {
-              cy.wrap($checkbox)
-                .click({ force: true })
-                .should("not.be.checked");
-            }
-          });
-      };
+      cy.xpath(
+        `//span[contains(@class, "question-check") and contains(text(), "${textoLabel}")]/preceding::mat-checkbox[1]//input[@type="checkbox"]`
+      )
+        .then(($checkbox) => {
+          const estaMarcado = $checkbox.is(":checked");
+          
+          // Solo hacer click si el estado actual no coincide con el deseado
+          if (debeMarcar !== estaMarcado) {
+            cy.wrap($checkbox)
+              .click({ force: true })
+              .should(debeMarcar ? "be.checked" : "not.be.checked");
+          }
+        });
+    };
 
-      // Uso con tus variables ("Si" o "No"):
-      marcarCheckboxSiNo(
-        "Posee un número de teléfono en Estados Unidos de Norteamérica",
-        tieneNumeroUsaFatcaCliente
-      );
-      marcarCheckboxSiNo(
-        "Posee un Código Postal en Estados Unidos de Norteamérica",
-        tieneZipUsaFatcaCliente
-      );
-      marcarCheckboxSiNo(
-        "Posee EIN (EmployerID) en Estados Unidos de Norteamérica",
-        tieneEinFatcaCliente
-      );
-      marcarCheckboxSiNo(
-        "Posee TIN (Seguro Social) en Estados Unidos de Norteamérica",
-        tieneTinFatcaCliente
-      );
-      marcarCheckboxSiNo("Cliente Recalcitrante", esClienteRecalcitrante);
-      cy.wait(1500);
+    // Uso con tus variables ("Si" o "No"):
+    marcarCheckboxSiNo(
+      "Posee un número de teléfono en Estados Unidos de Norteamérica",
+      tieneNumeroUsaFatcaCliente
+    );
+    marcarCheckboxSiNo(
+      "Posee un Código Postal en Estados Unidos de Norteamérica",
+      tieneZipUsaFatcaCliente
+    );
+    marcarCheckboxSiNo(
+      "Posee EIN (EmployerID) en Estados Unidos de Norteamérica",
+      tieneEinFatcaCliente
+    );
+    marcarCheckboxSiNo(
+      "Posee TIN (Seguro Social) en Estados Unidos de Norteamérica",
+      tieneTinFatcaCliente
+    );
+    marcarCheckboxSiNo("Cliente Recalcitrante", esClienteRecalcitrante);
+    cy.wait(1500);
 
-      if (tieneDireccionFatcaCliente === "Si") {
-        //ingresar la direccion de usa
-        cy.xpath('//input[contains(@placeholder, "Ingrese Dirección")]')
-          .scrollIntoView({ block: "center", inline: "center" })
-          .type(direccionclienteFatca, { force: true });
-      } else {
-        cy.log("No entra al flujo");
-      }
-      cy.wait(1500);
-      if (tieneNumeroUsaFatcaCliente === "Si") {
-        cy.xpath(
-          "//mat-label[contains(text(), 'Tipo de Teléfono')]/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//mat-select"
-        )
-          .filter(":visible:not([disabled])") // Solo inputs visibles y habilitados
-          .first() // Toma el primero que cumpla
-          .scrollIntoView()
-          .should("be.visible")
-          .click({ force: true });
-        cy.wait(500);
+    if (tieneDireccionFatcaCliente === "Si") {
+      //ingresar la direccion de usa
+      cy.xpath('//input[contains(@placeholder, "Ingrese Dirección")]')
+        .scrollIntoView({ block: "center", inline: "center" })
+        .type(direccionclienteFatca, { force: true });
+    } else {
+      cy.log("No entra al flujo");
+    }
+    cy.wait(1500);
+    if (tieneNumeroUsaFatcaCliente === "Si") {
+      cy.xpath(
+        "//mat-label[contains(text(), 'Tipo de Teléfono')]/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//mat-select"
+      )
+        .filter(":visible:not([disabled])") // Solo inputs visibles y habilitados
+        .first() // Toma el primero que cumpla
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
+      cy.wait(500);
 
-        cy.xpath(
-          `//mat-option[.//span[normalize-space()="${tipoCelularFatcaCliente}"]]`
-        ).click({
+      cy.xpath(
+        `//mat-option[.//span[normalize-space()="${tipoCelularFatcaCliente}"]]`
+      ).click({
+        force: true,
+      });
+      cy.xpath(
+        '//mat-label[contains(text(),"Teléfono")]/ancestor::mat-form-field//input'
+      )
+        .filter(":visible:not([disabled])") // Solo inputs visibles y habilitados
+        .first() // Toma el primero que cumpla
+        .scrollIntoView()
+        .should("be.visible")
+        .clear({ force: true })
+        .type(telefonoFatcaCliente, {
+          timeout: 6000,
           force: true,
         });
-        cy.xpath(
-          '//mat-label[contains(text(),"Teléfono")]/ancestor::mat-form-field//input'
-        )
-          .filter(":visible:not([disabled])") // Solo inputs visibles y habilitados
-          .first() // Toma el primero que cumpla
-          .scrollIntoView()
-          .should("be.visible")
-          .clear({ force: true })
-          .type(telefonoFatcaCliente, {
-            timeout: 6000,
-            force: true,
-          });
 
-        cy.xpath(
-          "//button[.//span[contains(@class, 'mdc-button__label') and text()='Agregar']]"
-        )
-          .filter(":visible:not([disabled])") // Solo inputs visibles y habilitados
-          .first() // Toma el primero que cumpla
-          .scrollIntoView()
-          .should("be.visible")
-          .click({ force: true });
-      } else {
-        cy.log("No entra al flujo");
-      }
-
-      if (tieneZipUsaFatcaCliente === "Si") {
-        cy.xpath('//input[contains(@placeholder, "Ingrese Código Postal")]')
-          .filter(":not(:disabled)")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .type(codigoZipFatcaCliente, { force: true });
-      } else {
-        cy.log("no entra al flujo, revisar pq ");
-      }
+      cy.xpath(
+        "//button[.//span[contains(@class, 'mdc-button__label') and text()='Agregar']]"
+      )
+        .filter(":visible:not([disabled])") // Solo inputs visibles y habilitados
+        .first() // Toma el primero que cumpla
+        .scrollIntoView()
+        .should("be.visible")
+        .click({ force: true });
     } else {
-      cy.log("No es estadounidense, por lo que no aplica este flujo");
-
-      // Opción 1: Usando `filter()` para seleccionar solo los que contienen "No"
-      cy.get('mat-radio-button label:contains("No")').each(($label) => {
-        const inputId = $label.attr("for");
-        if (inputId) {
-          cy.get(`#${inputId}`).click({ force: true }).should("be.checked");
-          cy.wait(100); // Pequeña pausa para renderizado (opcional)
-        }
-      });
-      cy.wait(500);
-      cy.xpath("//p[normalize-space(text())='Observaciones']").scrollIntoView();
+      cy.log("No entra al flujo");
     }
-    cy.xpath(
-      "//span[@class='mdc-button__label'][normalize-space()='Siguiente']"
-    )
-      .filter(":visible:not([disabled])")
-      .first()
-      .scrollIntoView()
-      .should("be.visible")
-      .click({ force: true });
 
-    cy.get(".loading", { timeout: 60000 }).should("not.exist");
+    if (tieneZipUsaFatcaCliente === "Si") {
+      cy.xpath('//input[contains(@placeholder, "Ingrese Código Postal")]')
+        .filter(":not(:disabled)")
+        .first()
+        .scrollIntoView()
+        .should("be.visible")
+        .type(codigoZipFatcaCliente, { force: true });
+    } else {
+      cy.log("no entra al flujo ua qie no ingreso ");
+    }
+  } else {
+    cy.log("No es estadounidense, por lo que no aplica este flujo");
+
+    // Opción 1: Usando `filter()` para seleccionar solo los que contienen "No"
+    cy.get('mat-radio-button label:contains("No")').each(($label) => {
+      const inputId = $label.attr("for");
+      if (inputId) {
+        cy.get(`#${inputId}`).click({ force: true }).should("be.checked");
+        cy.wait(100); // Pequeña pausa para renderizado (opcional)
+      }
+    });
+    cy.wait(500);
+    cy.xpath("//p[normalize-space(text())='Observaciones']").scrollIntoView();
   }
+  cy.xpath(
+    "//span[@class='mdc-button__label'][normalize-space()='Siguiente']"
+  )
+    .filter(":visible:not([disabled])")
+    .first()
+    .scrollIntoView()
+    .should("be.visible")
+    .click({ force: true });
+
+  cy.get(".loading", { timeout: 60000 }).should("not.exist");
+}
 
   referenciasLaborales(
     referenciaTipoPersona,
@@ -3895,8 +3919,9 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         cy.wait(500);
       } else if (
         referenciaTipoPersona === "Jurídica" ||
-        "Juridico" ||
-        "Juridica"
+        referenciaTipoPersona
+        === "Juridico" ||
+        referenciaTipoPersona ==="Juridica"
       ) {
         cy.xpath("//label[@class='mdc-label' and text()='Jurídica']")
           .filter(":visible:not([disabled])")
@@ -3958,7 +3983,7 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
       }
 
       cy.xpath(
-        "//button/span[contains(@class,'mdc-button__label') and text()='Siguiente']"
+        "//button/span[contains(@class,'mdc-button__label') and normalize-space(text())='Siguiente paso Referencia Laboral']"
       )
         .filter(":visible:not([disabled])")
         .first()
@@ -3987,7 +4012,7 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         .click({ force: true, timeout: 6000 });
 
       cy.xpath(
-        "//button[.//span[@class='mdc-button__label' and text()='Siguiente']]"
+        "//button/span[contains(@class,'mdc-button__label') and normalize-space(text())='Siguiente paso Referencia Laboral']"
       )
         .filter(":visible:not([disabled])")
         .first()
@@ -4690,14 +4715,15 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
       .scrollIntoView()
       .should("be.visible")
       .click({ force: true, timeout: 6000 });
-    cy.wait(500);
+    cy.wait(1000);
     cy.xpath(
-      "//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))]"
+      "(//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))])[1]"
     )
      .filter(":visible:not([disabled])")
       .first()
       .find("input[type='file']")
-      .attachFile("DNI_HONDURAS_PRUEBA.jpg", { force: true });
+      .first()
+      .attachFile("DNITest.jpg", { force: true });
 
     cy.wait(1000);
     cy.xpath('//p[normalize-space(text())="Notas:"]')
@@ -4726,12 +4752,13 @@ cy.xpath("//mat-step-header[.//span[text()='4'] and .//div[normalize-space(text(
         cy.wait(500);
 
         cy.xpath(
-          "//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))]"
+          "(//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))])[2]"
         )
           .filter(":visible:not([disabled])")
           .first()
           .find("input[type='file']")
-          .attachFile("rtn_prueba_1.jpg", { force: true });
+          .eq(0)
+          .attachFile("RTNTest.jpg", { force: true });
 
         cy.wait(1000);
 
