@@ -27,6 +27,7 @@ Cypress.Commands.add("Login", (data) => {
   });
 });
 
+
 Cypress.Commands.add("oculto", () => {
   cy.get(".loading", { timeout: 60000 }).should("not.exist");
 });
@@ -52,7 +53,7 @@ Cypress.Commands.add('xpathClk', (xpath) => {
   cy.oculto();
 
   cy.xpath(xpath, { timeout: 60000 })
-    .filter(":visible:not([disabled])")
+    //.filter(":visible:not([disabled])")
     .first()
     .click({force: true});                  // sin force, espera el estado correcto
 
@@ -97,7 +98,7 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
   if (!variable || String(variable).trim() === '') return;
 
   cy.xpath(xpath, { timeout: 60000 })
-      .filter(":visible:not([disabled])")
+      //.filter(":visible:not([disabled])")
       .first()
       .click({force: true})
       .clear()                 // limpia el input
@@ -109,6 +110,8 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
 
 
 Cypress.Commands.add('busquedaCliente', (data) => {
+  cy.oculto()
+  cy.alertaSus()
   // Paso 1: Ingresa a buscar cliente
   cy.xpathClk("  //span[contains(text(), 'Operación')]")
   cy.wait(2000)
@@ -120,8 +123,8 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   // Paso 4: Click en identificacion y llenamos 
   cy.xpathBtxt(data.InfoTipoDocumento, "//mat-label[normalize-space(text())='Identificación']/ancestor::mat-form-field//input")
   // Paso 5: Click en "Buscar"
-  cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")
-  cy.wait(500)
+//  cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")     =>  el metodo anterior da enter y resulta incesesario dar click en busca realiza la misma funcion 
+//  cy.wait(500)
   // Paso 6: Click en "Agregar"
   cy.xpathClk("//span[normalize-space(text()) = 'Agregar']")
   // Paso 7: Click en "Cliente"
@@ -272,3 +275,36 @@ Cypress.Commands.add('ScrollXpath', (Posb, PosI, xpath) => {
 
   cy.log("Se desplazó el xpath " + xpath);
 });
+
+
+Cypress.Commands.add('alertaSus', () => {
+  cy.get('body').then(($body) => {
+    // Verifica si el mensaje está presente en pantalla
+    if ($body.find('h2.swal2-title:contains("¿Desea suscribirse a las notificaciones?")').length > 0) {
+      cy.log('✅ Apareció el mensaje de suscripción');
+      // Si aparece, haz clic en el botón "No"
+      cy.xpath("//button[text()='Si']").click();
+    } else {
+      // Si no aparece, muestra un log
+      cy.log('⚠️ No apareció el mensaje de suscripción');
+    }
+  });
+});
+
+Cypress.Commands.add('alertaSus', () => {
+  cy.get('body').then(($body) => {
+    // Verifica si el mensaje está presente en pantalla
+    if ($body.find('h2.swal2-title:contains("¿Desea suscribirse a las notificaciones?")').length > 0) {
+      cy.log('✅ Apareció el mensaje de suscripción');
+      // Si aparece, haz clic en el botón "No"
+      cy.xpath("//button[text()='Si']").click();
+    } else {
+      // Si no aparece, muestra un log
+      cy.log('⚠️ No apareció el mensaje de suscripción');
+    }
+  });
+});
+
+
+
+

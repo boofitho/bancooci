@@ -34,7 +34,7 @@ class personaJuridica {
   }//FIN Datos Generales Persona Juridica
   TipoPersonaJuridica(data){
     
-    //cy.xpathClk("(//input[@value='"+data.TPJ+"'])[1]") //calidar este por que no ingresamos nada
+    //cy.xpathClk("(//input[@value='"+data.TPJ+"'])[1]") //validar este por que no ingresamos nada
     cy.xpath("//input[@value='" + data.TPJ + "']", { timeout: 60000 })
       .click({ force: true })
 
@@ -103,7 +103,7 @@ class personaJuridica {
     cy.xpathBtxt(dataRL.PrimerNombreRef, "(//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataRL.SegundoNombreRef, "(//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataRL.OtroNombreREF, "(//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input)[1]")  
-    cy.xpathClk("(//input[@value='"+dataRL.GeneroRef.toUpperCase()+"'])[1]")    
+    cy.xpath("(//input[@value='"+dataRL.GeneroRef.toUpperCase()+"'])[1]", {timeout: 60000}).click({force: true})    
 
     cy.xpathClkWOF("(//button[span[contains(text(), 'Siguiente paso accionista')]])[4]")
     cy.wait(1500)
@@ -140,8 +140,8 @@ class personaJuridica {
     cy.xpathBtxt(dataDGP.PrimerNombreRef, "(//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataDGP.SegundoNombreRef, "(//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataDGP.OtroNombreREF, "(//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input)[1]")  
-    cy.xpathClk("(//input[@value='"+dataDGP.GeneroRef.toUpperCase()+"'])[1]")
-    //Paso: 3.2 Nacionalidad y Residencia
+    cy.xpath("(//input[@value='"+dataDGP.GeneroRef.toUpperCase()+"'])[1]", {timeout: 60000}).click({force: true})    
+        //Paso: 3.2 Nacionalidad y Residencia
     cy.xpathBtxtClear(dataDGP.PaisRecRef, "(//mat-label[contains(text(), 'País de Residencia')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataDGP.RegionRef, "(//mat-label[contains(text(), 'Región')]/ancestor::mat-form-field//input)[1]")
     cy.xpathBtxt(dataDGP.DepRef, "(//mat-label[contains(text(), 'Departamento')]/ancestor::mat-form-field//input)[1]")
@@ -223,29 +223,25 @@ class personaJuridica {
         
   }
   DireccionRL(data){
-      cy.oculto()
-      cy.wait(1500)
-    cy.window().then((win) => {
-      // Mostrar ancho y alto del viewport
-      cy.log('Ancho: ' + win.innerWidth);
-      cy.log('Alto: ' + win.innerHeight);
+    //   cy.oculto()
+    // cy.get('mat-step-header')
+    //   .should('contain.text', 'Representante Legal')
+    //   .invoke('attr', 'style', 'position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);');
 
-      // Hacer scroll hacia arriba 3 pantallas desde la posición actual
-      win.scrollBy(0, -win.innerHeight * 3);
-    });
     
     cy.xpathBtxtClear(data.paisRL, "(//mat-label[normalize-space(.)='País']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.aniosRL, "(//mat-label[normalize-space(.)='Años de residir']/ancestor::mat-form-field//input)[1]")
-      
-      cy.xpath("(//mat-label[normalize-space(.)='Ingrese una ubicación']/ancestor::mat-form-field//input)[1]")
+     
+      // cy.get('mat-step-header')
+      // .should('contain.text', 'Representante Legal')
+      // .invoke('attr', 'style', 'position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);');
+
+      cy.xpath("(//mat-label[normalize-space(.)='Ingrese una ubicación']/ancestor::mat-form-field//input)[1]", {timeout: 6000})
         .filter(":visible:not([disabled])")
         .first()
-        .scrollIntoView()
         .click({force: true})
         .clear()
         .type(data.ubicacionRL)
-        cy.oculto()
-        cy.wait(420)
         cy.oculto()
       
       cy.xpathClk(`(//mat-option//span[contains(translate(normalize-space(.), 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÜÑ', 'abcdefghijklmnopqrstuvwxyzáéíóúüñ'),'${data.ubicacionRL.toLowerCase()}')])[1]`);

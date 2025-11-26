@@ -50,7 +50,7 @@ describe("BancoOcci", () => {
   before('Descarga de archivos datos y lectura de hojas del mismo', () => {
 
     //descarga archivo "datos"
-    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS, "datos")  
+    Generales.DescargaArchivoComplementos(ArrayVar[0].URL_DATOS_PJ, "datos")  
    
     cy.task("readExcelToJson", { filePath: "cypress/fixtures/datos.xlsx" }).then((excelData) => {
       ArrayCliente = excelData["0 Cliente"] || [];
@@ -70,32 +70,6 @@ describe("BancoOcci", () => {
   
     });
    });// TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
-
-  before('Descarga de archivos complemetnarios y lectura de hojas de los mismo', () => {
-      //descarga de archivos secundarios de los datos
-  
-
-      // //descarga archivo "referencia"
-      // Generales.DescargaArchivoComplementos(ArrayReferencias[0].URL_RefBancarias, "refBancaria")            
-      // //inicio lectura hojas archivo "Contacto"
-      // //lectura del archivo "Contacto" hoja 0 "correo"
-      // cy.task("readExcelToJson", { filePath: "cypress/fixtures/refBancaria.xlsx", hoja: "Ref Bancarias"}).then((RefBanca) => {
-      //   RefBanca.forEach((filaVar) => {
-      //     ArrayRefBanca.push(filaVar); 
-      //   });
-      // });
-      // //Fin lectura hojas archivo "Contacto"
-      // for(let x = 0; x < ArrayDigitDoc.length; x++){
-      // Generales.DescargaImagen(ArrayDigitDoc[x].URL_Imagen, ArrayDigitDoc.NombreArchivo[x])            
-      // }
-
-
-  })
-
-
-
-
-
 /*
 cy.xpath("//button[contains(., 'Siguiente')]")
   .filter(':visible')   // 👈 filtra solo los visibles
@@ -133,7 +107,6 @@ it("Agregar cliente", () => {
 
     cy.busquedaCliente(ArrayCliente[no]);
 
-    cy.log("AQUIIIIIII PAPUSHO antes del if");
     if (ArrayID[no].TipodePersona.toLowerCase() == "natural") {
 
     } else if (ArrayID[no].TipodePersona.toLowerCase() == "jurídica") {
@@ -426,7 +399,8 @@ it("Agregar cliente", () => {
       PJ.digitalizacionDocumentos(ArrayDigitDoc[no])
 
       cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//button[.//span[normalize-space()='Siguiente']]")
-
+      //cy.oculto()
+      //cy.seleccionarAutorizacionLocal(ArrayVar[0], "autorizacion local digitalización")
       // FIN PASO #11 Digitalización de documentos
 
 
