@@ -26,8 +26,6 @@ Cypress.Commands.add("Login", (data) => {
     }
   });
 });
-
-
 Cypress.Commands.add("oculto", () => {
   cy.get(".loading", { timeout: 60000 }).should("not.exist");
 });
@@ -130,8 +128,6 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   // Paso 7: Click en "Cliente"
   cy.wait(500)
   cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
-  cy.wait(1500)
-
 });
 
 
@@ -286,9 +282,6 @@ Cypress.Commands.add('alertaSus', () => {
       cy.log('✅ Apareció el mensaje de suscripción');
       // Si aparece, haz clic en el botón "No"
       cy.xpath("//button[text()='Si']").click();
-    cy.get(".loading", { timeout: 60000 }).should("not.exist");
-
-      cy.wait(5000)
     } else {
       // Si no aparece, muestra un log
       cy.log('⚠️ No apareció el mensaje de suscripción');
@@ -309,7 +302,3 @@ Cypress.Commands.add('alertaSus', () => {
     }
   });
 });
-
-
-
-
