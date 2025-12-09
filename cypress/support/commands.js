@@ -133,17 +133,18 @@ Cypress.Commands.add('busquedaCliente', (data) => {
 
 Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
   cy.log("entra a validar");
-  
+
   cy.get('body').then(($body) => {
-    const modal = $body.find('.swal2-popup.swal2-modal.swal2-show');
-    
-    if (modal.length > 0) {
-      // Esperar a que el modal esté visible
-      cy.get('.swal2-popup.swal2-modal.swal2-show', { timeout: 10000 }).should('be.visible');
-      
+   
+    const newModal = $body.find('mat-bottom-sheet-container');
+
+    if (newModal.length > 0) {
+      // ✅ Esperar a que el nuevo contenedor de la alerta esté visible
+      cy.get('mat-bottom-sheet-container', { timeout: 10000 }).should('be.visible');
+
       // Clic en botón "Local"
       cy.xpath("//button[normalize-space()='Local']").click({ force: true });
-      
+
       // Llenar usuario
       cy.get("#user")
         .filter(":not(:disabled)")
@@ -151,7 +152,6 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
         .scrollIntoView()
         .should("be.visible")
         .type(data.Usuario);
-
 
       cy.wait(300);
 
@@ -176,17 +176,15 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
       cy.wait(500);
 
       // Click en "Autorizar"
-      cy.xpath("//button[normalize-space()='Autorizar']").click({ force: true, timeout:6000  });
+      cy.xpath("//button[normalize-space()='Autorizar']").click({ force: true, timeout: 6000 });
 
       cy.wait(500);
 
       // Click en "Continuar"
-      cy.xpath("//button[normalize-space()='Continuar']").click({ force: true, timeout:6000 });
+      cy.xpath("//button[normalize-space()='Continuar']").click({ force: true, timeout: 6000 });
     }
   });
 });
-
-
 
 
 Cypress.Commands.add("ingresoJson", (valorJson) => {

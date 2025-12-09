@@ -26,6 +26,7 @@ module.exports = defineConfig({
         if (browser.family === 'chromium' && browser.name !== 'electron') {
           launchOptions.args.push('--enable-notifications');
 //          launchOptions.args.push('--disable-popup-blocking');
+
         }
         return launchOptions;
       });

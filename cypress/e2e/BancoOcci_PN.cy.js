@@ -96,9 +96,7 @@ describe("BancoOcci", () => {
   );
 
   it("Login", () => {
-    
     cy.Login(ArrayVar[0]);
-
   });
 
   it("Agregar cliente", () => {
@@ -173,8 +171,7 @@ describe("BancoOcci", () => {
       ArrayCargosPerNatural[no].tieneCuniadoPEP,
       ArrayCargosPerNatural[no].tipoParentescoCuniadoPEP,
       ArrayCargosPerNatural[no].primerApellidoCuniadoPEP,
-      ArrayCargosPerNatural[no].primerNombreCuniadoPEP,
-
+      ArrayCargosPerNatural[no].primerNombreCuniadoPEP
     );
 
     cotizador.esCasado(
@@ -217,6 +214,18 @@ describe("BancoOcci", () => {
       ArrayConyugue[no].CorreoContactoConyuguePEP,
       ArrayConyugue[no].tipoTelefonoContactoConyuguePEP,
       ArrayConyugue[no].telefonoContactoConyugue,
+      ArrayConyugue[no].nombreRefJuridica,
+      ArrayConyugue[no].fechaIngresoRefJuridica,
+      ArrayConyugue[no].esEgresadoRefJuridica,
+      ArrayConyugue[no].fechaEgresoRefJuridica,
+      ArrayConyugue[no].puestoRefJuridica,
+      ArrayConyugue[no].salarioRefJuridica,
+      ArrayConyugue[no].direccionRefJuridica,
+      ArrayConyugue[no].tipoCorreoRefJuridica,
+      ArrayConyugue[no].correoRefJuridica,
+      ArrayConyugue[no].tipoTelefonoRefJuridica,
+      ArrayConyugue[no].telefonoRefJuridica,
+      ArrayConyugue[no].tieneEmpresaConyuguePEP,
       ArrayConyugue[no].nombreEmpresaConyuguePEP,
       ArrayConyugue[no].fechaInscripcionNegocioConyuguePEP,
       ArrayConyugue[no].giroNegocioConyuguePEP,
@@ -262,7 +271,7 @@ describe("BancoOcci", () => {
       ArrayPerfilEconomico[no].institucionPerfilEconomico,
       ArrayPerfilEconomico[no].tieneOtrosIngresos,
       ArrayPerfilEconomico[no].montoOtrosIngresos,
-      ArrayPerfilEconomico[no].observacionesOtrosIngresos,
+      ArrayPerfilEconomico[no].observacionesOtrosIngresos
     );
 
     cotizador.datosDelNegocio(
@@ -300,6 +309,7 @@ describe("BancoOcci", () => {
       ArrayRefernciaLaboral[no].apellidoReferenciaLaboralCliente,
       ArrayRefernciaLaboral[no].nombreReferenciaLaboralCliente,
       ArrayRefernciaLaboral[no].fechaIngresoReferenciaLaboralCliente,
+      ArrayRefernciaLaboral[no].tieneFechaEgresoReferenciaLaboralCliente,
       ArrayRefernciaLaboral[no].fechaEgresoReferenciaLaboralCliente,
       ArrayRefernciaLaboral[no].puestoReferenciaLaboralCliente,
       ArrayRefernciaLaboral[no].salarioReferenciaLaboralCliente,
@@ -397,20 +407,34 @@ describe("BancoOcci", () => {
         for (let l = 0; l < ArrayRefFamiliarPN.length; l++) {
           cy.get(".loading", { timeout: 60000 }).should("not.exist");
 
-          cy.xpath("//button[.//span[normalize-space()='Editar']]").then(
-            ($btn) => {
-              const $visibleBtn = $btn.filter(":visible:not([disabled])");
-              if ($visibleBtn.length > 0) {
-                cy.wrap($visibleBtn)
-                  .first()
-                  .scrollIntoView()
-                  .should("be.visible")
-                  .click({ force: true });
-              } else {
-                cy.log("No hay botón Editar visible, se omite el click");
-              }
+          cy.get("body").then(() => {
+            // 1. Usar cy.get('body').find('SELECTOR_CSS') para buscar sin fallar.
+            // Si no encuentra el elemento, $btn será un objeto jQuery vacío, no un error.
+            const $btn = Cypress.$("button:contains('Editar')").filter(
+              ":visible:not([disabled])"
+            );
+
+            if ($btn.length > 0) {
+              cy.log("✅ Botón Editar visible encontrado.");
+              cy.wrap($btn).first().scrollIntoView().click({ force: true });
+            } else {
+              cy.log("⚠️ No hay botón Editar visible, se omite la acción.");
             }
-          );
+          });
+          // cy.xpath("//button[.//span[normalize-space()='Editar']]").then(
+          //   ($btn) => {
+          //     const $visibleBtn = $btn.filter(":visible:not([disabled])");
+          //     if ($visibleBtn.length > 0) {
+          //       cy.wrap($visibleBtn)
+          //         .first()
+          //         .scrollIntoView()
+          //         .should("be.visible")
+          //         .click({ force: true });
+          //     } else {
+          //       cy.log("No hay botón Editar visible, se omite el click");
+          //     }
+          //   }
+          // );
 
           cotizador.referenciasFamiliares(
             ArrayRefFamiliarPN[l].tieneReferenciasFamiliares,
@@ -438,20 +462,35 @@ describe("BancoOcci", () => {
           .should("be.visible")
           .click({ force: true });
         for (let m = 0; m < ArrayRefPersonalPN.length; m++) {
-          cy.xpath("//button[.//span[normalize-space()='Editar']]").then(
-            ($btn) => {
-              const $visibleBtn = $btn.filter(":visible:not([disabled])");
-              if ($visibleBtn.length > 0) {
-                cy.wrap($visibleBtn)
-                  .first()
-                  .scrollIntoView()
-                  .should("be.visible")
-                  .click({ force: true });
-              } else {
-                cy.log("No hay botón Editar visible, se omite el click");
-              }
+          cy.get("body").then(() => {
+            // 1. Usar cy.get('body').find('SELECTOR_CSS') para buscar sin fallar.
+            // Si no encuentra el elemento, $btn será un objeto jQuery vacío, no un error.
+            const $btn = Cypress.$("button:contains('Editar')").filter(
+              ":visible:not([disabled])"
+            );
+
+            if ($btn.length > 0) {
+              cy.log("✅ Botón Editar visible encontrado.");
+              cy.wrap($btn).first().scrollIntoView().click({ force: true });
+            } else {
+              cy.log("⚠️ No hay botón Editar visible, se omite la acción.");
             }
-          );
+          });
+
+          // cy.xpath("//button[.//span[normalize-space()='Editar']]").then(
+          //   ($btn) => {
+          //     const $visibleBtn = $btn.filter(":visible:not([disabled])");
+          //     if ($visibleBtn.length > 0) {
+          //       cy.wrap($visibleBtn)
+          //         .first()
+          //         .scrollIntoView()
+          //         .should("be.visible")
+          //         .click({ force: true });
+          //     } else {
+          //       cy.log("No hay botón Editar visible, se omite el click");
+          //     }
+          //   }
+          // );
 
           cotizador.referenciasPersonales(
             ArrayRefPersonalPN[m].tieneReferenciasPersonales,
