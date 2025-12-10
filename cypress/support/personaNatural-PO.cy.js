@@ -3261,7 +3261,7 @@ class PersonaNatural {
         .then(() => {
           cy.xpath(
             `//mat-option//span[normalize-space(.)="${situacionlaboralCliente}"]`
-          ).click();
+          ).click({force:true});
         });
       cy.xpath(
         "//mat-label[contains(text(), 'Institución')]/ancestor::div[contains(@class, 'mat-mdc-form-field-flex')]//input"
@@ -3330,7 +3330,7 @@ class PersonaNatural {
         .then(() => {
           cy.xpath(
             `//mat-option//span[normalize-space(.)="${situacionlaboralCliente}"]`
-          ).click();
+          ).click({force:true});
         });
       cy.xpath(
         "//mat-label[contains(text(), 'Institución')]/ancestor::div[contains(@class, 'mat-mdc-form-field-flex')]//input"
@@ -3398,7 +3398,7 @@ class PersonaNatural {
         .then(() => {
           cy.xpath(
             `//mat-option//span[normalize-space(.)="${situacionlaboralCliente}"]`
-          ).click();
+          ).click({force:true});
         });
       cy.xpath(
         "//mat-label[contains(text(), 'Institución')]/ancestor::div[contains(@class, 'mat-mdc-form-field-flex')]//input"
@@ -3466,7 +3466,7 @@ class PersonaNatural {
         .then(() => {
           cy.xpath(
             `//mat-option//span[normalize-space(.)="${situacionlaboralCliente}"]`
-          ).click();
+          ).click({force:true});
         });
 
       cy.xpath(
@@ -3535,7 +3535,7 @@ class PersonaNatural {
         .then(() => {
           cy.xpath(
             `//mat-option//span[normalize-space(.)="${situacionlaboralCliente}"]`
-          ).click();
+          ).click({force:true});
         });
       cy.xpath(
         "//mat-label[contains(text(), 'Institución')]/ancestor::div[contains(@class, 'mat-mdc-form-field-flex')]//input"
@@ -4902,7 +4902,7 @@ class PersonaNatural {
 
       cy.get(".loading", { timeout: 60000 }).should("not.exist");
       cy.xpath(
-        "//mat-step-header[.//div[normalize-space(text())='Referencias Laborales']]/ancestor::div[contains(@class,'mat-step')]"
+        "//mat-step-header[.//div[normalize-space(text())='Referencias']]/ancestor::div[contains(@class,'mat-step')]"
       ).scrollIntoView();
     } else {
       cy.log("No tiene referencias comerciales");

@@ -2,29 +2,65 @@ require("cypress-xpath");
 import "cypress-plugin-tab";
 import 'cypress-file-upload';
 
+// Cypress.Commands.add("Login", (data) => {
+//   // Visita la URL de inicio
+//   cy.visit(data.URL_Sitio);
+//   //espera de 5 segundos para que redireccione si es necesario  
+//   cy.wait(5000) 
+//   // Verifica si el hostname es el de Keycloak o plataforma
+//   cy.location('hostname').then((hostname) => {
+//     if (hostname.includes("keycloak-core.bytesw.cloud")) {
+//       // Si estamos en la página de Keycloak, hacemos login usando cy.origin
+//       cy.origin(
+//         "https://keycloak-core.bytesw.cloud",
+//         { args: { user: data.Usuario, password: data.Password } },
+//         ({ user, password }) => {
+//           cy.get("input#username").type(user, { log: false }); // Oculta en logs por seguridad
+//           cy.get("input#password").type(password, { log: false });
+//           cy.get("#kc-login").click();
+//         }
+//       );
+//     } else {
+//       // En caso de que no redirija a Keycloak, asumimos que ya está logueado o no se requiere login
+//       cy.log("Ya estás logueado o no se requiere autenticación");
+//     }
+//   });
+// });
+
 Cypress.Commands.add("Login", (data) => {
-  // Visita la URL de inicio
-  cy.visit(data.URL_Sitio);
-  //espera de 5 segundos para que redireccione si es necesario  
-  cy.wait(5000) 
-  // Verifica si el hostname es el de Keycloak o plataforma
-  cy.location('hostname').then((hostname) => {
-    if (hostname.includes("keycloak-core.bytesw.cloud")) {
-      // Si estamos en la página de Keycloak, hacemos login usando cy.origin
-      cy.origin(
-        "https://keycloak-core.bytesw.cloud",
-        { args: { user: data.Usuario, password: data.Password } },
-        ({ user, password }) => {
-          cy.get("input#username").type(user, { log: false }); // Oculta en logs por seguridad
-          cy.get("input#password").type(password, { log: false });
-          cy.get("#kc-login").click();
+    // 1. Visita la URL de inicio (la que podría redirigir a Keycloak)
+    cy.visit(data.URL_Sitio);
+
+    // 2. Espera de 5 segundos para que la redirección a Keycloak ocurra si es necesaria
+    cy.wait(5000); 
+
+    // 3. Obtiene el hostname y el origin completo de la URL actual
+    cy.location().then((location) => {
+        const currentOrigin = location.origin;
+        const hostname = location.hostname;
+
+        // 4. Verifica si el hostname contiene 'keycloak'. 
+        // Esto valida que estamos en CUALQUIER entorno Keycloak antes de usar cy.origin().
+        if (hostname.includes("keycloak")) {
+            cy.log(`Redirigido a Keycloak en el origin: ${currentOrigin}`);
+
+            // 5. Usamos el origin ACTÚAL de la ventana (currentOrigin) como primer argumento.
+            // Esto es CRUCIAL, ya que cy.origin DEBE coincidir con el origen donde está el navegador.
+            cy.origin(
+                currentOrigin, 
+                { args: { user: data.Usuario, password: data.Password } },
+                ({ user, password }) => {
+                    // El código dentro de cy.origin se ejecuta en el dominio de Keycloak
+                    cy.get("input#username").type(user, { log: false }); 
+                    cy.get("input#password").type(password, { log: false });
+                    cy.get("#kc-login").click();
+                }
+            );
+        } else {
+            // Si el hostname no contiene "keycloak" después de la espera
+            cy.log("No se detectó redirección a Keycloak. Asumiendo que la sesión está activa o no se requiere login.");
         }
-      );
-    } else {
-      // En caso de que no redirija a Keycloak, asumimos que ya está logueado o no se requiere login
-      cy.log("Ya estás logueado o no se requiere autenticación");
-    }
-  });
+    });
 });
 Cypress.Commands.add("oculto", () => {
   cy.get(".loading", { timeout: 60000 }).should("not.exist");
@@ -146,7 +182,7 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
       cy.xpath("//button[normalize-space()='Local']").click({ force: true });
 
       // Llenar usuario
-      cy.get("#user")
+      cy.get("#username")
         .filter(":not(:disabled)")
         .first()
         .scrollIntoView()
