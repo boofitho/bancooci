@@ -3,19 +3,30 @@ import "cypress-plugin-tab";
 import 'cypress-file-upload';
 
 Cypress.Commands.add("Login", (data) => {
-  // Visita la URL de inicio
-  cy.visit(data.URL_Sitio);
-  //espera de 5 segundos para que redireccione si es necesario  
-  cy.wait(5000) 
-  // Verifica si el hostname es el de Keycloak o plataforma
-  cy.location('hostname').then((hostname) => {
-    if (hostname.includes("keycloak-core.bytesw.cloud")) {
-      // Si estamos en la página de Keycloak, hacemos login usando cy.origin
+    cy.log("✅⏳🏃‍➡️🏃‍♂️‍➡️ Inicia metodo Login")
+    // 1. Visita la URL de inicio (la que podría redirigir a Keycloak)
+    cy.visit(data.URL_Sitio);
+
+    // 2. Espera de 5 segundos para que la redirección a Keycloak ocurra si es necesaria
+    cy.wait(5000); 
+
+    // 3. Obtiene el hostname y el origin completo de la URL actual
+    cy.location().then((location) => {
+    const currentOrigin = location.origin;
+    const hostname = location.hostname;
+
+    // 4. Verifica si el hostname contiene 'keycloak'. 
+    // Esto valida que estamos en CUALQUIER entorno Keycloak antes de usar cy.origin().
+    if (hostname.includes("keycloak")) {
+      cy.log(`Redirigido a Keycloak en el origin: ${currentOrigin}`);
+      // 5. Usamos el origin ACTÚAL de la ventana (currentOrigin) como primer argumento.
+      // Esto es CRUCIAL, ya que cy.origin DEBE coincidir con el origen donde está el navegador.
       cy.origin(
-        "https://keycloak-core.bytesw.cloud",
-        { args: { user: data.Usuario, password: data.Password } },
-        ({ user, password }) => {
-          cy.get("input#username").type(user, { log: false }); // Oculta en logs por seguridad
+        currentOrigin, 
+          { args: { user: data.Usuario, password: data.Password } },
+          ({ user, password }) => {
+          // El código dentro de cy.origin se ejecuta en el dominio de Keycloak
+          cy.get("input#username").type(user, { log: false }); 
           cy.get("input#password").type(password, { log: false });
           cy.get("#kc-login").click();
         }
@@ -25,6 +36,7 @@ Cypress.Commands.add("Login", (data) => {
       cy.log("Ya estás logueado o no se requiere autenticación");
     }
   });
+  cy.log("🔚🏁🏃🏃‍♂️ Finaliza metodo Login")
 });
 
 
@@ -110,26 +122,38 @@ Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
 
 
 Cypress.Commands.add('busquedaCliente', (data) => {
+
   cy.oculto()
   cy.alertaSus()
+  cy.oculto()
   // Paso 1: Ingresa a buscar cliente
   cy.xpathClk("  //span[contains(text(), 'Operación')]")
-  cy.wait(2000)
+  cy.oculto()
+  cy.wait(1000)
   cy.xpathClk("  //span[contains(text(), 'Búsqueda clientes')]")
   // Paso 2: Clic en el input asociado a "Tipo de documento"
   cy.xpathClk("//mat-label[contains(text(), 'Tipo de documento')]/ancestor::mat-form-field//input")
+  cy.oculto()
+  cy.wait(1000)
   // Paso 3: Esperar a que se abra el panel y seleccionar la opción que coincide con la variable
   cy.contains('.mat-mdc-option span',data.tipoDocumento, { timeout: 60000 }).click({ force: true })
+  cy.oculto()
+  cy.wait(1000)
   // Paso 4: Click en identificacion y llenamos 
   cy.xpathBtxt(data.InfoTipoDocumento, "//mat-label[normalize-space(text())='Identificación']/ancestor::mat-form-field//input")
   // Paso 5: Click en "Buscar"
-//  cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")     =>  el metodo anterior da enter y resulta incesesario dar click en busca realiza la misma funcion 
-//  cy.wait(500)
+  cy.xpathClk("//span[normalize-space(text()) = 'Buscar']")     //=>  el metodo anterior da enter y resulta incesesario dar click en busca realiza la misma funcion 
   // Paso 6: Click en "Agregar"
-  cy.xpathClk("//span[normalize-space(text()) = 'Agregar']")
-  // Paso 7: Click en "Cliente"
-  cy.wait(500)
-  cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
+  
+  cy.get('body').then($body => {
+    if ($body.find("div[role='alert']:contains('No hay resultados para los criterios proporcionados.')").length > 0) {
+      cy.xpathClk("//span[normalize-space(text()) = 'Agregar']")
+      // Paso 7: Click en "Cliente"
+      cy.xpathClk("//span[normalize-space(text()) = 'Cliente']")
+    } else {
+    cy.log("✅ Cliente ya registrado 😒");
+    }
+  });
 });
 
 
@@ -137,11 +161,11 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
   cy.log("entra a validar");
   
   cy.get('body').then(($body) => {
-    const modal = $body.find('.swal2-popup.swal2-modal.swal2-show');
+    const modal = $body.find("//div[contains(@class, 'auth-sheet')]");
     
     if (modal.length > 0) {
       // Esperar a que el modal esté visible
-      cy.get('.swal2-popup.swal2-modal.swal2-show', { timeout: 10000 }).should('be.visible');
+      cy.xpath("//div[contains(@class, 'auth-sheet')]", { timeout: 10000 }).should('be.visible');
       
       // Clic en botón "Local"
       cy.xpath("//button[normalize-space()='Local']").click({ force: true });
@@ -186,6 +210,7 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
       cy.xpath("//button[normalize-space()='Continuar']").click({ force: true, timeout:6000 });
     }
   });
+  cy.oculto()
 });
 
 
@@ -278,6 +303,8 @@ Cypress.Commands.add('ScrollXpath', (Posb, PosI, xpath) => {
 
 
 Cypress.Commands.add('alertaSus', () => {
+  cy.wait("5000")
+
   cy.get('body').then(($body) => {
     // Verifica si el mensaje está presente en pantalla
     if ($body.find('h2.swal2-title:contains("¿Desea suscribirse a las notificaciones?")').length > 0) {

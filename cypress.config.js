@@ -22,14 +22,33 @@ module.exports = defineConfig({
    preserveOnceAfterEach: true,
 
     setupNodeEvents(on, config) {
+      // on('before:browser:launch', (browser = {}, launchOptions) => {
+      //   if (browser.family === 'chromium' && browser.name !== 'electron') {
+      //     launchOptions.args.push('--enable-notifications');
+      //     launchOptions.args.push('--disable-popup-blocking');
+      //   }
+      //   return launchOptions;
+      // });
+
       on('before:browser:launch', (browser = {}, launchOptions) => {
         if (browser.family === 'chromium' && browser.name !== 'electron') {
-          launchOptions.args.push('--enable-notifications');
-//          launchOptions.args.push('--disable-popup-blocking');
+
+          // 🚀 Dar permiso explícito para notificaciones
+          launchOptions.preferences = {
+            ...(launchOptions.preferences || {}),
+            profile: {
+              ...(launchOptions.preferences?.profile || {}),
+              default_content_setting_values: {
+                notifications: 1,     // 1 = permitir, 2 = bloquear
+              },
+            },
+          };
+
+          launchOptions.args.push('--disable-popup-blocking');
+          launchOptions.args.push('--disable-notifications'); // evitar banners del propio Chrome
         }
         return launchOptions;
       });
-
 
 
 
@@ -40,32 +59,6 @@ module.exports = defineConfig({
           return workbook.SheetNames;
         }
       });
-
-
-      //leer archivo
-      // on('task', {
-      //   readExcelToJson({ filePath, hoja = null }) {
-      //     const xlsx = require("xlsx");
-      //     const workbook = xlsx.readFile(filePath);
-
-      //     // Si no se especifica hoja, devuelve todas las hojas en un objeto
-      //     if (!hoja) {
-      //       const result = {};
-      //       workbook.SheetNames.forEach(sheetName => {
-      //         const worksheet = workbook.Sheets[sheetName];
-      //         result[sheetName] = xlsx.utils.sheet_to_json(worksheet);
-      //       });
-      //       return result;
-      //     }
-
-      //     // Si se especifica hoja, devuelve solo esa hoja (comportamiento original)
-      //     const worksheet = workbook.Sheets[hoja];
-      //     if (!worksheet) {
-      //       throw new Error(`La hoja "${hoja}" no existe en el archivo Excel`);
-      //     }
-      //     return xlsx.utils.sheet_to_json(worksheet);
-      //   }
-      // });
 
       on("task", {
         async readExcelToJson({ filePath, hoja = null, timeout = 60000, interval = 3000 }) {
@@ -143,6 +136,8 @@ module.exports = defineConfig({
         }
       });
       //FIN contar cantidad de filas
+          return config;
     },
+    
   },
 });

@@ -17,14 +17,14 @@ class personaJuridica {
   //### PASO #2
   //Datos Generales Persona Juridica 
   DatosGeneralesPersonaJuridica(data){
-    cy.wait(1500)
-    cy.get('body').then($body => {
-    if ($body.find('h2#swal2-title:contains("Identificación vinculada con el cliente")').length > 0) {
-      cy.get('.swal2-cancel', { timeout: 10000 })
-        .should('be.visible')
-        .click({ force: true })
-      }
-    })
+    // cy.wait(1500)
+    // cy.get('body').then($body => {
+    // if ($body.find('h2#swal2-title:contains("Identificación vinculada con el cliente")').length > 0) {
+    //   cy.get('.swal2-cancel', { timeout: 10000 })
+    //     .should('be.visible')
+    //     .click({ force: true })
+    //   }
+    // })
 
     this.TipoPersonaJuridica(data)
     this.DatosConstitucionEmpresa(data)
@@ -35,132 +35,194 @@ class personaJuridica {
   TipoPersonaJuridica(data){
     
     //cy.xpathClk("(//input[@value='"+data.TPJ+"'])[1]") //validar este por que no ingresamos nada
-    cy.xpath("//input[@value='" + data.TPJ + "']", { timeout: 60000 })
+    cy.xpath("//app-general-data-juridical-person//input[@value='" + data.TPJ + "']", { timeout: 60000 })
       .click({ force: true })
 
-    cy.xpathBtxt(data.RazonSoc, "(//mat-label[normalize-space(text())='Razón Social']/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(data.NombreCom, "(//mat-label[normalize-space(text())='Nombre Comercial']/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(data.Siglas, "(//mat-label[normalize-space(text())='Siglas']/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxtClear(data.PaisOr, "(//mat-label[normalize-space(text())='País de Origen']/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(data.CatNegocio, "//mat-label[normalize-space(text())='Categoría de Negocio']/ancestor::mat-form-field//input")    
+    cy.xpathBtxt(data.RazonSoc, "//app-general-data-juridical-person//mat-label[normalize-space(text())='Razón Social']/ancestor::mat-form-field//input")
+    cy.xpathBtxt(data.NombreCom, "//app-general-data-juridical-person//mat-label[normalize-space(text())='Nombre Comercial']/ancestor::mat-form-field//input")
+    cy.xpathBtxt(data.Siglas, "//app-general-data-juridical-person//mat-label[normalize-space(text())='Siglas']/ancestor::mat-form-field//input")
+    cy.xpathBtxtClear(data.PaisOr, "//app-general-data-juridical-person//mat-label[normalize-space(text())='País de Origen']/ancestor::mat-form-field//input")
+    cy.xpathBtxt(data.CatNegocio, "//app-general-data-juridical-person//mat-label[normalize-space(text())='Categoría de Negocio']/ancestor::mat-form-field//input")    
   }
   DatosConstitucionEmpresa(data){
     
 
-    cy.xpathBtxt(data.TipSoc, "//mat-label[normalize-space(text())='Tipo de Sociedad']/ancestor::mat-form-field//input")
-    cy.IngresoFecha(data.FechaReg, "//mat-label[normalize-space()='Fecha de Registro']/ancestor::mat-form-field//button")
+    cy.xpathBtxt(data.TipSoc, "//app-general-data-juridical-person//mat-label[normalize-space(text())='Tipo de Sociedad']/ancestor::mat-form-field//input")
+    cy.IngresoFecha(data.FechaReg, "//app-general-data-juridical-person//mat-label[normalize-space()='Fecha de Registro']/ancestor::mat-form-field//button")
     if (data.EnFormacion == true)
       {
-        cy.xpathBtxt(data.EnFormacion, "//label[normalize-space(.)='En Formación']/preceding-sibling::input[@type='checkbox']")
+        cy.xpathBtxt(data.EnFormacion, "//app-general-data-juridical-person//label[normalize-space(.)='En Formación']/ancestor::mat-checkbox//input[@type='checkbox']")
       }else{
         cy.log("En formacion no esta selecciona")
       }
-    cy.IngresoFecha(data.FechaIniOp, "//mat-label[normalize-space(.)='Fecha de Inicio de Operaciones']/ancestor::mat-form-field//button[@aria-label='Open calendar']")  
+    cy.IngresoFecha(data.FechaIniOp, "//app-general-data-juridical-person//mat-label[normalize-space(.)='Fecha de Inicio de Operaciones']/ancestor::mat-form-field//button[@aria-label='Open calendar']")  
   }
   RegistroMercantil(data){
-    cy.xpathBtxt(data.Numero, "(//mat-label[normalize-space(.)='Número']/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(data.tomo, "//mat-label[normalize-space(.)='Tomo']/ancestor::mat-form-field//input")
-    cy.xpathBtxt(data.Pagina, "//mat-label[normalize-space(.)='Página']/ancestor::mat-form-field//input")
-    cy.xpathBtxt(data.PatenteCom, "//mat-label[normalize-space(.)='Patente de Comercio']/ancestor::mat-form-field//input")
-    cy.xpathBtxt(data.EscriPermiso, "//mat-label[normalize-space(.)='No. Escritura/Permiso Oper.']/ancestor::mat-form-field//input")       
+    cy.xpathBtxt(data.Numero, "//app-general-data-juridical-person//mat-label[normalize-space(.)='Número']/ancestor::mat-form-field//input")
+    cy.xpathBtxt(data.tomo, "//app-general-data-juridical-person//mat-label[normalize-space(.)='Tomo']/ancestor::mat-form-field//input")
+    cy.xpathBtxt(data.Pagina, "//app-general-data-juridical-person//mat-label[normalize-space(.)='Página']/ancestor::mat-form-field//input")
+    cy.xpathBtxt(data.PatenteCom, "//app-general-data-juridical-person//mat-label[normalize-space(.)='Patente de Comercio']/ancestor::mat-form-field//input")
+    cy.xpathBtxt(data.EscriPermiso, "//app-general-data-juridical-person//mat-label[normalize-space(.)='No. Escritura/Permiso Oper.']/ancestor::mat-form-field//input")       
   }
   //### FIN PASO #2
 
   //### PASO #3
   AggRefJuridica(dataID,dataIC,dataDGP,dataRL){
     //Paso: 0 ingresamos 
-    cy.xpathClk("(//button[contains(., 'JURIDICO')])[1]")
+    cy.xpathClk("//button[contains(., 'JURIDICO')]")
     //Paso: 1 Identificacion 
-    cy.wait(2500)
+    cy.xpathBtxt(dataID.RTNRef, "//app-shareholder-references//mat-label[normalize-space()='REGISTRO TRIBUTARIO NACIONAL']/ancestor::mat-form-field//input")
 
-    // Desplaza el elemento al centro de la vista
-    cy.xpath("//mat-drawer-content[@class='mat-drawer-content']").scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
-
-    cy.xpathBtxt(dataID.RTNRef, "(//mat-label[contains(text(), 'REGISTRO TRIBUTARIO')]/ancestor::mat-form-field//input)[3]")
-    cy.xpathBtxt(dataID.NRTRef, "(//mat-label[contains(normalize-space(), 'NUEVO REGISTRO TRIBUTARIO')])[2]")
-    cy.IngresoFecha(dataID.fechaExpRef, "//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button") //se peude ingresar sin necesidad de NRT
-    cy.xpathClkWOF("(//button[span[contains(text(), 'Siguiente paso accionista')]])[1]")
+    cy.xpathBtxt(dataID.NRTRef, "//app-shareholder-references//mat-label[normalize-space()='NUEVO REGISTRO TRIBUTARIO']/ancestor::mat-form-field//input")
+    cy.IngresoFecha(dataID.FechaExpNRT, "//app-shareholder-references//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button")
+    
+    cy.xpathClkWOF("(//app-shareholder-references//button[span[contains(text(), 'Siguiente paso accionista')]])[1]")
+    
     //Paso: 2 Información Complementaria 
-    cy.xpathBtxt(dataIC.TipoRef, "(//mat-label[contains(text(), 'Tipo')]/ancestor::mat-form-field//input)[2]")
-    cy.xpathBtxt(dataIC.PorcentajeRef, "//mat-label[normalize-space()='% de Participación']/ancestor::mat-form-field//input")
-    cy.xpathClkWOF("(//button[span[contains(text(), 'Siguiente paso accionista')]])[2]")
+    cy.xpathBtxt(dataIC.TipoRef, "//app-shareholder-references//mat-label[contains(text(), 'Tipo')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataIC.PorcentajeRef, "//app-shareholder-references//mat-label[normalize-space()='% de Participación']/ancestor::mat-form-field//input")
+    
+    cy.xpathClkWOF("(//app-shareholder-references//button[span[contains(text(), 'Siguiente paso accionista')]])[2]")
+    
     //Paso: 3 Datos Generales Persona Juridica 
-    cy.xpathBtxt(dataDGP.NombreRef, "(//mat-label[normalize-space()='Nombre']/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxtClear(dataDGP.PaisOrRef, "(//mat-label[contains(text(), 'País de Origen')]/ancestor::mat-form-field//input)[2]")
-    cy.xpathClkWOF("(//button[span[contains(text(), 'Siguiente paso accionista')]])[3]")
+    cy.xpathBtxt(dataDGP.NombreRef, "(//app-shareholder-references//mat-label[normalize-space()='Nombre']/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxtClear(dataDGP.PaisOrRef, "(//app-shareholder-references//mat-label[contains(text(), 'País de Origen')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathClkWOF("(//app-shareholder-references//button[span[contains(text(), 'Siguiente paso accionista')]])[3]")
     //Paso: 4 Representante Legal
-    cy.xpath('(//div[contains(@class, "mat-step") and contains(@class, "ng-star-inserted")])[3]')
-      .scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
+    // cy.xpath('(//div[contains(@class, "mat-step") and contains(@class, "ng-star-inserted")])[3]')
+    //   .scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
     
-    cy.xpathBtxt(dataRL.CedulaRef, "(//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataRL.PasaporteRef, "(//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataRL.UbcPaisRef, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[2]")
-    cy.xpathBtxt(dataRL.Ubc2Ref, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[1]")
-    cy.IngresoFecha(dataRL.FechaRef, "(//mat-label[contains(text(), 'Seleccione una fecha')]/ancestor::mat-form-field//button)[3]")
-    cy.xpathBtxt(dataRL.PrimerApellidoREF, "(//mat-label[contains(text(), 'Primer Apellido')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataRL.SegundoApellidoREF, "(//mat-label[contains(text(), 'Segundo Apellido')]/ancestor::mat-form-field//input)[1]")
-    
-    cy.xpathBtxt(dataRL.PrimerNombreRef, "(//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataRL.SegundoNombreRef, "(//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataRL.OtroNombreREF, "(//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input)[1]")  
-    cy.xpath("(//input[@value='"+dataRL.GeneroRef.toUpperCase()+"'])[1]", {timeout: 60000}).click({force: true})    
-
-    cy.xpathClkWOF("(//button[span[contains(text(), 'Siguiente paso accionista')]])[4]")
-    cy.wait(1500)
+    cy.xpathBtxt(dataRL.CedulaRef, "//app-shareholder-references//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataRL.UbiCedula, "//app-shareholder-references//td[.//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]]/following-sibling::td//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input")
+    cy.IngresoFecha(dataRL.FechaExpCedula, "//app-shareholder-references//tr[.//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]]//mat-label[contains(text(), 'Seleccione una fecha')]/ancestor::mat-form-field//button")
+    cy.xpathBtxt(dataRL.PasaporteRef, "//app-shareholder-references//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataRL.UbiPasaporte, "//app-shareholder-references//td[.//mat-label[contains(text(), 'PASAPORTE')]]/following-sibling::td//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataRL.PrimerApellidoREF, "//app-shareholder-references//mat-label[contains(text(), 'Primer Apellido')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataRL.SegundoApellidoREF, "//app-shareholder-references//mat-label[contains(text(), 'Segundo Apellido')]/ancestor::mat-form-field//input")   
+    cy.xpathBtxt(dataRL.PrimerNombreRef, "//app-shareholder-references//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataRL.SegundoNombreRef, "//app-shareholder-references//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataRL.OtroNombreREF, "//app-shareholder-references//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input")  
+    cy.xpath("//app-shareholder-references//input[@value='"+dataRL.GeneroRef.toUpperCase()+"']", {timeout: 60000}).click({force: true})    
+    cy.xpathClkWOF("(//app-shareholder-references//button[span[contains(text(), 'Siguiente paso accionista')]])[4]")
+    // cy.wait(1500)
     //Paso: 5 Agregar 
     cy.xpathClkWOF("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Captura de accionistas')]]//button[.//span[normalize-space()='Agregar']])[2]") 
     //se debede agregar un natural luego de un juridico  
   }
   AggRefNatural(dataID,dataIC,dataDGP){
     //Paso: 0 ingresamos 
-    cy.xpathClk("(//button[contains(., 'NATURAL')])[1]")
-    cy.oculto()
+    cy.xpathClk("//button[contains(., 'NATURAL')]")
     //Paso: 1 Identificacion 
+    cy.xpathBtxt(dataID.CedulaRef, "//app-shareholder-references//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataID.UbiCedula, "//app-shareholder-references//td[.//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]]/following-sibling::td//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input")
+    cy.IngresoFecha(dataID.FechaExpCedula, "//app-shareholder-references//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button")
 
-    cy.xpathBtxt(dataID.CedulaRef, "(//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataID.PasaporteRef, "(//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataID.PartidaNacRef, "//mat-label[contains(text(), 'PARTIDA DE NACIMIENTO')]/ancestor::mat-form-field//input")
-    cy.xpathBtxt(dataID.RTNRef, "(//mat-label[contains(text(), 'REGISTRO TRIBUTARIO')]/ancestor::mat-form-field//input)[3]")
-    cy.xpathBtxt(dataID.codTRef, "//mat-label[contains(text(), 'CODIGO TRIBUTARIO')]/ancestor::mat-form-field//input")
-    cy.xpathBtxt(dataID.UbcPaisRef, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[2]")
-    cy.xpathBtxt(dataID.Ubc2Ref, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[3]")
-    cy.IngresoFecha(dataID.FechaRef, "(//mat-label[contains(text(), 'Seleccione una fecha')]/ancestor::mat-form-field//button)[2]")
-    cy.xpathClkWOF("(//button[contains(., 'Siguiente paso')])[1]")
-    //Paso: 2 Información Complementaria
-    cy.xpathBtxtClear(dataIC.PaisOrRef, "(//mat-label[contains(text(), 'País de Origen')]/ancestor::mat-form-field//input)[2]")
-    cy.xpathBtxt(dataIC.TipoRef, "(//mat-label[contains(text(), 'Tipo')]/ancestor::mat-form-field//input)[2]")
-    cy.xpathBtxt(dataIC.PorcentajeRef, "//mat-label[normalize-space()='% de Participación']/ancestor::mat-form-field//input")
-    cy.xpathClkWOF("(//button[contains(., 'Siguiente paso')])[2]")
-    //Paso: 3.1 Datos Generales Persona natural 
-    cy.xpath('(//div[contains(@class, "mat-step") and contains(@class, "ng-star-inserted")])[3]')
-      .scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
+
+    cy.xpathBtxt(dataID.PasaporteRef, "//app-shareholder-references//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataID.UbiPasaporte, "//app-shareholder-references//td[.//mat-label[contains(text(), 'PASAPORTE')]]/following-sibling::td//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input")
     
-    cy.xpathBtxt(dataDGP.PrimerApellidoREF, "(//mat-label[contains(text(), 'Primer Apellido')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataDGP.SegundoApellidoREF, "(//mat-label[contains(text(), 'Segundo Apellido')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataDGP.PrimerNombreRef, "(//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataDGP.SegundoNombreRef, "(//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataDGP.OtroNombreREF, "(//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input)[1]")  
-    cy.xpath("(//input[@value='"+dataDGP.GeneroRef.toUpperCase()+"'])[1]", {timeout: 60000}).click({force: true})    
-        //Paso: 3.2 Nacionalidad y Residencia
-    cy.xpathBtxtClear(dataDGP.PaisRecRef, "(//mat-label[contains(text(), 'País de Residencia')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataDGP.RegionRef, "(//mat-label[contains(text(), 'Región')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataDGP.DepRef, "(//mat-label[contains(text(), 'Departamento')]/ancestor::mat-form-field//input)[1]")
-    cy.xpathBtxt(dataDGP.MunRef, "(//mat-label[contains(text(), 'Municipio')]/ancestor::mat-form-field//input)[1]")
+    cy.xpathBtxt(dataID.PartidaNacRef, "//app-shareholder-references//mat-label[contains(text(), 'PARTIDA DE NACIMIENTO')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataID.UbiPartidaNac, "//app-shareholder-references//td[.//mat-label[contains(text(), 'PARTIDA DE NACIMIENTO')]]/following-sibling::td//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input")
+
+    cy.xpathBtxt(dataID.licenciaConducir, "//app-shareholder-references//mat-label[contains(text(), 'LICENCIA DE CONDUCIR')]/ancestor::mat-form-field//input")
+
+    cy.xpathBtxt(dataID.RTNRef, "//app-shareholder-references//mat-label[contains(text(), 'REGISTRO TRIBUTARIO')]/ancestor::mat-form-field//input")
+
+    cy.xpathClkWOF("(//app-shareholder-references//button[span[contains(text(), 'Siguiente paso accionista')]])[1]")
+
+    //Paso: 2 Información Complementaria
+    cy.xpathBtxtClear(dataIC.PaisOrRef, "//app-shareholder-complementary-info//mat-label[contains(text(), 'País de Origen')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataIC.TipoRef, "//app-shareholder-references//mat-label[contains(text(), 'Tipo')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataIC.PorcentajeRef, "//app-shareholder-references//mat-label[normalize-space()='% de Participación']/ancestor::mat-form-field//input")
+    
+    cy.xpathClkWOF("(//app-shareholder-references//button[span[contains(text(), 'Siguiente paso accionista')]])[2]")
+
+    // cy.xpath('(//div[contains(@class, "mat-step") and contains(@class, "ng-star-inserted")])[3]')
+    //   .scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })   
+    const PaisOrigen = dataIC.PaisOrRef?.trim().toLowerCase();
+
+if(PaisOrigen === "estados unidos de america"){
+  
+} else if(PaisOrigen !== "honduras" ){
+
+}else{
+
+
+    //Paso: 3.1 Datos Generales Persona natural 
+    cy.xpathBtxt(dataDGP.PrimerApellidoREF, "//app-shareholder-references//mat-label[contains(text(), 'Primer Apellido')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataDGP.SegundoApellidoREF, "//app-shareholder-references//mat-label[contains(text(), 'Segundo Apellido')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataDGP.PrimerNombreRef, "//app-shareholder-references//mat-label[contains(text(), 'Primer Nombre')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataDGP.SegundoNombreRef, "//app-shareholder-references//mat-label[contains(text(), 'Segundo Nombre')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataDGP.OtroNombreREF, "//app-shareholder-references//mat-label[contains(text(), 'Otros Nombres')]/ancestor::mat-form-field//input")  
+    cy.xpath("//app-shareholder-references//input[@value='"+dataDGP.GeneroRef.toUpperCase()+"']", {timeout: 60000}).click({force: true})    
+
+    //Paso: 3.2 Nacionalidad y Residencia
+    cy.xpathBtxtClear(dataDGP.PaisResidencia, "//app-shareholder-references//mat-label[contains(text(), 'País de Residencia')]/ancestor::mat-form-field//input")
+
+
+
+
+    cy.xpathBtxt(dataDGP.RegionRef, "//app-shareholder-references//mat-label[contains(text(), 'Región')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataDGP.DepRef, "//app-shareholder-references//mat-label[contains(text(), 'Departamento')]/ancestor::mat-form-field//input")
+    cy.xpathBtxt(dataDGP.MunRef, "//app-shareholder-references//mat-label[contains(text(), 'Municipio')]/ancestor::mat-form-field//input")
 
     const segNac = dataDGP.SegundaNacionalidadRef?.trim().toLowerCase();
 
+    if (dataDGP.PaisResidencia === "HONDURAS") {  
+        cy.log("el cliente es hondureño 🤨🫡")
+      }else{
+      if (dataDGP.PaisResidencia === "ESTADOS UNIDOS DE AMERICA") {
+        
+        cy.xpathBtxt(dataDGP.SocialSecurityRef, "//app-shareholder-references//mat-label[contains(text(), 'Social Security Number')]/ancestor::mat-form-field//input");
+        cy.xpathBtxt(dataDGP.UbiSegNacRef, "//app-shareholder-references//tr[.//mat-label[contains(text(), 'Social Security Number')]]//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input");
+
+      } else if (dataDGP.PaisResidencia !== "HONDURAS") {
+      
+          cy.xpathBtxt(dataDGP.CedulaIdentidad2da, "(//app-shareholder-references//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[2]");
+          cy.xpathBtxt(dataDGP.UbiCedula2da, "(//app-shareholder-references//td[.//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]]/following-sibling::td//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[2]");
+          cy.IngresoFecha(dataID.FechaCedula2da, "(//app-shareholder-references//tr[.//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]]//mat-label[contains(text(), 'Seleccione una fecha')]/ancestor::mat-form-field//button)[2]")
+
+          cy.xpathBtxt(dataDGP.Pasaporte2da, "(//app-shareholder-references//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input)[2]");
+          cy.xpathBtxt(dataDGP.UbiPasaporte2da, "(//app-shareholder-references//td[.//mat-label[contains(text(), 'PASAPORTE')]]/following-sibling::td//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[2]");         
+
+      } else {
+        // 🟢 Es hondureña → no hace nada
+        cy.log("el cliente es hondureño")
+      }
+    }
+
+
     if (segNac && segNac !== "estadounidense") {
+        cy.log("👽🎅🧛‍♀️ Tiene segunda nacionalidad!")
+
         // valor distinto de null, undefined, vacío y no es estadounidense
-        cy.xpathBtxt(dataDGP.SegundaNacionalidadRef, "(//mat-label[contains(text(), '2da. Nacionalidad')]/ancestor::mat-form-field//input)[1]");
-    } else if (segNac === "estadounidense") {
+        cy.xpathBtxt(dataDGP.SegundaNacionalidadRef, "//app-shareholder-references//mat-label[contains(text(), '2da. Nacionalidad')]/ancestor::mat-form-field//input");
+
+        if (segNac !== "estadounidense") {              
+          cy.log("🗽🍟🍔🌭 el cliente no es "+ segNac)
+
+          cy.xpathBtxt(dataDGP.CedulaIdentidad2da, "(//app-shareholder-references//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[2]");
+          cy.xpathBtxt(dataDGP.UbiCedula2da, "(//app-shareholder-references//td[.//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]]/following-sibling::td//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[2]");
+          cy.IngresoFecha(dataID.FechaCedula2da, "(//app-shareholder-references//tr[.//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]]//mat-label[contains(text(), 'Seleccione una fecha')]/ancestor::mat-form-field//button)[2]")
+
+          cy.xpathBtxt(dataDGP.Pasaporte2da, "(//app-shareholder-references//mat-label[contains(text(), 'PASAPORTE')]/ancestor::mat-form-field//input)[2]");
+          cy.xpathBtxt(dataDGP.UbiPasaporte2da, "(//app-shareholder-references//td[.//mat-label[contains(text(), 'PASAPORTE')]]/following-sibling::td//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[2]");
+          
+// 	
+        }else{
+          cy.log("🗽🍟🍔🌭 el cliente es estadounidense")
+        }
+
+      } else if (segNac === "estadounidense") {
         // es estadounidense
-        cy.xpathBtxt(dataDGP.SegundaNacionalidadRef, "(//mat-label[contains(text(), '2da. Nacionalidad')]/ancestor::mat-form-field//input)[1]");
-        cy.xpathBtxt(dataDGP.SocialSecurityRef, "(//mat-label[contains(text(), 'Social Security Number')]/ancestor::mat-form-field//input)[1]");
-        cy.xpathBtxt(dataDGP.UbiSegNacRef, "(//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input)[4]");
+        cy.xpathBtxt(dataDGP.SegundaNacionalidadRef, "//app-shareholder-references//mat-label[contains(text(), '2da. Nacionalidad')]/ancestor::mat-form-field//input");
+        cy.xpathBtxt(dataDGP.SocialSecurityRef, "//app-shareholder-references//mat-label[contains(text(), 'Social Security Number')]/ancestor::mat-form-field//input");
+        cy.xpathBtxt(dataDGP.UbiSegNacRef, "//app-shareholder-references//tr[.//mat-label[contains(text(), 'Social Security Number')]]//mat-label[contains(text(), 'Ubicación')]/ancestor::mat-form-field//input");
     } else {
         cy.log("No tiene 2da. Nacionalidad");
     }
 
+}
     cy.xpathClkWOF("(//button[contains(., 'Siguiente paso')])[3]")
     cy.wait(1500)
     //Paso: 4 Agregar 
@@ -251,8 +313,12 @@ class personaJuridica {
       cy.xpathBtxtClear(data.dirRefBusqRL, "(//mat-label[normalize-space(.)='Dirección referencia busqueda']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.latitudRL, "(//mat-label[normalize-space(.)='Latitud']/ancestor::mat-form-field//input)[1]")
       cy.xpathBtxt(data.longitudRL, "(//mat-label[normalize-space(.)='Longitud']/ancestor::mat-form-field//input)[1]")
-      
-      cy.xpathClkWOF("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Representante Legal')]]//button[.//span[normalize-space()='Siguiente paso representante']])[2]")
+    
+      cy.xpath('//app-legal-representative//h4[text()="Coordenadas"]')
+        .scrollIntoView({ easing: 'linear', duration: 500 })
+
+      cy.xpath("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Representante Legal')]]//button[.//span[normalize-space()='Siguiente paso representante']])[2]")
+        .scrollIntoView().click({force: true})
 
   }
   correoRL(data){
@@ -330,12 +396,54 @@ class personaJuridica {
     PrincProvee(data){       
 
       cy.xpathBtxt(data.Proveedor ,"(//mat-label[normalize-space(.)='Proveedor']/ancestor::mat-form-field//input)[1]")
-      cy.wait(4000)
+      cy.wait(3000)
       cy.oculto()
       cy.xpathClk(`(//mat-option//span[contains(translate(normalize-space(.),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'${data.Proveedor.toLowerCase()}')])[1]`)
       cy.oculto()
       cy.wait(420)
+      cy.oculto()
       cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Agregar']])[3]")
+    }
+
+    NuevoProvee(data){       
+
+      cy.xpathClk("//button[.//span[text()='Nueva Persona']]")
+      cy.xpath("//app-main-suppliers//app-create-supplier//label[normalize-space()='" + data.TipodePersona + "']/preceding::input[@type='radio'][1]", { timeout: 60000 })
+      .click({ force: true })
+      cy.oculto()
+
+      if(data.TipodePersona=="Natural"){
+        						
+        cy.xpathBtxt(data.primerApellido,"//mat-form-field[.//mat-label[normalize-space()='Primer Apellido']]//input")
+        cy.xpathBtxt(data.segundoApellido,"//mat-form-field[.//mat-label[normalize-space()='Segundo Apellido']]//input")
+        cy.xpathBtxt(data.primerNombre,"//mat-form-field[.//mat-label[normalize-space()='Primer Nombre']]//input")
+        cy.xpathBtxt(data.segundoNombre,"//mat-form-field[.//mat-label[normalize-space()='Segundo Nombre']]//input")
+        cy.xpathBtxt(data.otrosNombres,"//mat-form-field[.//mat-label[normalize-space()='Otros Nombres']]//input")
+        cy.xpathBtxt(data.pasaporte,"//mat-form-field[.//mat-label[contains(normalize-space(),'PASAPORTE')]]//input")
+        cy.xpathBtxt(data.ubicacionPasaporte,"//app-economic-profile-juridical//app-documents//mat-label[contains(text(), 'PASAPORTE')]/ancestor::td/following-sibling::td[contains(@class, 'cdk-column-location')]//input[@role='combobox']")
+        cy.xpathBtxt(data.partidaNacimiento,"//mat-form-field[.//mat-label[contains(normalize-space(),'PARTIDA DE NACIMIENTO')]]//input")
+        cy.xpathBtxt(data.ubicacionPartidaNac,"//app-economic-profile-juridical//app-documents//mat-label[contains(text(), 'PARTIDA DE NACIMIENTO')]/ancestor::td/following-sibling::td[contains(@class, 'cdk-column-location')]//input[@role='combobox']")
+        cy.xpathBtxt(data.RTN,"//app-economic-profile-juridical//app-documents//mat-form-field[.//mat-label[contains(normalize-space(),'REGISTRO TRIBUTARIO NACIONAL')]]//input")
+        cy.xpathBtxt(data.cedulaID,"//mat-form-field[.//mat-label[contains(normalize-space(),'CEDULA DE IDENTIDAD')]]//input")
+        cy.xpathBtxt(data.ubicacionCedulaID,"//app-economic-profile-juridical//app-documents//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::td/following-sibling::td[contains(@class, 'cdk-column-location')]//input[@role='combobox']")
+        cy.xpath("//app-economic-profile-juridical//app-documents//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button").scrollIntoView()
+        cy.IngresoFecha(data.fechaCedulaID,"//app-economic-profile-juridical//app-documents//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button")
+        cy.xpathBtxt(data.licenciaConducir,"//mat-form-field[.//mat-label[contains(normalize-space(),'LICENCIA DE CONDUCIR')]]//input")
+        //CLICK EN GUARDAR LUEGO DE LLENAR LOS DATOS QUE TENGAMOS
+        cy.xpathClk("//button[.//span[normalize-space()='Guardar']]")
+        
+      }else if(data.TipodePersona=="Jurídica"){
+
+        cy.xpathBtxt(data.RazonSocial,"//mat-form-field[.//mat-label[normalize-space()='Razón Social']]//input")
+        cy.xpathBtxt(data.RTN,"//mat-form-field[.//mat-label[normalize-space()='REGISTRO TRIBUTARIO NACIONAL']]//input")
+        cy.xpathBtxt(data.NRT,"//mat-form-field[.//mat-label[normalize-space()='NUEVO REGISTRO TRIBUTARIO']]//input")
+        cy.IngresoFecha(data.FechaExp,"//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button")
+        //CLICK EN GUARDAR LUEGO DE LLENAR LOS DATOS QUE TENGAMOS
+        cy.xpathClk("//button[.//span[normalize-space()='Guardar']]")
+        
+      }else{
+        cy.log("no hay clientes pendientes u ocurrio un error")
+      }
     }
     //### FIN PASO #6
 
@@ -435,7 +543,7 @@ class personaJuridica {
           cy.log("FATCA no seleccionado inciso c cliente recalcitrante "+ data.cClienteRecalcitrante)
         }        
           cy.xpathBtxt(data.cGIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
-          cy.xpathBtxt(data.cUbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
+          cy.xpathBtxt(data.cUbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")     
         }else{
       cy.log("FATCA no seleccionado inciso"+ data.c)
     }
@@ -458,13 +566,27 @@ class personaJuridica {
           }else{
             cy.log("FATCA no seleccionado apartado 'I' cliente recalcitrante "+ data.cClienteRecalcitrante)
           }        
-          if(data.c){
-            cy.xpathBtxt(data.IGIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
-            cy.xpathBtxt(data.IUbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
-          }else{
-            cy.xpathBtxt(data.IGIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
-            cy.xpathBtxt(data.IUbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
-          }
+          
+          cy.xpathBtxt(data.Icedula, "(//app-fatca-indications-juridical//app-documents//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
+//        cy.xpathBtxt(data.Iubicacion, "(//app-fatca-indications-juridical//app-documents//mat-label[contains(text(), 'CEDULA DE IDENTIDAD')]/ancestor::mat-form-field//input)[1]")
+          cy.IngresoFecha(data.IFecha, "//app-fatca-indications-juridical//app-documents//mat-label[normalize-space()='Seleccione una fecha']/ancestor::mat-form-field//button")
+          cy.xpathBtxt(data.IRTN, "(//app-fatca-indications-juridical//app-documents//mat-label[contains(text(), 'REGISTRO TRIBUTARIO NACIONAL')]/ancestor::mat-form-field//input)[1]")
+
+          
+
+
+
+
+          // if(data.c){
+          //   cy.xpathBtxt(data.IGIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+          //   cy.xpathBtxt(data.IUbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
+          // }else{
+          //   cy.xpathBtxt(data.IGIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+          //   cy.xpathBtxt(data.IUbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")     
+          // }
+
+
+
         }else{
           cy.log("FATCA no seleccionado inciso 'd' apartado 'I' = "+ data.I)
         }
@@ -502,18 +624,31 @@ class personaJuridica {
             const verdaderoGU = valoresGU.filter(Boolean).length;
 
           if((verdaderoGU === 2)){
-            cy.xpathBtxt(data.II1GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
-            cy.xpathBtxt(data.II1UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+            cy.xpathBtxt(data.II1UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
           }else if ((verdaderoGU === 1)){
-            cy.xpathBtxt(data.II1GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
-            cy.xpathBtxt(data.II1UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+            cy.xpathBtxt(data.II1UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
           }else{
-            cy.xpathBtxt(data.II1GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
-            cy.xpathBtxt(data.II1UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")
+            cy.xpathBtxt(data.II1UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
           }        
           }else{
             cy.log("FATCA no seleccionado apartado 'II 1'  "+ data.II1)
           } 
+
+            const valoresGIN = [data.I];
+            const verdaderoGIN = valoresGIN.filter(Boolean).length;
+
+          if((verdaderoGIN === 1)){
+            cy.xpathBtxt(data.II1GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
+          }else if ((verdaderoGU === 1)){
+            cy.xpathBtxt(data.II1GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+          }else{
+            cy.xpathBtxt(data.II1GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
+          }        
+          }else{
+            cy.log("FATCA no seleccionado apartado 'II 1'  "+ data.II1)
+          } 
+
+
 
       cy.xpath('(//div[contains(@class, "mat-step") and contains(@class, "ng-star-inserted")])[32]').scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })
       cy.wait(420)
@@ -543,16 +678,16 @@ class personaJuridica {
 
           if((verdaderoGU === 3)){
             cy.xpathBtxt(data.II2GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
-            cy.xpathBtxt(data.II2UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
+            cy.xpathBtxt(data.II2UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
           }else if ((verdaderoGU === 2)){
             cy.xpathBtxt(data.II2GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
-            cy.xpathBtxt(data.II2UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+            cy.xpathBtxt(data.II2UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
           }else if ((verdaderoGU === 1)){
             cy.xpathBtxt(data.II2GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
-            cy.xpathBtxt(data.II2UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+            cy.xpathBtxt(data.II2UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
           }else{
             cy.xpathBtxt(data.II2GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
-            cy.xpathBtxt(data.II2UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")
+            cy.xpathBtxt(data.II2UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
           }        
           }else{
             cy.log("FATCA no seleccionado apartado 'II 2'  "+ data.II2)
@@ -589,19 +724,19 @@ class personaJuridica {
 
           if((verdaderoGU === 4)){
             cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
-            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[8]")     
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
           }else if ((verdaderoGU === 3)){
             cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
-            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
           }else if ((verdaderoGU === 2)){
             cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
-            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
           }else if ((verdaderoGU === 1)){
             cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
-            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
           }else{
             cy.xpathBtxt(data.II3GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
-            cy.xpathBtxt(data.II3UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")
+            cy.xpathBtxt(data.II3UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
           }        
           }else{
             cy.log("FATCA no seleccionado apartado 'II 2'  "+ data.II3)
@@ -640,22 +775,22 @@ class personaJuridica {
 
           if((verdaderoGU === 5)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[6]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[9]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
           }else if ((verdaderoGU === 4)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[8]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
           }else if ((verdaderoGU === 3)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
           }else if ((verdaderoGU === 2)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
           }else if ((verdaderoGU === 1)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
           }else{
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
           }        
           }else{
             cy.log("FATCA no seleccionado apartado 'II 2'  "+ data.II4)
@@ -728,25 +863,25 @@ class personaJuridica {
 
           if((verdaderoGU === 6)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[7]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[10]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
           }else if ((verdaderoGU === 5)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[6]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[9]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
           }else if ((verdaderoGU === 4)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[8]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
           }else if ((verdaderoGU === 3)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
           }else if ((verdaderoGU === 2)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
           }else if ((verdaderoGU === 1)){
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
           }else{
             cy.xpathBtxt(data.II4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
-            cy.xpathBtxt(data.II4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")
+            cy.xpathBtxt(data.II4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
           }        
 
           }else{
@@ -888,28 +1023,28 @@ class personaJuridica {
 
               if((verdaderoGU === 7)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[8]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[11]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[8]")     
               }else if ((verdaderoGU === 6)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[7]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[10]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
               }else if ((verdaderoGU === 5)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[6]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[9]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
               }else if ((verdaderoGU === 4)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[8]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
               }else if ((verdaderoGU === 3)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
               }else if ((verdaderoGU === 2)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
               }else if ((verdaderoGU === 1)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
               }else{
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
               }        
 
 
@@ -995,28 +1130,28 @@ class personaJuridica {
 
               if((verdaderoGU === 7)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[8]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[11]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[8]")     
               }else if ((verdaderoGU === 6)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[7]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[10]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
               }else if ((verdaderoGU === 5)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[6]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[9]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
               }else if ((verdaderoGU === 4)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[5]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[8]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
               }else if ((verdaderoGU === 3)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[4]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[7]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")     
               }else if ((verdaderoGU === 2)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[3]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[6]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[3]")     
               }else if ((verdaderoGU === 1)){
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[2]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[5]")     
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[2]")     
               }else{
                 cy.xpathBtxt(data.VIII4GIIN ,"(//mat-form-field[.//mat-label[contains(., 'GIIN')]]//input)[1]")     
-                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[4]")
+                cy.xpathBtxt(data.VIII4UbicacionFatca ,"(//app-fatca-indications-juridical//app-documents//mat-form-field[.//mat-label[contains(., 'Ubicación')]]//input)[1]")
               }        
 
 
@@ -1032,9 +1167,9 @@ class personaJuridica {
 
         }
 
-    }else{
+    // }else{
       cy.log("FATCA no seleccionado inciso 'd' = "+ data.d)
-    }
+    // }
 
       cy.xpath('(//div[contains(@class, "mat-step") and contains(@class, "ng-star-inserted")])[32]').scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })
       cy.wait(420)
@@ -1151,32 +1286,49 @@ class personaJuridica {
     //### PASO #11
     digitalizacionDocumentos(data) {
     cy.log("Flujo para ingresar documentos");
-    //para ingresar con DNI
-    cy.xpathClk("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//button[.//mat-icon[normalize-space(text())='add']])[1]")
+    
+        
+    cy.xpath("//tr[contains(., '"+data.NombreArchivo+"')]//mat-icon[normalize-space()='add']/ancestor::button")
+      .then($el => {
+        if ($el.length > 0) {
+          cy.wrap($el).click({ force: true });
 
-    cy.xpath("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))]")
-     .filter(":visible:not([disabled])")
-      .first()
-      .find("input[type='file']")
-      .attachFile(data.NombreArchivo+".jpg", { force: true });
+          cy.xpath("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))]")
+          .filter(":visible:not([disabled])")
+            .first()
+            .find("input[type='file']")
+            .attachFile("'"+data.NombreArchivo+"'.jpg'", { force: true });
 
-    cy.wait(1000);
-    cy.xpath('//p[normalize-space(text())="Notas:"]')
-      .filter(":visible:not([disabled])")
-      .first()
-      .scrollIntoView();
+          cy.wait(1000);
+          cy.xpath('//p[normalize-space(text())="Notas:"]')
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView();
 
-    cy.xpath("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//div[@class='angular-editor-textarea']")
-      .filter(":visible:not([disabled])")
-      .first()
-      .scrollIntoView()
-      .should("be.visible")
-      .type(data.Notas);
+          cy.xpath("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//div[@class='angular-editor-textarea']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(data.Notas);
 
 
 
-    cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//button[.//span[normalize-space(text())='Guardar']]")
+          cy.xpathClk("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//button[.//span[normalize-space(text())='Guardar']]")
+            
+
+
+        } else {
+          // No existe, continuar sin error
+          cy.log("No se encontró el botón ADD para CLIENTE");
+        }
+      });
+    
+
       
+    
+    
+
     }
     //### FIN PASO #11
 }

@@ -70,51 +70,20 @@ describe("BancoOcci", () => {
   
     });
    });// TERMINA EL IT DESCARGA DE ARCHIVO DATOS Y LECTURA DE HOJAS
-/*
-cy.xpath("//button[contains(., 'Siguiente')]")
-  .filter(':visible')   // 👈 filtra solo los visibles
-  .first()              // si hay más de uno visible, toma el primero
-  .click();
-ver tema de siguiente por que veo que salen varios y varian 
 
-
-
-
-
-ver tema de espera a que termine la descarga del archivo para continuar en el metodo para descarga 
-y no usar wait´s si en dado caso da problemas la descarga y lectura al instante de lo contrario no pasa nada 
-o ver si se puede hacer un tipo metodo oculto con la existencia o una espera explicita  
-
-
-
-
-
-
-ver tema de la segunda nacionalidad, si unicamente entra en 2da nacionalidad al security y eso o si entra 
-aunque la primera nacionalidad sea estadounidense y no uynicamente la segunda 
-
-
-
-
-
-
-*/
 it('Login', () => { 
   cy.Login(ArrayVar[0]);
 })
 
 it("Agregar cliente", () => {
+  
+      //PASO #1 Buscamos el cliente
+      cy.busquedaCliente(ArrayCliente[no]);
 
-    cy.busquedaCliente(ArrayCliente[no]);
+      cy.log("❗ Apareció el mensaje de NO RESULTADOS");
 
-    if (ArrayID[no].TipodePersona.toLowerCase() == "natural") {
-
-    } else if (ArrayID[no].TipodePersona.toLowerCase() == "jurídica") {
-      cy.log("JURIDICO PAPS");
-      
-      //PASO #1 Identificacion
-      PJ.Identificacion(ArrayID[no]);
-      
+      //PASO #2 Agregamos datos Identificacion
+      PJ.Identificacion(ArrayID[no]);     
       // FIN PASO #1 Identificacion
 
       //PASO #2 Datos Generales Persona juridica
@@ -215,6 +184,8 @@ it("Agregar cliente", () => {
       }
       //Boton siguiente Paso #4
       cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Captura de junta directiva')]]//button[.//span[normalize-space()='Siguiente']]");
+      cy.seleccionarAutorizacionLocal(ArrayVar[0], "autorizacion local digitalización")
+      
       // FIN PASO #4 Captura de junta directiva
       
       //PASO #5 Representante Legal
@@ -274,6 +245,9 @@ it("Agregar cliente", () => {
           
       });     
       PJ.Relaciones(ArrayPerfilEconomico[no])
+
+     if(ArrayPerfilEconomico[no].tieneProveedor){
+
       //descarga archivo "Perfil Economico - Proveedor"
       Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[no].Proveedor, "PerfilEcoProveedor")            
       //lectura hojas archivo "Perfil Economico - Proveedor"
@@ -283,12 +257,45 @@ it("Agregar cliente", () => {
            
         for (let i = 0; i < ArrayProveedor.length; i++) {
           PJ.PrincProvee(ArrayProveedor[i])
-        }
+        }      
+     });
+     }else{
+      cy.log("no tiene proveedores 🔚🏁🤨")
+     }
+     if(ArrayPerfilEconomico[no].newProveedor){
 
+     //descarga archivo "Perfil Economico - Proveedor"
+      Generales.DescargaArchivoComplementos(ArrayPerfilEconomico[no].URL_newProveedor, "PerfilEcoNewProveedor")            
+
+      //lectura hojas archivo "Perfil Economico - Proveedor"
+      //lectura del archivo "Perfil Economico - Proveedor" hoja 0 "proveedores"
+      cy.task("readExcelToJson", { filePath: "cypress/fixtures/PerfilEcoNewProveedor.xlsx"}).then((NewProveedor) => {
+          const ArrayNewProveedor = NewProveedor["aggProveedores"] || [];
+           
+        for (let i = 0; i < ArrayNewProveedor.length; i++) {
+
+          cy.log("Entro a nuevo proveedor ✅")
+          cy.log(ArrayNewProveedor.length)
+          cy.log(ArrayNewProveedor.length[0])
+          cy.log(ArrayNewProveedor.length[1])
+          cy.log(ArrayNewProveedor.length[2])
+          cy.log(i)
+
+          PJ.NuevoProvee(ArrayNewProveedor[i])
+
+        }      
+     });
+     
+          }else{
+            cy.log("no tiene proveedores nuevos por agregar 🔚🏁🤨")
+          }
+
+
+     
       //validar este siguiente no estoy seguro si es necesario
       cy.xpathClkWOF("(//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Perfil Economico')]]//button[.//span[normalize-space()='Finalizar']])[1]")
 
-      });
+
       // FIN PASO #6 Perfil Economico
       
       //PASO #7 Dirección
@@ -393,14 +400,18 @@ it("Agregar cliente", () => {
       // FIN PASO #10 Referencias
 
       // PASO #11 Digitalización de documentos
-      Generales.DescargaImagen(ArrayDigitDoc[no])            
 
+      for (let i = 0; i < ArrayDigitDoc.length; i++) {
+        Generales.DescargaImagen(ArrayDigitDoc[i])            
+      }
       
-      PJ.digitalizacionDocumentos(ArrayDigitDoc[no])
+      for (let i = 0; i < ArrayDigitDoc.length; i++) {
+        PJ.digitalizacionDocumentos(ArrayDigitDoc[i]);
+      }
 
       cy.xpathClkWOF("//div[contains(@class, 'mat-step') and .//div[contains(text(), 'Digitalización de documentos')]]//button[.//span[normalize-space()='Siguiente']]")
       //cy.oculto()
-      //cy.seleccionarAutorizacionLocal(ArrayVar[0], "autorizacion local digitalización")
+      // cy.seleccionarAutorizacionLocal(ArrayVar[0], "autorizacion local digitalización")
       // FIN PASO #11 Digitalización de documentos
 
 
@@ -411,13 +422,11 @@ it("Agregar cliente", () => {
       // FIN PASO #12 Cliente Finalizado
 
 
-    } else {
 
-      cy.log("*******************************************************");
-      cy.log("Debe de ingresar un tipo de cliente: Natural o Juridico");
-      cy.log("*******************************************************");
 
-    }
+
+
+   
     
   })//TERMINA IT AGREGAR CLIENTE
    // no++
