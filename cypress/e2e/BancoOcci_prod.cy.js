@@ -1,5 +1,5 @@
 import MetodosGenerales from "../support/MetodosGeneralesPo.cy.js";
-import PersonaNatural from "../support/personaNatural-PO.cy.js";
+import PersonaNatural from "../support/personaNatural-PO_prod.cy.js";
 import personaJuridica from "../support/personaJuridica.cy.js";
 
 const cotizador = new PersonaNatural();
