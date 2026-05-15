@@ -292,11 +292,11 @@ class MetodosGenerales{
 
     //Fin Metodos Generales
 
-TipodePersona(persona){
+TipodePersona(){
 
   cy.wait(5000)
    cy.get(".loading", { timeout: 60000 }).should("not.exist");
-cy.contains('label', persona, { timeout: 60000 }).should('be.visible').should('not.be.disabled').click({force:true});
+cy.contains('label', 'Natural', { timeout: 60000 }).should('be.visible').should('not.be.disabled').click({force:true});
 
 
 

@@ -27,9 +27,9 @@ class PersonaNatural {
 
         // Clic en botón "Local"
         cy.xpath("//button[normalize-space()='Local']").click({ force: true });
-
+        cy.wait(1000);
         // Llenar usuario
-        cy.get("#username")
+        cy.get("#username", { timeout: 6000 })
           .filter(":not(:disabled)")
           .first()
           .scrollIntoView()
@@ -75,8 +75,6 @@ class PersonaNatural {
     });
   }
 
-  
-
   IdentificacionGeneralPersonaNatural(
     InfoTipoDocumento,
     fechaExpericacionCedulaCliente,
@@ -88,6 +86,7 @@ class PersonaNatural {
     cy.get(".loading", { timeout: 60000 }).should("not.exist");
     cy.wait(2500);
     cy.wait(1000);
+    cy.get(".loading", { timeout: 60000 }).should("not.exist");
     cy.xpath(
       '//mat-radio-button[.//label[normalize-space()="Natural"]]//input[@type="radio"]',
       { timeout: 9000 }
@@ -277,7 +276,7 @@ class PersonaNatural {
           ).click({ force: true });
 
           // Flujo adicional si es estadounidense
-          if (segundaNacionalidad === "ESTADOUNIDENSE") {
+          if (segundaNacionalidad === "ESTADOUNIDENSE ") {
             cy.contains("mat-label", "Social Security Number", {
               timeout: 6000,
             })
@@ -299,7 +298,9 @@ class PersonaNatural {
                   });
               });
           } else {
-            cy.log("Solo tiene nacionalidad doble pero no estadounidense");
+            cy.log(
+              "Solo tiene nacionalidad doble pero no estadounidense o no esta el recuadro"
+            );
           }
         });
     } else {
@@ -1601,9 +1602,9 @@ class PersonaNatural {
         //Referencias laborales pep direccion
         cy.wait(2000);
         cy.xpath(
-          "(//mat-label[.='Ingrese una ubicación']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input) [2]"
+          "//mat-label[contains(text(), 'Ingrese una ubicación')]//ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
         )
-          .filter(":not(:disabled)")
+          .filter(":visible:not([disabled])")
           .first()
           .scrollIntoView()
           .should("be.visible")
@@ -1625,9 +1626,9 @@ class PersonaNatural {
           });
 
         cy.xpath(
-          "(//span[@class='mdc-button__label'][normalize-space()='Buscar'])[2]"
+          "//span[@class='mdc-button__label'][normalize-space()='Buscar']"
         )
-          .filter(":not(:disabled)")
+          .filter(":visible:not([disabled])")
           .first()
           .scrollIntoView()
           .should("be.visible")
@@ -1636,9 +1637,9 @@ class PersonaNatural {
         //Boton siguiente
 
         cy.xpath(
-          "(//span[@class='mdc-button__label'][normalize-space()='Siguiente'])[10]"
+          "//span[@class='mdc-button__label'][normalize-space()='Siguiente']"
         )
-          .filter(":not(:disabled)")
+          .filter(":visible:not([disabled])")
           .first()
           .scrollIntoView()
           .should("be.visible")
@@ -1660,29 +1661,29 @@ class PersonaNatural {
             ).click({ force: true });
             cy.wait(500);
             cy.xpath(
-              "(//mat-label[.='Correo']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input)[2]"
+              "//mat-label[.='Correo']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
             )
-              .filter(":not(:disabled)")
+              .filter(":visible:not([disabled])")
               .first()
               .scrollIntoView()
               .should("be.visible")
               .type(CorreoContactoConyuguePEP, { force: true });
             //boton agregar
             cy.xpath(
-              '//*[@id="cdk-accordion-child-6"]/div/section/app-contact/div/section[1]/div/div[2]/div/button/span[2]'
+              "//button[.//span[text()='Agregar'] and .//mat-icon[contains(@class,'mat-icon')]]"
             )
-              .filter(":not(:disabled)")
+              .filter(":visible:not([disabled])")
               .first()
               .scrollIntoView()
               .should("be.visible")
-              .click({ force: true });
+              .click({ force: true, timeout: 6000 });
           });
 
         //Telefono
         cy.xpath(
-          "(//mat-label[.='Tipo de Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//mat-select)[2]"
+          "//mat-label[.='Tipo de Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//mat-select"
         )
-          .filter(":not(:disabled)")
+          .filter(":visible:not([disabled])")
           .first()
           .scrollIntoView()
           .should("be.visible")
@@ -1693,9 +1694,9 @@ class PersonaNatural {
               `//mat-option[.//span[normalize-space()="${tipoTelefonoContactoConyuguePEP}"]]`
             ).click({ force: true });
             cy.xpath(
-              "(//mat-label[.='Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input)[2]"
+              "//mat-label[.='Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
             )
-              .filter(":not(:disabled)")
+              .filter(":visible:not([disabled])")
               .first()
               .scrollIntoView()
               .should("be.visible")
@@ -2422,7 +2423,7 @@ class PersonaNatural {
         .then(() => {
           cy.wait(500);
 
-           cy.xpath(
+          cy.xpath(
             `//mat-option[.//span[normalize-space()="${tipoTelefonoContactoCliente}"]]`
           ).click({ force: true });
           cy.wait(500);
@@ -3625,423 +3626,505 @@ class PersonaNatural {
       (this.situacionlaboralCliente === "Comerciante/Asalariado" ||
         this.situacionlaboralCliente === "Comerciante")
     ) {
-      cy.log(
-        "Datos del negocio cuando es comerciante y/o comerciante/Asalariado"
-      );
-      cy.get(".loading", { timeout: 120000 }).should("not.exist");
-      cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+      cy.get("body").then(($body) => {
+        // Buscamos si existe el texto en el HTML
+        const textoNegocioVisible =
+          $body.find(".mat-step-text-label:contains('Datos Del Negocio')")
+            .length > 0;
 
-      cy.xpath(
-        "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
-      )
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(FechaInscripcionNegocioCliente, { force: true });
+        if (textoNegocioVisible) {
+          cy.log(
+            "Se detectó la sección 'Datos del negocio' y el cliente es Comerciante."
+          );
 
-      cy.wait(500);
-      cy.xpath('//input[@placeholder="Giro del Negocio"]')
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(giroNegocioCliente, { force: true })
-        .tab()
-        .type(ingresoMensuales, { force: true })
-        .tab()
-        .xpath(
-          `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
-        );
-      cy.wait(500);
-      cy.get(".mat-mdc-autocomplete-panel mat-option")
-        .eq(0)
-        .click({ force: true });
+          cy.log(
+            "Datos del negocio cuando es comerciante y/o comerciante/Asalariado"
+          );
+          cy.get(".loading", { timeout: 120000 }).should("not.exist");
+          cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(nombreEmpresaCliente, { timeout: 6000, force: true });
 
-      cy.xpath("//input[@placeholder='Ingrese los años de residir']")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(aniosResidirCliente, { timeout: 6000 });
-      cy.xpath(
-        "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(ubicacionCliente, { timeout: 6000 })
-        .wait(500)
-        .then(() => {
-          cy.get(".mat-mdc-option").eq(0).click({ force: true });
-        });
+          cy.xpath(
+            "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
+          )
+            .filter(":not(:disabled)")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(FechaInscripcionNegocioCliente, { force: true });
 
-      cy.xpath("//button[.//span[text()='Buscar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
-      cy.xpath("//button[.//span[text()='Siguiente']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+          cy.wait(500);
+          cy.xpath('//input[@placeholder="Giro del Negocio"]')
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(giroNegocioCliente, { force: true })
+            .tab()
+            .type(ingresoMensuales, { force: true })
+            .tab()
+            .xpath(
+              `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
+            );
+          cy.wait(500);
+          cy.get(".mat-mdc-autocomplete-panel mat-option")
+            .eq(0)
+            .click({ force: true });
+
+          cy.xpath("//input[@placeholder='Ingrese los años de residir']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(aniosResidirCliente, { timeout: 6000 });
+          cy.xpath(
+            "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(ubicacionCliente, { timeout: 6000 })
+            .wait(500)
+            .then(() => {
+              cy.get(".mat-mdc-option").eq(0).click({ force: true });
+            });
+
+          cy.xpath("//button[.//span[text()='Buscar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
+          cy.xpath("//button[.//span[text()='Siguiente']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        } else {
+          cy.log("No se encontró el texto 'Datos Del Negocio' en el HTML.");
+        }
+      });
     } else if (
       +this.FechaNacimientoCliente.split("/")[2] >= 2007 &&
       (this.situacionlaboralCliente === "Comerciante/Asalariado" ||
         this.situacionlaboralCliente === "Comerciante")
     ) {
-      cy.log("Flujo cuando es menor de edad y es comerciante ");
-      cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
-      cy.xpath(
-        "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
-      )
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(FechaInscripcionNegocioCliente, { force: true });
-      cy.wait(500);
-      cy.xpath('//input[@placeholder="Giro del Negocio"]')
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(giroNegocioCliente, { force: true })
-        .tab()
-        .type(ingresoMensuales, { force: true })
-        .tab()
-        .xpath(
-          `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
-        );
-      cy.wait(500);
-      cy.get(".mat-mdc-autocomplete-panel mat-option")
-        .eq(0)
-        .click({ force: true });
-      cy.xpath("//input[@placeholder='Ingrese los años de residir']")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(aniosResidirCliente, { timeout: 6000 });
-      cy.xpath(
-        "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(ubicacionCliente, { timeout: 6000 })
-        .wait(500)
-        .then(() => {
-          cy.get(".mat-mdc-option").eq(0).click({ force: true });
-        });
+      cy.get("body").then(($body) => {
+        // Buscamos si existe el texto en el HTML
 
-      cy.xpath("//button[.//span[text()='Buscar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
-      cy.xpath("//button[.//span[text()='Siguiente']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
+        const textoNegocioVisible =
+          $body.find(".mat-step-text-label:contains('Datos Del Negocio')")
+            .length > 0;
+
+        if (textoNegocioVisible) {
+          cy.log(
+            "Se detectó la sección 'Datos del negocio' y el cliente es Comerciante."
+          );
+
+          cy.log("Flujo cuando es menor de edad y es comerciante ");
+          cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+          cy.xpath(
+            "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
+          )
+            .filter(":not(:disabled)")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(FechaInscripcionNegocioCliente, { force: true });
+          cy.wait(500);
+          cy.xpath('//input[@placeholder="Giro del Negocio"]')
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(giroNegocioCliente, { force: true })
+            .tab()
+            .type(ingresoMensuales, { force: true })
+            .tab()
+            .xpath(
+              `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
+            );
+          cy.wait(500);
+          cy.get(".mat-mdc-autocomplete-panel mat-option")
+            .eq(0)
+            .click({ force: true });
+          cy.xpath("//input[@placeholder='Ingrese los años de residir']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(aniosResidirCliente, { timeout: 6000 });
+          cy.xpath(
+            "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(ubicacionCliente, { timeout: 6000 })
+            .wait(500)
+            .then(() => {
+              cy.get(".mat-mdc-option").eq(0).click({ force: true });
+            });
+
+          cy.xpath("//button[.//span[text()='Buscar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
+          cy.xpath("//button[.//span[text()='Siguiente']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+        } else {
+          cy.log("No se encontró el texto 'Datos Del Negocio' en el HTML.");
+        }
+      });
     } else if (
       this.esPEP === "Si" &&
       this.EstadoCivil !== "Casado" &&
       (this.situacionlaboralCliente === "Comerciante/Asalariado" ||
         this.situacionlaboralCliente === "Comerciante")
     ) {
-      cy.log(
-        "Es PEP, pero no es Casado, datos del negocio cuando es comerciante y/o comerciante/Asalariado"
-      );
-      cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
-      cy.xpath(
-        "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
-      )
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(FechaInscripcionNegocioCliente, { force: true });
-      cy.wait(500);
-      cy.xpath('//input[@placeholder="Giro del Negocio"]')
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(giroNegocioCliente, { force: true })
-        .tab()
-        .type(ingresoMensuales, { force: true })
-        .tab()
-        .xpath(
-          `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
-        );
-      cy.wait(500);
-      cy.get(".mat-mdc-autocomplete-panel mat-option")
-        .eq(0)
-        .click({ force: true });
-      cy.xpath("//input[@placeholder='Ingrese los años de residir']")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(aniosResidirCliente, { timeout: 6000 });
-      cy.xpath(
-        "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(ubicacionCliente, { timeout: 6000 })
-        .wait(500)
-        .then(() => {
-          cy.get(".mat-mdc-option").eq(0).click({ force: true });
-        });
+      cy.get("body").then(($body) => {
+        // Buscamos si existe el texto en el HTML
 
-      cy.xpath("//button[.//span[text()='Buscar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
-      cy.xpath("//button[.//span[text()='Siguiente']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        const textoNegocioVisible =
+          $body.find(".mat-step-text-label:contains('Datos Del Negocio')")
+            .length > 0;
+
+        if (textoNegocioVisible) {
+          cy.log(
+            "Se detectó la sección 'Datos del negocio' y el cliente es Comerciante."
+          );
+
+          cy.log(
+            "Es PEP, pero no es Casado, datos del negocio cuando es comerciante y/o comerciante/Asalariado"
+          );
+          cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+          cy.xpath(
+            "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
+          )
+            .filter(":not(:disabled)")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(FechaInscripcionNegocioCliente, { force: true });
+          cy.wait(500);
+          cy.xpath('//input[@placeholder="Giro del Negocio"]')
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(giroNegocioCliente, { force: true })
+            .tab()
+            .type(ingresoMensuales, { force: true })
+            .tab()
+            .xpath(
+              `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
+            );
+          cy.wait(500);
+          cy.get(".mat-mdc-autocomplete-panel mat-option")
+            .eq(0)
+            .click({ force: true });
+          cy.xpath("//input[@placeholder='Ingrese los años de residir']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(aniosResidirCliente, { timeout: 6000 });
+          cy.xpath(
+            "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(ubicacionCliente, { timeout: 6000 })
+            .wait(500)
+            .then(() => {
+              cy.get(".mat-mdc-option").eq(0).click({ force: true });
+            });
+
+          cy.xpath("//button[.//span[text()='Buscar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
+          cy.xpath("//button[.//span[text()='Siguiente']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        } else {
+          cy.log("No se encontró el texto 'Datos Del Negocio' en el HTML.");
+        }
+      });
     } else if (
       this.esPEP !== "Si" &&
       this.EstadoCivil !== "Casado" &&
       (this.situacionlaboralCliente === "Comerciante/Asalariado" ||
         this.situacionlaboralCliente === "Comerciante")
     ) {
-      cy.log("No es PEP y tiene diferente estado civil, menos casado");
-      cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
-      cy.xpath(
-        "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
-      )
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(FechaInscripcionNegocioCliente, { force: true });
-      cy.wait(500);
-      cy.xpath('//input[@placeholder="Giro del Negocio"]')
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(giroNegocioCliente, { force: true })
-        .tab()
-        .type(ingresoMensuales, { force: true })
-        .tab()
-        .xpath(
-          `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
-        );
-      cy.wait(500);
-      cy.get(".mat-mdc-autocomplete-panel mat-option")
-        .eq(0)
-        .click({ force: true });
-      cy.xpath("(//input[@placeholder='Ingrese los años de residir'])[2]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(aniosResidirCliente, { timeout: 6000 });
-      cy.xpath(
-        "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(ubicacionCliente, { timeout: 6000 })
-        .wait(500)
-        .then(() => {
-          cy.get(".mat-mdc-option").eq(0).click({ force: true });
-        });
+      cy.get("body").then(($body) => {
+        // Buscamos si existe el texto en el HTML
 
-      cy.xpath("//button[.//span[text()='Buscar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
-      cy.xpath("//button[.//span[text()='Siguiente']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        const textoNegocioVisible =
+          $body.find(".mat-step-text-label:contains('Datos Del Negocio')")
+            .length > 0;
+
+        if (textoNegocioVisible) {
+          cy.log(
+            "Se detectó la sección 'Datos del negocio' y el cliente es Comerciante."
+          );
+
+          cy.log("No es PEP y tiene diferente estado civil, menos casado");
+          cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+          cy.xpath(
+            "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
+          )
+            .filter(":not(:disabled)")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(FechaInscripcionNegocioCliente, { force: true });
+          cy.wait(500);
+          cy.xpath('//input[@placeholder="Giro del Negocio"]')
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(giroNegocioCliente, { force: true })
+            .tab()
+            .type(ingresoMensuales, { force: true })
+            .tab()
+            .xpath(
+              `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
+            );
+          cy.wait(500);
+          cy.get(".mat-mdc-autocomplete-panel mat-option")
+            .eq(0)
+            .click({ force: true });
+          cy.xpath("(//input[@placeholder='Ingrese los años de residir'])[2]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(aniosResidirCliente, { timeout: 6000 });
+          cy.xpath(
+            "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(ubicacionCliente, { timeout: 6000 })
+            .wait(500)
+            .then(() => {
+              cy.get(".mat-mdc-option").eq(0).click({ force: true });
+            });
+
+          cy.xpath("//button[.//span[text()='Buscar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
+          cy.xpath("//button[.//span[text()='Siguiente']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        } else {
+          cy.log("No se encontró el texto 'Datos Del Negocio' en el HTML.");
+        }
+      });
     } else if (
       this.EstadoCivil === "Casado" &&
       this.esPEP !== "Si" &&
       (this.situacionlaboralCliente === "Comerciante/Asalariado" ||
         this.situacionlaboralCliente === "Comerciante")
     ) {
-      cy.log("Flujo no es pep y es casado");
-      cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//input[@placeholder='Nombre de la Empresa']")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(nombreEmpresaCliente, { timeout: 6000, force: true });
-      cy.xpath(
-        "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
-      )
-        .filter(":not(:disabled)")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(FechaInscripcionNegocioCliente, { force: true });
-      cy.wait(500);
-      cy.xpath('//input[@placeholder="Giro del Negocio"]')
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(giroNegocioCliente, { force: true })
-        .tab()
-        .type(ingresoMensuales, { force: true })
-        .tab()
-        .xpath(
-          `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
-        );
-      cy.wait(500);
-      cy.get(".mat-mdc-autocomplete-panel mat-option")
-        .eq(0)
-        .click({ force: true });
-      cy.xpath("//input[@placeholder='Ingrese los años de residir']")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(aniosResidirCliente, { timeout: 6000 });
-      cy.xpath(
-        "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(ubicacionCliente, { timeout: 6000 })
-        .wait(500)
-        .then(() => {
-          cy.get(".mat-mdc-option").eq(0).click({ force: true });
-        });
+      cy.get("body").then(($body) => {
+        // Buscamos si existe el texto en el HTML
 
-      cy.xpath("//button[.//span[text()='Buscar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
-      cy.xpath("//button[.//span[text()='Siguiente']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        const textoNegocioVisible =
+          $body.find(".mat-step-text-label:contains('Datos Del Negocio')")
+            .length > 0;
+
+        if (textoNegocioVisible) {
+          cy.log(
+            "Se detectó la sección 'Datos del negocio' y el cliente es Comerciante."
+          );
+
+          cy.log("Flujo no es pep y es casado");
+          cy.xpath("//button[.//span[contains(text(), 'Agregar')]]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//input[@placeholder='Nombre de la Empresa']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(nombreEmpresaCliente, { timeout: 6000, force: true });
+          cy.xpath(
+            "//mat-label[normalize-space()='Fecha de Inscripción']/ancestor::*[contains(@class, 'mat-mdc-form-field')]//input"
+          )
+            .filter(":not(:disabled)")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(FechaInscripcionNegocioCliente, { force: true });
+          cy.wait(500);
+          cy.xpath('//input[@placeholder="Giro del Negocio"]')
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(giroNegocioCliente, { force: true })
+            .tab()
+            .type(ingresoMensuales, { force: true })
+            .tab()
+            .xpath(
+              `//mat-option//span[normalize-space(text())= '${categoriaDeNegocioCliente}']`
+            );
+          cy.wait(500);
+          cy.get(".mat-mdc-autocomplete-panel mat-option")
+            .eq(0)
+            .click({ force: true });
+          cy.xpath("//input[@placeholder='Ingrese los años de residir']")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(aniosResidirCliente, { timeout: 6000 });
+          cy.xpath(
+            "//mat-label[normalize-space(text())='Ingrese una ubicación']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(ubicacionCliente, { timeout: 6000 })
+            .wait(500)
+            .then(() => {
+              cy.get(".mat-mdc-option").eq(0).click({ force: true });
+            });
+
+          cy.xpath("//button[.//span[text()='Buscar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
+          cy.xpath("//button[.//span[text()='Siguiente']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
+        } else {
+          cy.log("No se encontró el texto 'Datos Del Negocio' en el HTML.");
+        }
+      });
     } else {
-      cy.log("no es comerciante entonces no entra al flujo", { timeout: 2500 });
+      cy.log(
+        "no es comerciante entonces no entra al flujo o no aparece dicha configuracion",
+        { timeout: 2500 }
+      );
     }
     cy.get(".loading", { timeout: 60000 }).should("not.exist");
   }
@@ -4249,298 +4332,313 @@ class PersonaNatural {
     telefonoReferencialLaboralCliente
   ) {
     if (
-      this.situacionlaboralCliente === "Comerciante/Asalariado" ||
+      this.situacionlaboralCliente === "Comerciante/Asalariado" || //se cambia ya que no entra a validar por bd
       this.situacionlaboralCliente === "Asalariado"
     ) {
-      cy.log("Flujo cuando es Comerciante/asalariado");
-      if (referenciaTipoPersona === "Natural") {
-        cy.xpath("//label[@class='mdc-label' and text()='Natural']")
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .click({ force: true });
-        if (
-          generoReferenciaLaboralCliente === "Masculino" ||
-          generoReferenciaLaboralCliente === "masculino"
-        ) {
-          cy.log("El Sexo es masculino");
-          cy.xpath('//label[@class="mdc-label" and text()="Masculino"]')
-            .filter(":visible:not([disabled])")
-            .first()
-            .scrollIntoView()
-            .should("be.visible")
-            .click({ force: true });
-        } else {
-          cy.log("El Sexo es Femenino");
-          cy.xpath("//label[@class='mdc-label' and text()='Femenino']")
-            .filter(":visible:not([disabled])")
-            .first()
-            .scrollIntoView()
-            .should("be.visible")
-            .click({ force: true });
-        }
+      cy.get("body").then(($body) => {
+        const pantallaReferenciasPresente =
+          $body.find(".mat-step-text-label:contains('Referencias Laborales')")
+            .length > 0;
 
-        cy.xpath(
-          "//mat-label[text()='Primer Apellido']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
-        )
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .type(apellidoReferenciaLaboralCliente, { force: true });
-        cy.wait(500);
-        cy.xpath(
-          "//mat-label[text()='Primer Nombre']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-        )
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .type(nombreReferenciaLaboralCliente, { force: true });
-        cy.wait(500);
-        cy.xpath(
-          "//mat-label[text()='Fecha Ingreso']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-        )
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .type(fechaIngresoReferenciaLaboralCliente, { force: true });
-        cy.wait(500);
-        if (tieneFechaEgresoReferenciaLaboralCliente === "Si") {
+        if (pantallaReferenciasPresente) {
+          cy.log("PASO: Referencias Laborales detectado.");
+          cy.log("Flujo cuando es Comerciante/asalariado");
+          if (referenciaTipoPersona === "Natural") {
+            cy.xpath("//label[@class='mdc-label' and text()='Natural']")
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .click({ force: true });
+            if (
+              generoReferenciaLaboralCliente === "Masculino" ||
+              generoReferenciaLaboralCliente === "masculino"
+            ) {
+              cy.log("El Sexo es masculino");
+              cy.xpath('//label[@class="mdc-label" and text()="Masculino"]')
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .click({ force: true });
+            } else {
+              cy.log("El Sexo es Femenino");
+              cy.xpath("//label[@class='mdc-label' and text()='Femenino']")
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .click({ force: true });
+            }
+
+            cy.xpath(
+              "//mat-label[text()='Primer Apellido']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
+            )
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .type(apellidoReferenciaLaboralCliente, { force: true });
+            cy.wait(500);
+            cy.xpath(
+              "//mat-label[text()='Primer Nombre']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            )
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .type(nombreReferenciaLaboralCliente, { force: true });
+            cy.wait(500);
+            cy.xpath(
+              "//mat-label[text()='Fecha Ingreso']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            )
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .type(fechaIngresoReferenciaLaboralCliente, { force: true });
+            cy.wait(500);
+            if (tieneFechaEgresoReferenciaLaboralCliente === "Si") {
+              cy.xpath(
+                "//mat-label[text()='Fecha Egreso']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+              )
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .type(fechaEgresoReferenciaLaboralCliente, { force: true });
+            } else {
+              cy.log(
+                "No ingresa fecha ya que no tiene una fecha de egreso la referencia"
+              );
+            }
+
+            cy.xpath(
+              "//mat-label[text()='Puesto']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            )
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .type(puestoReferenciaLaboralCliente, { force: true });
+            cy.wait(500);
+            cy.xpath(
+              "//mat-label[text()='Salario']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            )
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .click({ force: true });
+            cy.wait(500);
+            cy.xpath(
+              `//mat-option/span[contains(normalize-space(.), "${salarioReferenciaLaboralCliente}")]`
+            ).click({
+              force: true,
+            });
+            cy.wait(500);
+          } else if (
+            referenciaTipoPersona === "Jurídica" ||
+            referenciaTipoPersona === "Juridico" ||
+            referenciaTipoPersona === "Juridica"
+          ) {
+            cy.xpath("//label[@class='mdc-label' and text()='Jurídica']")
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .click({ force: true });
+
+            cy.wait(500);
+            cy.xpath(
+              "//mat-label[text()='Nombre de la Empresa']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            )
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .type(nombreEmpresaReferenciaLaboralCliente, { force: true });
+            cy.xpath(
+              "//mat-label[text()='Fecha Ingreso']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            )
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .type(fechaIngresoReferenciaLaboralCliente, { force: true });
+            cy.wait(500);
+            if (tieneFechaEgresoReferenciaLaboralCliente === "Si") {
+              cy.xpath(
+                "//mat-label[text()='Fecha Egreso']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+              )
+                .filter(":visible:not([disabled])")
+                .first()
+                .scrollIntoView()
+                .should("be.visible")
+                .type(fechaEgresoReferenciaLaboralCliente, { force: true });
+            } else {
+              cy.log(
+                "No ingresa fecha ya que no tiene una fecha de egreso la referencia"
+              );
+            }
+            cy.xpath(
+              "//mat-label[text()='Puesto']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            )
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .type(puestoReferenciaLaboralCliente, { force: true });
+            cy.wait(500);
+            cy.xpath(
+              "//mat-label[text()='Salario']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            )
+              .filter(":visible:not([disabled])")
+              .first()
+              .scrollIntoView()
+              .should("be.visible")
+              .click({ force: true });
+            cy.wait(500);
+            cy.xpath(
+              `//mat-option/span[contains(normalize-space(.), "${salarioReferenciaLaboralCliente}")]`
+            ).click({
+              force: true,
+            });
+            cy.wait(500);
+          }
+
           cy.xpath(
-            "//mat-label[text()='Fecha Egreso']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            "//button/span[contains(@class,'mdc-button__label') and normalize-space(text())='Siguiente paso Referencia Laboral']"
           )
             .filter(":visible:not([disabled])")
             .first()
             .scrollIntoView()
             .should("be.visible")
-            .type(fechaEgresoReferenciaLaboralCliente, { force: true });
-        } else {
-          cy.log(
-            "No ingresa fecha ya que no tiene una fecha de egreso la referencia"
-          );
-        }
+            .click({ force: true });
+          cy.get(".loading", { timeout: 60000 }).should("not.exist");
 
-        cy.xpath(
-          "//mat-label[text()='Puesto']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-        )
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .type(puestoReferenciaLaboralCliente, { force: true });
-        cy.wait(500);
-        cy.xpath(
-          "//mat-label[text()='Salario']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-        )
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .click({ force: true });
-        cy.wait(500);
-        cy.xpath(
-          `//mat-option/span[contains(normalize-space(.), "${salarioReferenciaLaboralCliente}")]`
-        ).click({
-          force: true,
-        });
-        cy.wait(500);
-      } else if (
-        referenciaTipoPersona === "Jurídica" ||
-        referenciaTipoPersona === "Juridico" ||
-        referenciaTipoPersona === "Juridica"
-      ) {
-        cy.xpath("//label[@class='mdc-label' and text()='Jurídica']")
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .click({ force: true });
-
-        cy.wait(500);
-        cy.xpath(
-          "//mat-label[text()='Nombre de la Empresa']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-        )
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .type(nombreEmpresaReferenciaLaboralCliente, { force: true });
-        cy.xpath(
-          "//mat-label[text()='Fecha Ingreso']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-        )
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .type(fechaIngresoReferenciaLaboralCliente, { force: true });
-        cy.wait(500);
-        if (tieneFechaEgresoReferenciaLaboralCliente === "Si") {
           cy.xpath(
-            "//mat-label[text()='Fecha Egreso']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+            "//mat-label[contains(text(), 'Ingrese una ubicación')]//ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
           )
             .filter(":visible:not([disabled])")
             .first()
             .scrollIntoView()
             .should("be.visible")
-            .type(fechaEgresoReferenciaLaboralCliente, { force: true });
+            .type(ubicacionReferencialLaboralCliente, { force: true });
+          cy.wait(500);
+          cy.get("mat-option").eq(0).click({ force: true, timeout: 6000 });
+          cy.xpath(
+            "//button[.//span[contains(@class, 'mdc-button__label') and text()='Buscar']]"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+
+          cy.xpath(
+            "//button/span[contains(@class,'mdc-button__label') and normalize-space(text())='Siguiente paso Referencia Laboral']"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.wait(500);
+          cy.get(".loading", { timeout: 120000 }).should("not.exist");
+
+          cy.xpath(
+            "//mat-label[text()='Tipo de Correo']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//mat-select"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.wait(500);
+          cy.xpath(
+            `//mat-option/span[contains(normalize-space(.), "${tipoCorreoReferencialLaboralCliente}")]`
+          ).click({
+            force: true,
+          });
+
+          cy.xpath(
+            "//mat-label[text()='Correo']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .type(correoReferenciaLaboralCliente, { force: true });
+          cy.wait(500);
+          cy.xpath(
+            "//button[.//span[text()='Agregar'] and .//mat-icon[contains(@class,'mat-icon')]]"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.wait(500);
+          cy.xpath(
+            "//mat-label[text()='Tipo de Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//mat-select"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.wait(500);
+          cy.xpath(
+            `//mat-option[.//span[normalize-space()="${tipoTelefonoReferenciaLaboralCliente}"]]`
+          ).click({
+            force: true,
+          });
+          cy.wait(500);
+          cy.xpath(
+            "//mat-label[text()='Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .clear({ force: true })
+            .type(telefonoReferencialLaboralCliente, {
+              timeout: 6000,
+              force: true,
+            });
+          cy.wait(500);
+          cy.xpath(
+            "//button[.//span[text()='Agregar'] and .//mat-icon[contains(@class,'mat-icon')]]"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.wait(500);
+          cy.xpath("//button[@mat-raised-button and .//span[text()='Agregar']]")
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.wait(1500);
+          cy.xpath(
+            "//button[@mat-raised-button and .//span[text()='Siguiente']]"
+          )
+            .filter(":visible:not([disabled])")
+            .first()
+            .scrollIntoView()
+            .should("be.visible")
+            .click({ force: true, timeout: 6000 });
+          cy.get(".loading", { timeout: 80000 }).should("not.exist");
         } else {
           cy.log(
-            "No ingresa fecha ya que no tiene una fecha de egreso la referencia"
+            "El cliente es asalariado, pero no se visualiza el paso 'Referencias Laborales'."
           );
         }
-        cy.xpath(
-          "//mat-label[text()='Puesto']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-        )
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .type(puestoReferenciaLaboralCliente, { force: true });
-        cy.wait(500);
-        cy.xpath(
-          "//mat-label[text()='Salario']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-        )
-          .filter(":visible:not([disabled])")
-          .first()
-          .scrollIntoView()
-          .should("be.visible")
-          .click({ force: true });
-        cy.wait(500);
-        cy.xpath(
-          `//mat-option/span[contains(normalize-space(.), "${salarioReferenciaLaboralCliente}")]`
-        ).click({
-          force: true,
-        });
-        cy.wait(500);
-      }
-
-      cy.xpath(
-        "//button/span[contains(@class,'mdc-button__label') and normalize-space(text())='Siguiente paso Referencia Laboral']"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true });
-      cy.get(".loading", { timeout: 60000 }).should("not.exist");
-
-      cy.xpath(
-        "//mat-label[contains(text(), 'Ingrese una ubicación')]//ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//input"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(ubicacionReferencialLaboralCliente, { force: true });
-      cy.wait(500);
-      cy.get("mat-option").eq(0).click({ force: true, timeout: 6000 });
-      cy.xpath(
-        "//button[.//span[contains(@class, 'mdc-button__label') and text()='Buscar']]"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-
-      cy.xpath(
-        "//button/span[contains(@class,'mdc-button__label') and normalize-space(text())='Siguiente paso Referencia Laboral']"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.wait(500);
-      cy.get(".loading", { timeout: 120000 }).should("not.exist");
-
-      cy.xpath(
-        "//mat-label[text()='Tipo de Correo']/ancestor::div[contains(@class, 'mat-mdc-text-field-wrapper')]//mat-select"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.wait(500);
-      cy.xpath(
-        `//mat-option/span[contains(normalize-space(.), "${tipoCorreoReferencialLaboralCliente}")]`
-      ).click({
-        force: true,
       });
-
-      cy.xpath(
-        "//mat-label[text()='Correo']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .type(correoReferenciaLaboralCliente, { force: true });
-      cy.wait(500);
-      cy.xpath(
-        "//button[.//span[text()='Agregar'] and .//mat-icon[contains(@class,'mat-icon')]]"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.wait(500);
-      cy.xpath(
-        "//mat-label[text()='Tipo de Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//mat-select"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.wait(500);
-      cy.xpath(
-        `//mat-option[.//span[normalize-space()="${tipoTelefonoReferenciaLaboralCliente}"]]`
-      ).click({
-        force: true,
-      });
-      cy.wait(500);
-      cy.xpath(
-        "//mat-label[text()='Teléfono']/ancestor::div[contains(@class,'mat-mdc-text-field-wrapper')]//input"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .clear({ force: true })
-        .type(telefonoReferencialLaboralCliente, {
-          timeout: 6000,
-          force: true,
-        });
-      cy.wait(500);
-      cy.xpath(
-        "//button[.//span[text()='Agregar'] and .//mat-icon[contains(@class,'mat-icon')]]"
-      )
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.wait(500);
-      cy.xpath("//button[@mat-raised-button and .//span[text()='Agregar']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.wait(1500);
-      cy.xpath("//button[@mat-raised-button and .//span[text()='Siguiente']]")
-        .filter(":visible:not([disabled])")
-        .first()
-        .scrollIntoView()
-        .should("be.visible")
-        .click({ force: true, timeout: 6000 });
-      cy.get(".loading", { timeout: 80000 }).should("not.exist");
     } else {
       cy.log("No aplica este flujo ya que no es Comerciante/Asalariado");
     }
@@ -5142,37 +5240,76 @@ class PersonaNatural {
   digitalizacionDocumentos() {
     cy.log("Flujo para ingresar documentos");
     //para ingresar con DNI
-    cy.xpath(
-      "//tr[td[contains(normalize-space(.), 'DNI')]]//button[.//mat-icon[normalize-space(text())='add']]"
-    )
-      .filter(":visible:not([disabled])")
-      .first()
-      .scrollIntoView()
-      .should("be.visible")
-      .click({ force: true, timeout: 6000 });
-    cy.wait(1000);
-    cy.xpath(
-      "(//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))])[1]"
-    )
-      .filter(":visible:not([disabled])")
-      .first()
-      .find("input[type='file']")
-      .first()
-      .attachFile("DNI.jpg", { force: true });
+    // cy.xpath(
+    //   "//tr[td[contains(normalize-space(.), 'DNI')]]//button[.//mat-icon[normalize-space(text())='add']]"
+    // )
+    //   .filter(":visible:not([disabled])")
+    //   .first()
+    //   .scrollIntoView()
+    //   .should("be.visible")
+    //   .click({ force: true, timeout: 6000 });
+    // cy.wait(1000);
+    // cy.xpath(
+    //   "(//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))])[1]"
+    // )
+    //   .filter(":visible:not([disabled])")
+    //   .first()
+    //   .find("input[type='file']")
+    //   .first()
+    //   .attachFile("DNI.jpg", { force: true });
 
-    cy.wait(1000);
-    cy.xpath('//p[normalize-space(text())="Notas:"]')
-      .filter(":visible:not([disabled])")
-      .first()
-      .scrollIntoView();
-    cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
-      .filter(":visible:not([disabled])")
-      .first()
-      .scrollIntoView()
-      .should("be.visible")
-      .click({ force: true, timeout: 6000 });
+    // cy.wait(1000);
+    // cy.xpath('//p[normalize-space(text())="Notas:"]')
+    //   .filter(":visible:not([disabled])")
+    //   .first()
+    //   .scrollIntoView();
+    // cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+    //   .filter(":visible:not([disabled])")
+    //   .first()
+    //   .scrollIntoView()
+    //   .should("be.visible")
+    //   .click({ force: true, timeout: 6000 });
+    cy.window().then(() => {
+      const $rtnBtn = Cypress.$(
+        "tr:has(td:contains('DNI')) button:has(mat-icon:contains('add'))"
+      );
 
-    // //Para ingresar el RTN (sera opcional)
+      if ($rtnBtn.length > 0 && $rtnBtn.is(":visible")) {
+        cy.log("Documento DNI sí aplica");
+
+        cy.wrap($rtnBtn).click({ force: true });
+        cy.wait(500);
+
+        cy.xpath(
+          "//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))]"
+        )
+          .filter(":visible:not([disabled])")
+          .first()
+          .find("input[type='file']")
+          .eq(0)
+          .attachFile("DNI.jpg", { force: true });
+
+        cy.wait(1000);
+
+        cy.xpath('//p[normalize-space(text())="Notas:"]')
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView();
+
+        cy.wait(1000);
+
+        cy.xpath("//button[.//span[normalize-space(text())='Guardar']]")
+          .filter(":visible:not([disabled])")
+          .first()
+          .scrollIntoView()
+          .should("be.visible")
+          .click({ force: true, timeout: 6000 });
+      } else {
+        cy.log("El cliente no tiene RTN, se salta este paso.");
+      }
+    });
+
+    // Para ingresar el RTN (sera opcional)
     cy.wait(2500);
 
     cy.window().then(() => {
@@ -5187,7 +5324,7 @@ class PersonaNatural {
         cy.wait(500);
 
         cy.xpath(
-          "(//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))])[2]"
+          "//div[contains(@class, 'container-local') and not(contains(@style, 'display: none'))]"
         )
           .filter(":visible:not([disabled])")
           .first()

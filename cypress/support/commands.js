@@ -1,6 +1,6 @@
 require("cypress-xpath");
 import "cypress-plugin-tab";
-import 'cypress-file-upload';
+import "cypress-file-upload";
 
 Cypress.Commands.add("Login", (data) => {
     cy.log("✅⏳🏃‍➡️🏃‍♂️‍➡️ Inicia metodo Login")
@@ -44,82 +44,78 @@ Cypress.Commands.add("oculto", () => {
   cy.get(".loading", { timeout: 60000 }).should("not.exist");
 });
 
-Cypress.Commands.add('leerHojaExcel', (nombreHoja) => {
-  return cy.task('readExcelToJson', {
-    filePath: 'cypress/fixtures/datos.xlsx',
-    hoja: nombreHoja
+Cypress.Commands.add("leerHojaExcel", (nombreHoja) => {
+  return cy.task("readExcelToJson", {
+    filePath: "cypress/fixtures/datos.xlsx",
+    hoja: nombreHoja,
   });
 });
 
-Cypress.Commands.add('xpathClkWOF', (xpath) => {
+Cypress.Commands.add("xpathClkWOF", (xpath) => {
   cy.oculto();
 
   cy.xpath(xpath, { timeout: 60000 })
-    .and('not.be.disabled')    // habilitado
-    .click({force: true});                  // sin force, espera el estado correcto
+    .and("not.be.disabled") // habilitado
+    .click({ force: true }); // sin force, espera el estado correcto
 
   cy.oculto();
 });
 // CLICK en elemento (radio, botón, etc.) - VERSIÓN MEJORADA
-Cypress.Commands.add('xpathClk', (xpath) => {
+Cypress.Commands.add("xpathClk", (xpath) => {
   cy.oculto();
 
   cy.xpath(xpath, { timeout: 60000 })
     //.filter(":visible:not([disabled])")
     .first()
-    .click({force: true});                  // sin force, espera el estado correcto
+    .click({ force: true }); // sin force, espera el estado correcto
 
   cy.oculto();
 });
 
 // ESCRIBIR en input - VERSIÓN MEJORADA
-Cypress.Commands.add('xpathBtxt', (variable, xpath) => {
+Cypress.Commands.add("xpathBtxt", (variable, xpath) => {
   cy.oculto();
 
-  if (!variable || String(variable).trim() === '') return;
+  if (!variable || String(variable).trim() === "") return;
 
   cy.xpath(xpath, { timeout: 60000 })
     .filter(":visible:not([disabled])")
     .first()
-    .click({force: true})
+    .click({ force: true })
     .clear()
-    .type(String(variable) + '{enter}'/*, {delay: 100}*/);
+    .type(String(variable) + "{enter}" /*, {delay: 100}*/);
 });
 
 // ESCRIBIR en input - VERSIÓN MEJORADA
-Cypress.Commands.add('xpathBtxtWE', (variable, xpath) => {
+Cypress.Commands.add("xpathBtxtWE", (variable, xpath) => {
   cy.oculto();
 
-  if (!variable || String(variable).trim() === '') return;
+  if (!variable || String(variable).trim() === "") return;
 
   cy.xpath(xpath, { timeout: 60000 })
     .filter(":visible:not([disabled])")
     .first()
-    .click({force: true})
+    .click({ force: true })
     .clear()
     .type(String(variable))
-    .blur();  // 👈 importante: dispara la validación reactiva
+    .blur(); // 👈 importante: dispara la validación reactiva
 });
-
-
 
 // ESCRIBIR en input (tipo texto o autocomplete) y limpiar antes
-Cypress.Commands.add('xpathBtxtClear', (variable, xpath) => {
+Cypress.Commands.add("xpathBtxtClear", (variable, xpath) => {
   cy.oculto();
 
-  if (!variable || String(variable).trim() === '') return;
+  if (!variable || String(variable).trim() === "") return;
 
   cy.xpath(xpath, { timeout: 60000 })
-      //.filter(":visible:not([disabled])")
-      .first()
-      .click({force: true})
-      .clear()                 // limpia el input
-      .type(String(variable) + '{enter}'); // escribe el valor
+    //.filter(":visible:not([disabled])")
+    .first()
+    .click({ force: true })
+    .clear() // limpia el input
+    .type(String(variable) + "{enter}"); // escribe el valor
 
-      cy.oculto();
-
+  cy.oculto();
 });
-
 
 Cypress.Commands.add('busquedaCliente', (data) => {
 
@@ -156,8 +152,7 @@ Cypress.Commands.add('busquedaCliente', (data) => {
   });
 });
 
-
-Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
+Cypress.Commands.add("seleccionarAutorizacionLocal", (data, motivo) => {
   cy.log("entra a validar");
   
   cy.get('body').then(($body) => {
@@ -169,15 +164,14 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
       
       // Clic en botón "Local"
       cy.xpath("//button[normalize-space()='Local']").click({ force: true });
-      
+
       // Llenar usuario
-      cy.get("#user")
+      cy.get("#username")
         .filter(":not(:disabled)")
         .first()
         .scrollIntoView()
         .should("be.visible")
         .type(data.Usuario);
-
 
       cy.wait(300);
 
@@ -202,19 +196,22 @@ Cypress.Commands.add('seleccionarAutorizacionLocal', (data, motivo) => {
       cy.wait(500);
 
       // Click en "Autorizar"
-      cy.xpath("//button[normalize-space()='Autorizar']").click({ force: true, timeout:6000  });
+      cy.xpath("//button[normalize-space()='Autorizar']").click({
+        force: true,
+        timeout: 6000,
+      });
 
       cy.wait(500);
 
       // Click en "Continuar"
-      cy.xpath("//button[normalize-space()='Continuar']").click({ force: true, timeout:6000 });
+      cy.xpath("//button[normalize-space()='Continuar']").click({
+        force: true,
+        timeout: 6000,
+      });
     }
   });
   cy.oculto()
 });
-
-
-
 
 Cypress.Commands.add("ingresoJson", (valorJson) => {
   cy.get("body").then(() => {
@@ -242,11 +239,9 @@ Cypress.Commands.add("ingresoJson", (valorJson) => {
   });
 });
 
-
 Cypress.Commands.add("IngresoFecha", (Fecha, xpAbrirFecha) => {
-
   // Validar si la fecha está vacía, nula o indefinida
-  if (!Fecha || String(Fecha).trim() === '') {
+  if (!Fecha || String(Fecha).trim() === "") {
     cy.log(`⏭️ Fecha vacía para xpath: ${xpAbrirFecha}, se omite la acción.`);
     return;
   }
@@ -255,15 +250,25 @@ Cypress.Commands.add("IngresoFecha", (Fecha, xpAbrirFecha) => {
   const [dia, mes, anio] = Fecha.split("/");
 
   const mesesAbreviados = [
-    "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
-    "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
+    "ENE",
+    "FEB",
+    "MAR",
+    "ABR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AGO",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DIC",
   ];
   const mesAbreviado = mesesAbreviados[parseInt(mes, 10) - 1];
 
   // Paso 2: Abrir el selector de fecha
   cy.xpath(xpAbrirFecha, { timeout: 60000 })
     // 👈 Scroll antes de hacer click
-    .should('not.be.disabled')
+    .should("not.be.disabled")
     .click({ force: true });
 
   // Paso 3: Cambiar al modo de selección de año
@@ -273,29 +278,34 @@ Cypress.Commands.add("IngresoFecha", (Fecha, xpAbrirFecha) => {
   cy.contains(".mat-calendar-body-cell-content", anio).click({ force: true });
 
   // Paso 5: Seleccionar mes
-  cy.contains(".mat-calendar-body-cell-content", mesAbreviado).click({ force: true });
+  cy.contains(".mat-calendar-body-cell-content", mesAbreviado).click({
+    force: true,
+  });
 
   // Paso 6: Seleccionar día
-  cy.contains(".mat-calendar-body-cell-content", String(parseInt(dia, 10))).click({ force: true });
+  cy.contains(
+    ".mat-calendar-body-cell-content",
+    String(parseInt(dia, 10))
+  ).click({ force: true });
 
   cy.oculto();
-
 });
-
 
 Cypress.Commands.add("clickSiguiente", (stepName) => {
-  cy.xpath(`//h4[contains(text(),'${stepName}')]
+  cy.xpath(
+    `//h4[contains(text(),'${stepName}')]
     /ancestor::div[contains(@class,'mat-step-header')]
     /following::div[contains(@class,'mat-vertical-stepper-content')][1]
-    //button[.//span[contains(text(),'Siguiente')]]`, { timeout: 10000 }
-  ).should('be.visible').click();
+    //button[.//span[contains(text(),'Siguiente')]]`,
+    { timeout: 10000 }
+  )
+    .should("be.visible")
+    .click();
 });
 
-
-
-Cypress.Commands.add('ScrollXpath', (Posb, PosI, xpath) => {
+Cypress.Commands.add("ScrollXpath", (Posb, PosI, xpath) => {
   cy.xpath(xpath, { timeout: 60000 })
-    .should('exist')
+    .should("exist")
     .scrollIntoView({ block: Posb, inline: PosI });
 
   cy.log("Se desplazó el xpath " + xpath);
@@ -307,31 +317,35 @@ Cypress.Commands.add('alertaSus', () => {
 
   cy.get('body').then(($body) => {
     // Verifica si el mensaje está presente en pantalla
-    if ($body.find('h2.swal2-title:contains("¿Desea suscribirse a las notificaciones?")').length > 0) {
-      cy.log('✅ Apareció el mensaje de suscripción');
+    if (
+      $body.find(
+        'h2.swal2-title:contains("¿Desea suscribirse a las notificaciones?")'
+      ).length > 0
+    ) {
+      cy.log("✅ Apareció el mensaje de suscripción");
       // Si aparece, haz clic en el botón "No"
       cy.xpath("//button[text()='Si']").click();
     } else {
       // Si no aparece, muestra un log
-      cy.log('⚠️ No apareció el mensaje de suscripción');
+      cy.log("⚠️ No apareció el mensaje de suscripción");
     }
   });
 });
 
-Cypress.Commands.add('alertaSus', () => {
-  cy.get('body').then(($body) => {
+Cypress.Commands.add("alertaSus", () => {
+  cy.get("body").then(($body) => {
     // Verifica si el mensaje está presente en pantalla
-    if ($body.find('h2.swal2-title:contains("¿Desea suscribirse a las notificaciones?")').length > 0) {
-      cy.log('✅ Apareció el mensaje de suscripción');
+    if (
+      $body.find(
+        'h2.swal2-title:contains("¿Desea suscribirse a las notificaciones?")'
+      ).length > 0
+    ) {
+      cy.log("✅ Apareció el mensaje de suscripción");
       // Si aparece, haz clic en el botón "No"
       cy.xpath("//button[text()='Si']").click();
     } else {
       // Si no aparece, muestra un log
-      cy.log('⚠️ No apareció el mensaje de suscripción');
+      cy.log("⚠️ No apareció el mensaje de suscripción");
     }
   });
 });
-
-
-
-

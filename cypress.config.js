@@ -45,6 +45,7 @@ module.exports = defineConfig({
           };
 
           launchOptions.args.push('--disable-popup-blocking');
+
           launchOptions.args.push('--disable-notifications'); // evitar banners del propio Chrome
         }
         return launchOptions;
