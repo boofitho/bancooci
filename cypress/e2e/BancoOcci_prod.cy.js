@@ -28,6 +28,9 @@ let ArrayRefernciaLaboral = [];
 let ArrayDigitDoc = [];
 
 let no = 0;
+
+let valorInformacionLaboral;
+  let valorRequiereNegocio;
 describe("BancoOcci", () => {
   Cypress.on("uncaught:exception", (err, Runnable) => {
     return false;
@@ -94,6 +97,8 @@ describe("BancoOcci", () => {
       Generales.DescargaImagen(ArrayDigitDoc[1]);
     }
   );
+
+  
 
   it("Login", () => {
     cy.Login(ArrayVar[0]);
